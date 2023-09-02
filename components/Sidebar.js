@@ -6,6 +6,8 @@ import { BiHash } from "react-icons/bi"
 import { BsBell, BsBookmark, BsThreeDots, BsTwitter } from "react-icons/bs"
 import { HiOutlineClipboardList, HiOutlineDotsCircleHorizontal } from "react-icons/hi"
 import { signOut, useSession } from 'next-auth/react'
+import Image from 'next/image'
+import mtuLogo from "../assets/images/mtulogo.jpg";
 
 const Sidebar = () => {
 
@@ -14,7 +16,8 @@ const Sidebar = () => {
     return (
         <div className='hidden sm:flex flex-col items-center xl:items-start xl:w-[340px] p-2 fixed h-full border-r border-gray-400 pr-0 xl:pr-8'>
             <div className='flex items-center justify-center w-14 h-14 hoverEffect p-0 xl:ml-24'>
-                <BsTwitter className='text-blue-500 text-[34px]' />
+              {/*  <BsTwitter className='text-blue-500 text-[34px]' /> */}
+                <Image className='rounded-[1px]' src={mtuLogo} height="74px" width="64px" />
             </div>
             <div className='space-y-2 mt-4 mb-2.5 xl:ml-24 text-[#16181C]'>
                 <SidebarLink text="Home" Icon={AiFillHome} />
@@ -27,8 +30,8 @@ const Sidebar = () => {
                 <SidebarLink text="More" Icon={HiOutlineDotsCircleHorizontal} />
             </div>
 
-            <button className="hidden xl:inline ml-auto bg-[#1d9bf0] text-white rounded-full w-52 h-[52px] text-lg font-bold hover:bg-[#1a8cd8]">
-                Tweet
+            <button className="hidden xl:inline ml-auto bg-yellow-500 text-white rounded-full w-52 h-[52px] text-lg font-bold hover:bg-[#1a8cd8]">
+                Write
             </button>
 
             <div

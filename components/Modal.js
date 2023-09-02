@@ -66,7 +66,7 @@ const Modal = () => {
 
                         <img src={post?.image} className='mt-2 max-h-[250px] rounded-[15px] object-cover' alt="" />
 
-                        <p className='mt-4 text-gray-500'>Replying to: <span className='text-[#1d9bf0]'>@{post?.tag}</span></p>
+                        <p className='mt-4 text-gray-500'>Replying to: <span className='text-yellow-500'>@{post?.tag}</span></p>
 
                     </div>
 
@@ -83,11 +83,11 @@ const Modal = () => {
                             onChange={(e) => setInput(e.target.value)} />
 
                         <div className='flex justify-between items-center'>
-                            <div className='flex gap-4 text-[20px] text-[#1d9bf0]'>
+                            <div className='flex gap-4 text-[20px] text-yellow-500'>
 
                                 <BsImage />
 
-                                <div className='border-[#1d9bf0] border rounded h-[18px] text-[16px] grid place-items-center'>
+                                <div className='border-yellow-500 border rounded h-[18px] text-[16px] grid place-items-center'>
                                     <AiOutlineGif />
                                 </div>
                                 <RiBarChart2Line className='rotate-90' />
@@ -97,7 +97,7 @@ const Modal = () => {
                             </div>
 
                             <button
-                                className="bg-[#1d9bf0] text-white rounded-full px-4 py-1.5 font-bold shadow-md hover:bg-[#1a8cd8] disabled:hover:bg-[#1d9bf0] disabled:opacity-50 disabled:cursor-default"
+                                className="bg-yellow-500 text-white rounded-full px-4 py-1.5 font-bold shadow-md hover:bg-yellow-400 disabled:hover:bg-yellow-200 disabled:opacity-50 disabled:cursor-default"
                                 disabled={!input.trim()}
                                 onClick={sendComment}>
                                 Tweet

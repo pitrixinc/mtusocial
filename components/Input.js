@@ -113,7 +113,7 @@ const Input = () => {
                     {!loading && (
                         <div className='flex justify-between items-center'>
 
-                            <div className='flex gap-4 text-[20px] text-[#1d9bf0]'>
+                            <div className='flex gap-4 text-[20px] text-yellow-500'>
 
                                 <label htmlFor="file">
                                     <BsImage className='cursor-pointer' />
@@ -124,7 +124,7 @@ const Input = () => {
                                     onChange={addImageToPost}
                                 />
 
-                                <div className='border-[#1d9bf0] border rounded h-[18px] text-[16px] grid place-items-center'>
+                                <div className='border-yellow-500 border rounded h-[18px] text-[16px] grid place-items-center'>
                                     <AiOutlineGif />
                                 </div>
                                 <RiBarChart2Line className='rotate-90' />
@@ -134,7 +134,7 @@ const Input = () => {
                             </div>
 
                             <button
-                                className="bg-[#1d9bf0] text-white rounded-full px-4 py-1.5 font-bold shadow-md hover:bg-[#1a8cd8] disabled:hover:bg-[#1d9bf0] disabled:opacity-50 disabled:cursor-default"
+                                className="bg-yellow-500 text-white rounded-full px-4 py-1.5 font-bold shadow-md hover:bg-yellow-400 disabled:hover:bg-yellow-200 disabled:opacity-50 disabled:cursor-default"
                                 disabled={!input.trim() && !selectedFile}
                                 onClick={sendPost} >
                                 Tweet
