@@ -4,7 +4,8 @@ import Input from './Input'
 import Post from './Post'
 import { onSnapshot, collection, query, orderBy } from "firebase/firestore";
 import { db } from "../firebase";
-import { BsTwitter } from "react-icons/bs"
+import Image from 'next/image'
+import mtuLogo from "../assets/images/mtulogo.jpg";
 
 const Feed = () => {
 
@@ -24,7 +25,9 @@ const Feed = () => {
     <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] min-h-screen border-r border-gray-400 text-[#16181C] py-2'>
       <div className='sticky top-0 bg-white text-[#16181C] flex justify-between font-bold text-[20px] px-4 py-2'>
         Home
-        <BsTwitter className='text-blue-500 text-[29px] md:hidden lg:hidden' />
+        <div className='rounded-[1px] md:hidden lg:hidden'>
+        <Image className='rounded-[1px] md:hidden lg:hidden' src={mtuLogo} height="33px" width="29px" />
+        </div>
         <HiOutlineSparkles />
       </div>
 
