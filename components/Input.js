@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { BsImage, BsEmojiSmile } from "react-icons/bs"
-import { AiOutlineGif, AiOutlineClose } from "react-icons/ai"
+import { AiOutlineVideoCameraAdd, AiOutlineClose } from "react-icons/ai"
 import { RiBarChart2Line } from "react-icons/ri"
 import { IoCalendarNumberOutline } from "react-icons/io5"
 import { HiOutlineLocationMarker } from "react-icons/hi"
@@ -20,6 +20,19 @@ const Input = () => {
     const [showEmojis, setShowEmojis] = useState(false)
     const [input, setInput] = useState("")
     const [loading, setLoading] = useState(false)
+
+    const [selectedVideo, setSelectedVideo] = useState(null);
+
+    const addVideoToPost = (e) => {
+        const reader = new FileReader();
+        if (e.target.files[0]) {
+          reader.readAsDataURL(e.target.files[0]);
+        }
+    
+        reader.onload = (readerEvent) => {
+          setSelectedVideo(readerEvent.target.result);
+        };
+      };
 
 
     const addImageToPost = (e) => {
@@ -70,9 +83,25 @@ const Input = () => {
                 })
         }
 
+        const videoRef = ref(storage, `posts/${docRef.id}/video`);
+
+    if (selectedVideo) {
+      await uploadString(videoRef, selectedVideo, 'data_url')
+        .then(async () => {
+          const downloadURL = await getDownloadURL(videoRef);
+          await updateDoc(doc(db, 'posts', docRef.id), {
+            video: downloadURL,
+          });
+        })
+        .catch((error) => {
+          console.error('Error uploading video:', error);
+        });
+    }
+
         setLoading(false)
         setInput("")
         setSelectedFile(null)
+        setSelectedVideo(null); // Clear the selected video
         setShowEmojis(false)
 
     }
@@ -110,6 +139,23 @@ const Input = () => {
 
                     )}
 
+                              {selectedVideo && (
+                                        <div className="relative mb-4">
+                                            <div
+                                            className="absolute w-8 h-8 bg-[#15181c] hover:[#272c26] bg-opacity-75 rounded-full flex items-center justify-center top-1 left-1 cursor-pointer"
+                                            onClick={() => setSelectedVideo(null)}
+                                            >
+                                            <AiOutlineClose className="text-white h-5" />
+                                            </div>
+                                            {/* Display the selected video */}
+                                            <video
+                                            controls
+                                            src={selectedVideo}
+                                            className="rounded-2xl max-h-80"
+                                            ></video>
+                                        </div>
+                                        )}
+
                     {!loading && (
                         <div className='flex justify-between items-center'>
 
@@ -124,13 +170,22 @@ const Input = () => {
                                     onChange={addImageToPost}
                                 />
 
-                                <div className='border-yellow-500 border rounded h-[18px] text-[16px] grid place-items-center'>
-                                    <AiOutlineGif />
-                                </div>
-                                <RiBarChart2Line className='rotate-90' />
+                                <label htmlFor="video">
+                                        <AiOutlineVideoCameraAdd className="cursor-pointer" />
+                                        </label>
+                                        <input
+                                        id="video"
+                                        type="file"
+                                        accept="video/*" // Allow video files only
+                                        hidden
+                                        onChange={addVideoToPost}
+                                        />
+                                        {/* ...existing code */}
+                                        
                                 <BsEmojiSmile className='cursor-pointer' onClick={() => setShowEmojis(!showEmojis)} />
-                                <IoCalendarNumberOutline />
-                                <HiOutlineLocationMarker />
+                               {/* <IoCalendarNumberOutline />
+                                   <RiBarChart2Line className='rotate-90' />
+                                   <HiOutlineLocationMarker /> */}
                             </div>
 
                             <button

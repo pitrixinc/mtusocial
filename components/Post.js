@@ -71,7 +71,7 @@ const Post = ({ id, post }) => {
   }
 
   return (
-    <div className='mt-4 border-t border-gray-500 px-4 pt-6 pb-4 cursor-pointer' onClick={() => router.push(`/${id}`)}>
+    <div className='mt-4 border-t border-gray-300 px-4 pt-6 pb-4 cursor-pointer' onClick={() => router.push(`/${id}`)}>
       <div className='grid grid-cols-[48px,1fr] gap-4'>
 
         <div>
@@ -92,10 +92,25 @@ const Post = ({ id, post }) => {
 
           </div>
           <p>{post?.text}</p>
-          <img
+          {post?.image && (
+            <img
             className='max-h-[450px] object-cover rounded-[20px] mt-2'
             src={post?.image}
             alt="" />
+          )}
+          {post?.video && (
+            <video
+            controls
+            className="max-h-[450px] object-cover rounded-[20px] mt-2"
+          >
+            <source src={post?.video}  />
+            Your browser does not support the video tag.
+          </video>
+          )}
+        {/*  <img
+            className='max-h-[450px] object-cover rounded-[20px] mt-2'
+            src={post?.image}
+            alt="" /> */}
 
 
           <div className='flex justify-between text-[20px] mt-4 w-[80%]'>

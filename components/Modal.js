@@ -64,7 +64,23 @@ const Modal = () => {
                         </div>
                         <p className='text-[12px] md:text-[16px]'>{post?.text}</p>
 
-                        <img src={post?.image} className='mt-2 max-h-[250px] rounded-[15px] object-cover' alt="" />
+                        {post?.image && (
+                            <img
+                            className='mt-2 max-h-[250px] rounded-[15px] object-cover'
+                            src={post?.image}
+                            alt="" />
+                        )}
+                        {post?.video && (
+                            <video
+                            controls
+                            className="mt-2 max-h-[250px] rounded-[15px] object-cover"
+                        >
+                            <source src={post?.video}  />
+                            Your browser does not support the video tag.
+                        </video>
+                       )}
+
+                       {/* <img src={post?.image} className='mt-2 max-h-[250px] rounded-[15px] object-cover' alt="" /> */}
 
                         <p className='mt-4 text-gray-500'>Replying to: <span className='text-yellow-500'>@{post?.tag}</span></p>
 
