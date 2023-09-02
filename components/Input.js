@@ -137,7 +137,7 @@ const Input = () => {
                                 className="bg-yellow-500 text-white rounded-full px-4 py-1.5 font-bold shadow-md hover:bg-yellow-400 disabled:hover:bg-yellow-200 disabled:opacity-50 disabled:cursor-default"
                                 disabled={!input.trim() && !selectedFile}
                                 onClick={sendPost} >
-                                Tweet
+                                Write
                             </button>
 
                         </div>
