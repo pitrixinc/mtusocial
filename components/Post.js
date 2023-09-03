@@ -10,6 +10,7 @@ import { useRouter } from 'next/router'
 import { collection, deleteDoc, doc, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore'
 import { useSession } from "next-auth/react"
 import { AppContext } from '../contexts/AppContext'
+import SkeletonLoader from './SkeletonLoader'
 
 
 const Post = ({ id, post }) => {
@@ -17,6 +18,7 @@ const Post = ({ id, post }) => {
   const [likes, setLikes] = useState([])
   const [liked, setLiked] = useState(false)
   const [comments, setComments] = useState([])
+  const [loading, setLoading] = useState(true); // State to track loading status
 
   const { data: session } = useSession()
   const router = useRouter()
@@ -70,8 +72,20 @@ const Post = ({ id, post }) => {
     console.log('opening model ', appContext.post);
   }
 
+  // Use useEffect to simulate loading time
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      setLoading(false); // Set loading to false after a simulated delay
+    }, 1000); // Adjust the delay time as needed
+
+    return () => clearTimeout(delay);
+  }, []);
+
   return (
     <div className='mt-4 border-t border-gray-300 px-4 pt-6 pb-4 cursor-pointer' onClick={() => router.push(`/${id}`)}>
+      {loading ? (
+      <SkeletonLoader /> // Display the SkeletonLoader while loading
+    ) : (
       <div className='grid grid-cols-[48px,1fr] gap-4'>
 
         <div>
@@ -151,6 +165,7 @@ const Post = ({ id, post }) => {
         </div>
 
       </div>
+    )}
     </div>
   )
 }
