@@ -56,6 +56,7 @@ const Post = ({ id, post }) => {
       await deleteDoc(doc(db, "posts", id, "likes", session.user.uid));
     } else {
       await setDoc(doc(db, "posts", id, "likes", session.user.uid), {
+        id: session.user.uid,
         username: session.user.name,
       });
     }

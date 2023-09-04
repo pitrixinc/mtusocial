@@ -34,11 +34,12 @@ const SinglePost = () => {
         [db]
     )
 
+
     return (
         <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] min-h-screen border-r border-gray-400 text-black py-2'>
             <div className='sticky top-0 bg-white flex items-center gap-4 font-bold text-[20px] px-4 py-2'>
                 <BsArrowLeft className='cursor-pointer' onClick={() => router.push(`/`)} />
-                MTU Social
+              <div className='text-center items-center justify-center'> MTU Social </div>
             </div>
 
             <Post id={id} post={post} />

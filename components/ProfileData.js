@@ -13,7 +13,7 @@ const ProfileData = () => {
             </div>
 
 
-            <div className='bg-white rounded-[20px] text-[#16181C] mt-4 px-4 py-4 fixed top-1 z-10 h-full'>
+            <div className='bg-white rounded-[20px] text-[#16181C] mt-4 px-4 py-4 sticky top-1 z-10 h-full'>
                 <h1 className='text-[20px] font-medium'>What's Happening</h1>
 
                 <TrendingList />

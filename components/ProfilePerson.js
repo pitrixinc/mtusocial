@@ -12,7 +12,7 @@ import { useSession, getSession  } from "next-auth/react"
 import { AppContext } from '../contexts/AppContext'
 import Post from '../components/Post';
 
-const ProfilePerson = ({ id, post }) => {
+const ProfilePerson = ({ id, post, allPosts}) => {
   const [likes, setLikes] = useState([])
   const [liked, setLiked] = useState(false)
   const [comments, setComments] = useState([])
@@ -64,8 +64,40 @@ const ProfilePerson = ({ id, post }) => {
     }
   }, [session]);
 
+  // Filter the userPosts to only include posts with media (image or video)
+  const postsWithMedia = userPosts.filter((post) => post.image || post.video);
+ 
+  const [likePosts, setLikePosts] = useState([]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const postsQuery = query(collection(db, 'posts'));
+        const postsSnapshot = await getDocs(postsQuery);
 
+        const userLikedPosts = [];
+
+        for (const postDoc of postsSnapshot.docs) {
+          const likesQuery = query(collection(db, 'posts', postDoc.id, 'likes'), where('id', '==', session.user.uid));
+          const likesSnapshot = await getDocs(likesQuery);
+
+          if (!likesSnapshot.empty) {
+            userLikedPosts.push({ id: postDoc.id, ...postDoc.data() });
+          }
+        }
+
+        setLikePosts(userLikedPosts);
+      } catch (error) {
+        console.error('Error fetching user posts: ', error);
+      }
+    };
+
+    if (session?.user?.uid) {
+      fetchData();
+    }
+  }, [session?.user?.uid]);
+  
+  
   const [activeTab, setActiveTab] = useState('Tweets'); // Initialize with the default tab
 
   const handleTabClick = (tabName) => {
@@ -75,11 +107,17 @@ const ProfilePerson = ({ id, post }) => {
   // Define the content for each tab
   const tabContents = {
     Tweets: <div>{userPosts.slice().reverse().map((post) => (
-      <Post key={post.id} id={post.id} post={post} />
-    ))}</div> ,
-    'Tweets & replies': <div>Content for Tweets & replies tab</div>,
-    Media: <div>Content for Media tab</div>,
-    Likes: <div>Content for Likes tab</div>,
+                <Post key={post.id} id={post.id} post={post} />
+              ))}</div> ,
+    'Tweets & replies': <div>{userPosts.slice().reverse().map((post) => (
+                            <Post key={post.id} id={post.id} post={post} />
+                          ))}</div>,
+    Media: <div>{postsWithMedia.map((post) => (
+                        <Post key={post.id} id={post.id} post={post} />
+                      ))}</div>,
+    Likes: <div>{likePosts.map((post) => (
+              <Post key={post.id} id={post.id} post={post} />
+            ))}</div>,
   };
   
   return (
