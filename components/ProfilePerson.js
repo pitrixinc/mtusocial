@@ -106,18 +106,34 @@ const ProfilePerson = ({ id, post, allPosts}) => {
 
   // Define the content for each tab
   const tabContents = {
-    Tweets: <div>{userPosts.slice().reverse().map((post) => (
-                <Post key={post.id} id={post.id} post={post} />
-              ))}</div> ,
-    'Tweets & replies': <div>{userPosts.slice().reverse().map((post) => (
+    Tweets: <div>{userPosts.length === 0 ? (
+      <p className='text-xl text-semibold text-center text-gray-600'>You have not liked any posts yet.</p>
+              ) : (
+                userPosts.map((post) => (
+                  <Post key={post.id} id={post.id} post={post} />
+                ))
+              )}</div> ,
+    'Replies': <div>{userPosts.length === 0 ? (
+      <p className='text-xl text-semibold text-center text-gray-600'>You have not liked any posts yet.</p>
+                        ) : (
+                          userPosts.map((post) => (
                             <Post key={post.id} id={post.id} post={post} />
-                          ))}</div>,
-    Media: <div>{postsWithMedia.map((post) => (
-                        <Post key={post.id} id={post.id} post={post} />
-                      ))}</div>,
-    Likes: <div>{likePosts.map((post) => (
-              <Post key={post.id} id={post.id} post={post} />
-            ))}</div>,
+                          ))
+                        )}</div>,
+    Media: <div>{postsWithMedia.length === 0 ? (
+      <p className='text-xl text-semibold text-center text-gray-600'>You have no media.</p>
+                      ) : (
+                        postsWithMedia.map((post) => (
+                          <Post key={post.id} id={post.id} post={post} />
+                        ))
+                      )}</div>,
+    Likes: <div>{likePosts.length === 0 ? (
+      <p className='text-xl text-semibold text-center text-gray-600'>You have not liked any posts yet.</p>
+    ) : (
+      likePosts.map((post) => (
+        <Post key={post.id} id={post.id} post={post} />
+      ))
+    )}</div>,
   };
   
   return (

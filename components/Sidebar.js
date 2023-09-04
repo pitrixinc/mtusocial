@@ -19,7 +19,9 @@ const Sidebar = () => {
                 <Image className='rounded-[1px]' src={mtuLogo} height="74px" width="64px" />
             </div>
             <div className='space-y-2 mt-4 mb-2.5 xl:ml-24 text-[#16181C]'>
+                <div onClick={() => router.push('/')}>
                 <SidebarLink text="Home" Icon={AiFillHome} />
+                </div>
                 <SidebarLink text="Explore" Icon={BiHash} />
                 <SidebarLink text="Notifications" Icon={BsBell} />
                 <SidebarLink text="Messages" Icon={AiOutlineInbox} />
