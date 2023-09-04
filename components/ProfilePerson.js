@@ -107,14 +107,14 @@ const ProfilePerson = ({ id, post, allPosts}) => {
   // Define the content for each tab
   const tabContents = {
     Tweets: <div>{userPosts.length === 0 ? (
-      <p className='text-xl text-semibold text-center text-gray-600'>You have not liked any posts yet.</p>
+      <p className='text-xl text-semibold text-center text-gray-600'>You have no post.</p>
               ) : (
                 userPosts.map((post) => (
                   <Post key={post.id} id={post.id} post={post} />
                 ))
               )}</div> ,
     'Replies': <div>{userPosts.length === 0 ? (
-      <p className='text-xl text-semibold text-center text-gray-600'>You have not liked any posts yet.</p>
+      <p className='text-xl text-semibold text-center text-gray-600'>You have no comments.</p>
                         ) : (
                           userPosts.map((post) => (
                             <Post key={post.id} id={post.id} post={post} />
