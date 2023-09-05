@@ -99,7 +99,7 @@ function UpdateProfileModal({ isOpen, onClose }) {
           <div className="flex items-start justify-between px-4 py-3">
             <div className="relative">
               <img
-                className="-mt-16 h-32 w-32 cursor-pointer rounded-full"
+                className="-mt-16 h-32 w-32 cursor-pointer rounded-full ring-4 ring-gray-100"
                 src={profileData.profileImage || session?.user?.image}
                 alt="Profile"
               />
@@ -179,6 +179,7 @@ function UpdateProfileModal({ isOpen, onClose }) {
               type="email"
               value={profileData.email}
               onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
+              disabled
             />
           </div>
 

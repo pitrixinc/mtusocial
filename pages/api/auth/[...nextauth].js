@@ -2,6 +2,7 @@ import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google";
 import { db, auth } from "../../../firebase";
 import { collection, deleteDoc, doc, getDoc, onSnapshot, orderBy, query, setDoc, where } from 'firebase/firestore'
+import moment from 'moment';
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -59,6 +60,11 @@ export const authOptions = {
         .toLocaleLowerCase();
 
       session.user.uid = token.sub;
+
+      // Get the current date and format it as "Month Year"
+      const currentDate = moment();
+      const formattedDate = currentDate.format('MMMM YYYY'); // Example: "August 2021"
+
       // Check if the user's data exists in the Firestore collection
       const userDocRef = doc(db, 'users', session.user.uid);
       const userDocSnapshot = await getDoc(userDocRef);
@@ -71,12 +77,15 @@ export const authOptions = {
             name: session.user.name,
             email: session.user.email,
             tag: session.user.tag,
+            signupDate: formattedDate, // Include the formatted date
+            profileImage: session.user.image,
             // Add other fields you want to store in the document
           };
 
           await setDoc(userDocRef, userData);
         } catch (error) {
           console.error('Error creating user document in Firestore:', error);
+          return null
         }
       }
 
