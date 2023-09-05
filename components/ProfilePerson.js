@@ -7,13 +7,13 @@ import Moment from 'react-moment'
 
 import { db } from "../firebase"
 import { useRouter } from 'next/router'
-import { collection, deleteDoc, doc, getDocs, onSnapshot, orderBy, query, setDoc, where } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDocs, getDoc, onSnapshot, orderBy, query, setDoc, where } from 'firebase/firestore'
 import { useSession, getSession  } from "next-auth/react"
 import { AppContext } from '../contexts/AppContext'
 import Post from '../components/Post';
 import UpdateProfileModal from './UpdateProfileModal';
 
-const ProfilePerson = ({ id, post, allPosts}) => {
+const ProfilePerson = ({ id, post, allPosts }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -148,6 +148,25 @@ const ProfilePerson = ({ id, post, allPosts}) => {
     )}</div>,
   };
 
+  const [updatedProfile, setUpdatedProfile] = useState(null);
+
+  useEffect(() => {
+    const fetchUpdatedProfileData = async () => {
+      try {
+        const userDoc = doc(db, 'users', session.user.uid);
+        const userSnapshot = await getDoc(userDoc);
+        if (userSnapshot.exists()) {
+          setUpdatedProfile(userSnapshot.data());
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    if (session) {
+      fetchUpdatedProfileData();
+    }
+  }, [session]);
   
   
   return (
@@ -170,7 +189,7 @@ const ProfilePerson = ({ id, post, allPosts}) => {
 
    {/* <!-- Header image --> */}
     <div>
-      <img src="https://t3.ftcdn.net/jpg/02/16/47/50/360_F_216475029_YEdkzXdw97bvK9OioWRwRjfPG1IQkP69.jpg" />
+      <img src={updatedProfile?.headerImage ||"https://t3.ftcdn.net/jpg/02/16/47/50/360_F_216475029_YEdkzXdw97bvK9OioWRwRjfPG1IQkP69.jpg"} className="w-full h-auto max-w-screen-lg mx-auto" />
     </div>
 
    {/* <!-- Profile picture and edit button --> */}
