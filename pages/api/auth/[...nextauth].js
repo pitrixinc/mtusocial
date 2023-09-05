@@ -1,6 +1,7 @@
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google";
 import { db, auth } from "../../../firebase";
+import { collection, deleteDoc, doc, getDoc, onSnapshot, orderBy, query, setDoc, where } from 'firebase/firestore'
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -58,6 +59,27 @@ export const authOptions = {
         .toLocaleLowerCase();
 
       session.user.uid = token.sub;
+      // Check if the user's data exists in the Firestore collection
+      const userDocRef = doc(db, 'users', session.user.uid);
+      const userDocSnapshot = await getDoc(userDocRef);
+
+      if (!userDocSnapshot.exists()) {
+        // If the user's data doesn't exist, create a new document in the "users" collection
+        try {
+          const userData = {
+            id: session.user.uid,
+            name: session.user.name,
+            email: session.user.email,
+            tag: session.user.tag,
+            // Add other fields you want to store in the document
+          };
+
+          await setDoc(userDocRef, userData);
+        } catch (error) {
+          console.error('Error creating user document in Firestore:', error);
+        }
+      }
+
       return session;
     },
   },

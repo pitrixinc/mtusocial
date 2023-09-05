@@ -11,8 +11,20 @@ import { collection, deleteDoc, doc, getDocs, onSnapshot, orderBy, query, setDoc
 import { useSession, getSession  } from "next-auth/react"
 import { AppContext } from '../contexts/AppContext'
 import Post from '../components/Post';
+import UpdateProfileModal from './UpdateProfileModal';
 
 const ProfilePerson = ({ id, post, allPosts}) => {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   const [likes, setLikes] = useState([])
   const [liked, setLiked] = useState(false)
   const [comments, setComments] = useState([])
@@ -135,6 +147,8 @@ const ProfilePerson = ({ id, post, allPosts}) => {
       ))
     )}</div>,
   };
+
+  
   
   return (
     <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2'>
@@ -162,9 +176,9 @@ const ProfilePerson = ({ id, post, allPosts}) => {
    {/* <!-- Profile picture and edit button --> */}
     <div class="flex items-start justify-between px-4 py-3">
       <img class="-mt-[4.5rem] h-32 w-32 cursor-pointer rounded-full" src={session?.user?.image} />
-      <button class="rounded-full border border-gray-300 px-4 py-1.5 font-bold transition duration-150 ease-in-out hover:bg-gray-200 dark:border-gray-500 dark:hover:bg-gray-700">Edit profile</button>
+      <button class="rounded-full border border-gray-300 px-4 py-1.5 font-bold transition duration-150 ease-in-out hover:bg-gray-200 dark:border-gray-500 dark:hover:bg-gray-700" onClick={openModal}>Edit profile</button>
     </div>
-
+    <UpdateProfileModal isOpen={isModalOpen} onClose={closeModal} />
    {/* <!-- Name and handle --> */}
     <div class="mt-2 px-4">
       <h2 class="text-xl font-bold tracking-tight">{session?.user?.name}</h2>
