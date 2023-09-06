@@ -4,7 +4,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useRouter } from 'next/router'
 
-const NotificationPage = () => {
+const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   const { data: session } = useSession();
 
@@ -64,4 +64,4 @@ const NotificationPage = () => {
   );
 };
 
-export default NotificationPage;
+export default Notifications;
