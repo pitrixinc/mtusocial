@@ -2,15 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
+import { useRouter } from 'next/router'
 
 const NotificationPage = () => {
   const [notifications, setNotifications] = useState([]);
   const { data: session } = useSession();
 
+  const router = useRouter()
+  const { id } = router.query;
+
   useEffect(() => {
     const loadNotifications = async () => {
       try {
-        if (session?.user?.uid) {
+        if (id) {
           // Fetch all notifications
           const notificationsCollection = collection(db, 'notifications');
           const notificationsSnapshot = await getDocs(notificationsCollection);
@@ -20,7 +24,7 @@ const NotificationPage = () => {
 
           notificationsSnapshot.forEach((doc) => {
             const notification = doc.data();
-            if (notification.recipientUserId === session?.user?.uid) {
+            if (notification.recipientUserId === id) {
               filteredNotifications.push(notification);
             }
           });
@@ -39,7 +43,7 @@ const NotificationPage = () => {
     };
 
     loadNotifications();
-  }, [session]);
+  }, [id]);
 
   return (
     <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto no-scrollbar'>
