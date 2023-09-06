@@ -20,7 +20,7 @@ const NotificationPage = () => {
 
           notificationsSnapshot.forEach((doc) => {
             const notification = doc.data();
-            if (notification.recipientUserId === session.user.uid) {
+            if (notification.recipientUserId === session?.user?.uid) {
               filteredNotifications.push(notification);
             }
           });
