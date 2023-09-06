@@ -7,7 +7,7 @@ import Moment from 'react-moment'
 
 import { db } from "../firebase"
 import { useRouter } from 'next/router'
-import { collection, deleteDoc, doc, getDocs, getDoc, onSnapshot, orderBy, query, setDoc, where } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDocs, getDoc, onSnapshot, orderBy, query, setDoc, addDoc, where } from 'firebase/firestore'
 import { useSession, getSession  } from "next-auth/react"
 import { AppContext } from '../contexts/AppContext'
 import Post from '../components/Post';
@@ -186,6 +186,58 @@ console.log('UID from URL:', id); */}
 
   const followUser = async () => {
     try {
+      // Get the updated name from the updatedProfile state
+      const updatedName = updatedProfile ? updatedProfile.name : session.user.name;
+  
+      // Add the follower to the user being followed's followers subcollection
+      await setDoc(doc(db, 'users', id, 'followers', session.user.uid), {
+        id: session.user.uid,
+        name: updatedName, // Use the updated name
+        dateFollowed: new Date(),
+      });
+  
+      // Retrieve the data of the user being followed (UPS PI)
+      const userBeingFollowedDoc = await getDoc(doc(db, 'users', id));
+  
+      if (userBeingFollowedDoc.exists()) {
+        const userBeingFollowedData = userBeingFollowedDoc.data();
+  
+        // Add the user being followed (UPS PI) to the follower's following subcollection
+        await setDoc(doc(db, 'users', session.user.uid, 'following', id), {
+          id: id, // Use the id of UPS PI
+          name: userBeingFollowedData.name, // Use UPS PI's name
+          dateFollowed: new Date(),
+        });
+  
+        setIsFollowing(true);
+  
+        // Update the followers subcollection for UPS PI
+        await setDoc(doc(db, 'users', id, 'followers', session.user.uid), {
+          id: session.user.uid,
+          name: session.user.name, // Use Queen Cynthia's name
+          dateFollowed: new Date(),
+        });
+
+        // Create a notification for the user being followed (UPS PI)
+        await addDoc(collection(db, 'notifications'), {
+          recipientUserId: id, // UPS PI's user ID
+          senderUserId: session.user.uid, // Queen Cynthia's user ID
+          type: 'follow',
+          message: `${session.user.name} followed you.`,
+          timestamp: new Date(),
+          read: false,
+        });
+
+      }
+    } catch (error) {
+      console.error('Error following user:', error);
+    }
+  };
+  
+  
+  {/*
+   const followUser = async () => {
+    try {
       // Add the follower to the user being followed's followers subcollection
       await setDoc(doc(db, 'users', id, 'followers', session.user.uid), {
         id: session.user.uid,
@@ -205,6 +257,8 @@ console.log('UID from URL:', id); */}
       console.error('Error following user:', error);
     }
   };
+*/}
+  
 
   const unfollowUser = async () => {
     try {
@@ -270,7 +324,7 @@ console.log('UID from URL:', id); */}
     setShowFollowingModal(true);
     // Fetch the list of following
     if (session) {
-      const followingRef = collection(db, 'users', session.user.uid, 'following');
+      const followingRef = collection(db, 'users', id, 'following');
       const followingSnapshot = await getDocs(followingRef);
       const followingData = followingSnapshot.docs.map((doc) => doc.data());
       setFollowingList(followingData);
@@ -296,7 +350,7 @@ console.log('UID from URL:', id); */}
 
 
   return (
-    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2'>
+    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto no-scrollbar'>
        {/* <h1 className='font-semibold'>{session?.user?.name}</h1> */}
        <div class="mx-auto flex h-screen w-full items-start justify-center bg-white text-sm text-gray-900 antialiased">
   <div class="mx-auto w-full max-w-[600px]">

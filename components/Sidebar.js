@@ -23,7 +23,9 @@ const Sidebar = () => {
                 <SidebarLink text="Home" Icon={AiFillHome} />
                 </div>
                 <SidebarLink text="Explore" Icon={BiHash} />
+                <div onClick={() => router.push(`/notifications/${session.user.uid}`)}>
                 <SidebarLink text="Notifications" Icon={BsBell} />
+                </div>
                 <SidebarLink text="Messages" Icon={AiOutlineInbox} />
                 <SidebarLink text="Bookmarks" Icon={BsBookmark} />
                 <SidebarLink text="Lists" Icon={HiOutlineClipboardList} />
