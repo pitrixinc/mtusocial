@@ -69,6 +69,7 @@ const Input = () => {
             tag: session.user.tag,
             text: input,
             timestamp: serverTimestamp(),
+            postedById: session.user.uid,
         })
 
         const imageRef = ref(storage, `posts/${docRef.id}/image`)

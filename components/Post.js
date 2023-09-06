@@ -83,18 +83,18 @@ const Post = ({ id, post }) => {
   }, []);
 
   return (
-    <div className='mt-4 border-t border-gray-300 px-4 pt-6 pb-4 cursor-pointer' onClick={() => router.push(`/${id}`)}>
+    <div className='mt-4 border-t border-gray-300 px-4 pt-6 pb-4 cursor-pointer'>
       {loading ? (
       <SkeletonLoader /> // Display the SkeletonLoader while loading
     ) : (
       <div className='grid grid-cols-[48px,1fr] gap-4'>
 
-        <div>
+        <div onClick={() => router.push(`/users/${post.postedById}`)}>
           <img className='h-12 w-12 rounded-full object-cover' src={post?.userImg} alt="" />
         </div>
 
         <div>
-          <div className='block sm:flex gap-1'>
+          <div className='block sm:flex gap-1' onClick={() => router.push(`/users/${post.postedById}`)}>
             <h1 className='font-semibold'>{post?.username}</h1>
 
             <div className='flex'>
@@ -106,7 +106,7 @@ const Post = ({ id, post }) => {
 
 
           </div>
-          <p>{post?.text}</p>
+          <p onClick={() => router.push(`/${id}`)}>{post?.text}</p>
           {post?.image && (
             <img
             className='max-h-[450px] object-cover rounded-[20px] mt-2'
@@ -117,6 +117,7 @@ const Post = ({ id, post }) => {
             <video
             controls
             className="max-h-[450px] object-cover rounded-[20px] mt-2"
+            onClick={() => router.push(`/${id}`)}
           >
             <source src={post?.video}  />
             Your browser does not support the video tag.
