@@ -7,7 +7,7 @@ import Moment from 'react-moment'
 
 import { db } from "../firebase"
 import { useRouter } from 'next/router'
-import { collection, deleteDoc, doc, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore'
+import { collection, deleteDoc, doc, onSnapshot, orderBy, query, setDoc, addDoc, serverTimestamp } from 'firebase/firestore'
 import { useSession } from "next-auth/react"
 import { AppContext } from '../contexts/AppContext'
 import SkeletonLoader from './SkeletonLoader'
@@ -51,7 +51,8 @@ const Post = ({ id, post }) => {
     ), [likes]
   )
 
-  const likePost = async () => {
+  {/*
+      const likePost = async () => {
     if (liked) {
       await deleteDoc(doc(db, "posts", id, "likes", session.user.uid));
     } else {
@@ -72,6 +73,69 @@ const Post = ({ id, post }) => {
 
     console.log('opening model ', appContext.post);
   }
+*/}
+
+  const likePost = async () => {
+    if (liked) {
+      await deleteDoc(doc(db, 'posts', id, 'likes', session.user.uid));
+    } else {
+      await setDoc(doc(db, 'posts', id, 'likes', session.user.uid), {
+        id: session.user.uid,
+        username: session.user.name,
+      });
+
+      // Create a notification for the post owner when someone likes their post
+      if (post.postedById !== session.user.uid) {
+        await addDoc(collection(db, 'notifications'), {
+          recipientUserId: post.postedById,
+          senderUserId: session.user.uid,
+          senderName: session.user.name,
+          senderImage: session.user.image,
+          message:  'liked your post.',
+          type: 'like',
+          postId: id, // Add the post ID here
+          timestamp: serverTimestamp(),
+          read: false,
+        });
+      }
+    }
+  };
+  
+
+    // Mark notifications related to this post as read when the post is opened
+    if (session?.user?.uid) {
+      const notificationsCollection = collection(db, 'notifications');
+      const notificationsQuery = query(
+        notificationsCollection,
+        orderBy('timestamp', 'desc')
+      );
+
+      onSnapshot(notificationsQuery, (snapshot) => {
+        snapshot.docs.forEach(async (doc) => {
+          if (
+            doc.data().recipientUserId === session.user.uid &&
+            doc.data().postId === id &&
+            !doc.data().read
+          ) {
+            // Mark the notification as read
+            await updateDoc(doc.ref, {
+              read: true,
+            });
+          }
+        });
+      });
+    
+  };
+  
+  const openModal = () => {
+    setAppContext({
+      ...appContext, 
+      isModalOpen: true,
+      post,
+      postId: id
+    })
+
+    console.log('opening model ', appContext.post);}
 
   // Use useEffect to simulate loading time
   useEffect(() => {
@@ -111,7 +175,9 @@ const Post = ({ id, post }) => {
             <img
             className='max-h-[450px] object-cover rounded-[20px] mt-2'
             src={post?.image}
-            alt="" />
+            alt="post"
+            onClick={() => router.push(`/${id}`)}
+             />
           )}
           {post?.video && (
             <video

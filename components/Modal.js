@@ -8,7 +8,7 @@ import { HiOutlineLocationMarker } from "react-icons/hi"
 import { useSession } from 'next-auth/react'
 import { AppContext } from '../contexts/AppContext'
 import Moment from 'react-moment'
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { collection, onSnapshot, orderBy, query, addDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase'
 import { useRouter } from 'next/router'
 
@@ -37,14 +37,32 @@ const Modal = () => {
           timestamp: serverTimestamp(),
         });
 
+        // Check if the post owner's user ID is defined
+    if (post && post.postedById) {
+        // Create a notification for the post owner
+        await addDoc(collection(db, 'notifications'), {
+            recipientUserId: post.postedById, // Post owner's user ID
+            senderUserId: session.user.uid,
+            senderName: session.user.name,
+            senderImage: session.user.image,
+            message:  'commented on your post.',
+            comment: input,
+            type: 'comment',
+            postId: appContext.postId,
+            timestamp: serverTimestamp(),
+            read: false,
+        });
+    }
         setAppContext({...appContext, isModalOpen: false})
         setInput("");
 
         router.push(`/${appContext.postId}`);
     }
 
+     
+
     return (
-        <div className='fixed to-0 left-0 z-[20] h-screen w-screen bg-[#242d34bb]' onClick={closeModal}>
+        <div className='fixed to-0 left-0 z-[20] h-screen w-screen bg-[#242d34bb] overflow-y-auto no-scrollbar' onClick={closeModal}>
 
             <div className='bg-white w-[350px] md:w-[650px] text-black absolute left-[50%] translate-x-[-50%] mt-[40px] p-4 rounded-[20px]'
                 onClick={(e) => e.stopPropagation()}>

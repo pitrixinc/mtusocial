@@ -223,7 +223,9 @@ console.log('UID from URL:', id); */}
           recipientUserId: id, // UPS PI's user ID
           senderUserId: session.user.uid, // Queen Cynthia's user ID
           type: 'follow',
-          message: `${session.user.name} followed you.`,
+          senderName: session.user.name,
+          senderImage: session.user.image,
+          message:  'followed you.',
           timestamp: new Date(),
           read: false,
         });
