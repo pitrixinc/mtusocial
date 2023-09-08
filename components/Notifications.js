@@ -126,17 +126,17 @@ useEffect(() => {
 
 // Helper function to handle notification click
 const handleNotificationClick = async (notification) => {
-  if (notification.type === 'like' || notification.type === 'comment' || notification.type === 'follow') {
+  if (notification.type === 'like' || notification.type === 'comment' || notification.type === 'follow' || notification.type === 'repost') {
     // Update notification as read when clicked
     const notificationRef = doc(db, 'notifications', notification.id);
     await updateDoc(notificationRef, { read: true });
 
     // Redirect to the post or user profile based on the notification type
-    if (notification.type === 'like' || notification.type === 'comment') {
+    if (notification.type === 'like' || notification.type === 'comment' || notification.type === 'repost') {
       router.push(`/${notification.postId}`);
-    } else {
+    } if (notification.type === 'follow') {
       router.push(`/users/${notification.senderUserId}`);
-    }
+    } 
   }
 };
 
@@ -144,7 +144,7 @@ const handleNotificationClick = async (notification) => {
     <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto no-scrollbar'>
       <div className="mx-auto flex h-screen w-full items-start justify-center bg-white text-sm text-gray-900 antialiased">
         <div>
-          <h1 className='text-2xl font-bold'>Notifications</h1>
+          <h1 className='text-2xl font-bold text-center'>Notifications</h1>
           {/* 
           <ul>
             {notifications.map((notification, index) => (
@@ -170,8 +170,8 @@ const handleNotificationClick = async (notification) => {
                 
                 {/* Display additional content based on notification type */}
                 {notification.type === 'like' && (
-                  <div>
-                    <div className='cursor-pointer'>
+                  <div className='ml-2 md:ml-0 lg:ml-0 border-b border-b-gray-200'>
+                    <div className='cursor-pointer mt-2'>
                   <img className='h-12 w-12 rounded-full object-cover' src={notification.senderImage} alt="" />
                 </div>
                 <span className='font-bold cursor-pointer'>{notification.senderName}</span> {notification.message} <Moment fromNow>{notification.timestamp.toDate()}</Moment>
@@ -183,8 +183,8 @@ const handleNotificationClick = async (notification) => {
                   </div>
                 )}
                 {notification.type === 'comment' && (
-                  <div>
-                    <div className='cursor-pointer'>
+                  <div className='ml-2 md:ml-0 lg:ml-0 border-b border-b-gray-200'>
+                    <div className='cursor-pointer mt-2'>
                   <img className='h-12 w-12 rounded-full object-cover' src={notification.senderImage} alt="" />
                 </div>
                 <span className='font-bold cursor-pointer'>{notification.senderName}</span> {notification.message} <Moment fromNow>{notification.timestamp.toDate()}</Moment>
@@ -196,13 +196,26 @@ const handleNotificationClick = async (notification) => {
                   </div>
                 )}
                {notification.type === 'follow' && (
-                <div>
-                   <div className='cursor-pointer'>
+                <div className='ml-2 md:ml-0 lg:ml-0 border-b border-b-gray-200 py-2'>
+                   <div className='cursor-pointer mt-2'>
                    <img className='h-12 w-12 rounded-full object-cover' src={notification.senderImage} alt="" />
                    </div>
                  <span className='font-bold cursor-pointer'>{notification.senderName}</span> {notification.message} <Moment fromNow>{notification.timestamp.toDate()}</Moment>
                  </div>
                )}
+               {notification.type === 'repost' && (
+                  <div className='ml-2 md:ml-0 lg:ml-0 border-b border-b-gray-200'>
+                    <div className='cursor-pointer mt-2'>
+                  <img className='h-12 w-12 rounded-full object-cover' src={notification.senderImage} alt="" />
+                </div>
+                <span className='font-bold cursor-pointer'>{notification.senderName}</span> {notification.message} <Moment fromNow>{notification.timestamp.toDate()}</Moment>
+                <div className="font-semibold"> {notification.repostMessage} </div>
+                    <Post
+                      id={notification.postId}
+                      post={notificationPost.find((post) => post.id === notification.postId)} // Find the corresponding post in notificationPost
+                    />
+                  </div>
+                )}
               </li>
             ))}
           </ul>

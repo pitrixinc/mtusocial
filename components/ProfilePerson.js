@@ -112,6 +112,41 @@ useEffect(() => {
       fetchData();
     }
   }, [session?.user?.uid]);
+
+
+  //reposting to appear on profile
+  const [rePosts, setRePosts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const repostsQuery = query(collection(db, 'posts'));
+        const repostsSnapshot = await getDocs(repostsQuery);
+
+        const userRePosts = [];
+
+        for (const postDoc of repostsSnapshot.docs) {
+          const repostQuery = query(collection(db, 'posts', postDoc.id, 'rePost'), where('userId', '==', session.user.uid));
+          const repostSnapshot = await getDocs(repostQuery);
+
+          if (!repostSnapshot.empty) {
+            userRePosts.push({ id: postDoc.id, ...postDoc.data() });
+          }
+        }
+
+        setRePosts(userRePosts);
+      } catch (error) {
+        console.error('Error fetching user posts: ', error);
+      }
+    };
+
+    if (session?.user?.uid) {
+      fetchData();
+    }
+  }, [session?.user?.uid]);
+
+
+
   
   
   const [activeTab, setActiveTab] = useState('Tweets'); // Initialize with the default tab
@@ -129,10 +164,10 @@ useEffect(() => {
                   <Post key={post.id} id={post.id} post={post} />
                 ))
               )}</div> ,
-    'Replies': <div>{userPosts.length === 0 ? (
+    'Reposts': <div>{rePosts.length === 0 ? (
       <p className='text-xl text-semibold text-center text-gray-600'>You have no comments.</p>
                         ) : (
-                          userPosts.map((post) => (
+                          rePosts.map((post) => (
                             <Post key={post.id} id={post.id} post={post} />
                           ))
                         )}</div>,
