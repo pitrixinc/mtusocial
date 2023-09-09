@@ -82,9 +82,9 @@ useEffect(() => {
 
   // Filter the userPosts to only include posts with media (image or video)
   const postsWithMedia = userPosts.filter((post) => post.image || post.video);
- 
-  const [likePosts, setLikePosts] = useState([]);
 
+ // to make the likes available to all users use id but to display it to only the session user use session.user.uid
+  const [likePosts, setLikePosts] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -94,7 +94,7 @@ useEffect(() => {
         const userLikedPosts = [];
 
         for (const postDoc of postsSnapshot.docs) {
-          const likesQuery = query(collection(db, 'posts', postDoc.id, 'likes'), where('id', '==', session.user.uid));
+          const likesQuery = query(collection(db, 'posts', postDoc.id, 'likes'), where('id', '==', id));
           const likesSnapshot = await getDocs(likesQuery);
 
           if (!likesSnapshot.empty) {
@@ -108,10 +108,10 @@ useEffect(() => {
       }
     };
 
-    if (session?.user?.uid) {
+    if (session) {
       fetchData();
     }
-  }, [session?.user?.uid]);
+  }, [session, id]);
 
 
   //reposting to appear on profile
@@ -126,7 +126,7 @@ useEffect(() => {
         const userRePosts = [];
 
         for (const postDoc of repostsSnapshot.docs) {
-          const repostQuery = query(collection(db, 'posts', postDoc.id, 'rePost'), where('userId', '==', session.user.uid));
+          const repostQuery = query(collection(db, 'posts', postDoc.id, 'rePost'), where('userId', '==', id));
           const repostSnapshot = await getDocs(repostQuery);
 
           if (!repostSnapshot.empty) {
@@ -140,10 +140,10 @@ useEffect(() => {
       }
     };
 
-    if (session?.user?.uid) {
+    if (session) {
       fetchData();
     }
-  }, [session?.user?.uid]);
+  }, [session, id]);
 
 
 
@@ -165,7 +165,7 @@ useEffect(() => {
                 ))
               )}</div> ,
     'Reposts': <div>{rePosts.length === 0 ? (
-      <p className='text-xl text-semibold text-center text-gray-600'>You have no comments.</p>
+      <p className='text-xl text-semibold text-center text-gray-600'>You have no repost.</p>
                         ) : (
                           rePosts.map((post) => (
                             <Post key={post.id} id={post.id} post={post} />

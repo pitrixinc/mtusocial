@@ -48,6 +48,7 @@ const Sidebar = () => {
       }, [session]);
       
     return (
+      <>
         <div className='hidden sm:flex flex-col items-center xl:items-start xl:w-[340px] p-2 fixed h-full border-r border-gray-400 pr-0 xl:pr-8'>
             <div className='flex items-center justify-center w-14 h-14 hoverEffect p-0 xl:ml-24'>
                 <Image className='rounded-[1px]' src={mtuLogo} height="74px" width="64px" />
@@ -77,7 +78,6 @@ const Sidebar = () => {
             <button className="hidden xl:inline ml-auto bg-yellow-500 text-white rounded-full w-52 h-[52px] text-lg font-bold hover:bg-[#1a8cd8]">
                 Write
             </button>
-
             <div
                 className="text-[#d9d9d9] flex items-center justify-center mt-auto hoverEffect xl:ml-auto xl:-mr-5 px-4 py-2"
                 onClick={signOut}
@@ -95,6 +95,26 @@ const Sidebar = () => {
             </div>
 
         </div>
+
+        
+             {/* Use Tailwind CSS classes to conditionally display the bottom navigation bar */}
+      <div className='fixed bottom-0 left-0 w-full md:hidden lg:hidden bg-white border-t border-gray-400 p-2 flex justify-between'>
+        
+        <AiFillHome className='text-2xl cursor-pointer' onClick={() => router.push('/')} />
+        <BiHash className='text-2xl cursor-pointer'/>
+        <div onClick={() => router.push(`/notifications/${session.user.uid}`)}>
+                <div className='relative'>
+                    <span className={`absolute top-0 right-0 -mt-1 -mr-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs text-center ${unreadNotifications > 0 ? 'block' : 'hidden'}`}>
+                    {unreadNotifications > 0 ? unreadNotifications : ''}
+                    </span>
+                    <BsBell className='text-2xl cursor-pointer' />
+                </div>
+                </div>
+        <AiOutlineInbox className='text-2xl cursor-pointer' />
+        <BsBookmark className='text-2xl cursor-pointer' />
+    </div>
+
+        </>
     )
 }
 
