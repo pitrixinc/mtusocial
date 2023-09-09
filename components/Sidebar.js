@@ -66,7 +66,9 @@ const Sidebar = () => {
                     <SidebarLink text='Notifications' Icon={BsBell} />
                 </div>
                 </div>
+                <div onClick={() => router.push('/ConversationList')}>
                 <SidebarLink text="Messages" Icon={AiOutlineInbox} />
+                </div>
                 <SidebarLink text="Bookmarks" Icon={BsBookmark} />
                 <SidebarLink text="Lists" Icon={HiOutlineClipboardList} />
                 <div onClick={() => router.push(`/users/${session.user.uid}`)}>
@@ -110,8 +112,10 @@ const Sidebar = () => {
                     <BsBell className='text-xl cursor-pointer' />
                 </div>
                 </div>
-        <AiOutlineInbox className='text-xl cursor-pointer' />
-    </div>
+                <div onClick={() => router.push('/ConversationList')}>
+                 <AiOutlineInbox className='text-xl cursor-pointer' />
+                </div>
+          </div>
 
         </>
     )

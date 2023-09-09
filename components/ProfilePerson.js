@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { BsChat } from "react-icons/bs"
+import { BiMessageSquareAdd } from "react-icons/bi"
 import { FaRetweet } from "react-icons/fa"
 import { AiOutlineHeart, AiOutlineShareAlt, AiFillHeart } from 'react-icons/ai'
 import { RiDeleteBin5Line } from 'react-icons/ri'
@@ -412,8 +412,21 @@ console.log('UID from URL:', id); */}
    {/* <!-- Profile picture and edit button --> */}
     <div class="flex items-start justify-between px-4 py-3">
       <img class="-mt-[4.5rem] h-32 w-32 cursor-pointer rounded-full ring-4 ring-gray-100" src={updatedProfile?.profileImage || 'https://media.idownloadblog.com/wp-content/uploads/2017/03/Twitter-new-2017-avatar-001.png'} />
+       {/* Add a "Message" button/link */}
+       {session && session.user.uid !== id && (
+          <button className="bg-yellow-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full" onClick={() => router.push(`/conversation/${id}`)}>
+           <BiMessageSquareAdd className='text-xl' /> 
+          </button>
+      )}
       {session && session.user.uid !== id && (
-        <button onClick={isFollowing ? unfollowUser : followUser}>
+        <button 
+           onClick={isFollowing ? unfollowUser : followUser}
+           className={`${
+            isFollowing
+              ? 'bg-yellow-500 text-white' // followed
+              : 'bg-yellow-500 text-white' //not followed ------ Use your preferred background and text colors
+          } p-2 rounded-full`}
+        >
           {isFollowing ? 'Unfollow' : 'Follow'}
         </button>
       )}
