@@ -249,7 +249,7 @@ const Post = ({ id, post }) => {
 
         <div>
           <div className='block sm:flex gap-1' onClick={() => router.push(`/users/${post.postedById}`)}>
-            <h1 className='font-semibold'>{post?.username}</h1>
+            <h1 className='font-semibold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'>{post?.username}</h1>
 
             <div className='flex'>
               <p className='text-gray-500'>@{post?.tag} &nbsp;·&nbsp;</p>

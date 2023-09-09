@@ -157,7 +157,7 @@ useEffect(() => {
 
   // Define the content for each tab
   const tabContents = {
-    Tweets: <div>{userPosts.length === 0 ? (
+    Posts: <div>{userPosts.length === 0 ? (
       <p className='text-xl text-semibold text-center text-gray-600'>You have no post.</p>
               ) : (
                 userPosts.map((post) => (
@@ -399,7 +399,7 @@ console.log('UID from URL:', id); */}
         </svg>
       </button>
       <div class="flex flex-col items-start">
-        <h2 class="text-xl font-bold tracking-tight">{updatedProfile?.name || session?.user?.name}</h2>
+        <h2 class="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black">{updatedProfile?.name || session?.user?.name}</h2>
         <span class="text-xs text-gray-500 dark:text-gray-400">{userPosts.length} Writings </span>
       </div>
     </div>
@@ -442,7 +442,7 @@ console.log('UID from URL:', id); */}
     <UpdateProfileModal isOpen={isModalOpen} onClose={closeModal} />
    {/* <!-- Name and handle --> */}
     <div class="mt-2 px-4">
-      <h2 class="text-xl font-bold tracking-tight">{updatedProfile?.name || session?.user?.name}</h2>
+      <h2 class="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black">{updatedProfile?.name || session?.user?.name}</h2>
       <span class="text-gray-500 dark:text-gray-400">@{updatedProfile?.tag || session?.user?.tag}</span>
     </div>
 
