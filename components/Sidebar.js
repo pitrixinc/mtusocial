@@ -111,7 +111,6 @@ const Sidebar = () => {
                 </div>
                 </div>
         <AiOutlineInbox className='text-2xl cursor-pointer' />
-        <BsBookmark className='text-2xl cursor-pointer' />
     </div>
 
         </>
