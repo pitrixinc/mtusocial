@@ -79,7 +79,7 @@ const Chat = () => {
               className='w-8 h-8 rounded-full object-cover mr-2'
             />
           )}
-          <h1 className='text-xl font-semibold'>{userInfo.name}</h1>
+          <h1 className='text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'>{userInfo.name}</h1>
         </div>
         
       
@@ -94,7 +94,7 @@ const Chat = () => {
         className={`${
           message.fromId === session.user.uid
             ? 'self-end bg-yellow-500 text-white rounded-tl-lg rounded-bl-lg rounded-tr-lg p-2 max-w-[70%]'
-            : 'self-start bg-gray-200 rounded-tr-lg rounded-br-lg rounded-tl-lg p-2 max-w-[70%]'
+            : 'self-start bg-gray-200 rounded-tr-lg rounded-br-lg rounded-tl-lg p-2 max-w-[70%]      bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black border  border-yellow-500'
         }`}
       >
         <div className='mb-1'>{message.text}</div>
@@ -108,12 +108,12 @@ const Chat = () => {
   {/* Input field and send button */}
   <form onSubmit={handleSubmit} className='p-4 border-t border-gray-300'>
     <div className='flex'>
-      <input
+      <textarea
         type="text"
         placeholder="Type your message..."
         value={newMessage}
         onChange={(e) => setNewMessage(e.target.value)}
-        className='flex-grow px-4 py-2 rounded-l-lg focus:outline-none focus:ring focus:border-yellow-300'
+        className='flex-grow px-4 py-2 rounded-l-lg focus:outline-none border border-yellow-500  bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'
       />
       <button
         type="submit"
