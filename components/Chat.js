@@ -106,7 +106,7 @@ const Chat = () => {
 
 
   {/* Input field and send button */}
-  <form onSubmit={handleSubmit} className='p-4 border-t border-gray-300 mb-5'>
+  <form onSubmit={handleSubmit} className='p-4 border-t border-gray-300 mb-2 shadow-sm'>
     <div className='flex'>
       <textarea
         type="text"
