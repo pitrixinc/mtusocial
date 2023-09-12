@@ -100,7 +100,7 @@ const Sidebar = () => {
 
         
              {/* Use Tailwind CSS classes to conditionally display the bottom navigation bar */}
-      <div className='fixed bottom-0 left-0 w-full md:hidden lg:hidden bg-white border-t border-gray-400 p-2 flex justify-between'>
+      <div className='fixed bottom-0 left-0 w-full md:hidden lg:hidden bg-white border-t border-gray-400 p-4 flex justify-between'>
         
         <AiFillHome className='text-xl cursor-pointer' onClick={() => router.push('/')} />
         <BiHash className='text-xl cursor-pointer'/>
@@ -114,6 +114,13 @@ const Sidebar = () => {
                 </div>
                 <div onClick={() => router.push('/ConversationList')}>
                  <AiOutlineInbox className='text-xl cursor-pointer' />
+                </div>
+                <div onClick={() => router.push(`/users/${session.user.uid}`)}>
+                <img
+                    src={session?.user?.image}
+                    alt=""
+                    className="h-6 w-6 rounded-full"
+                />
                 </div>
           </div>
 

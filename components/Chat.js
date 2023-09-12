@@ -84,7 +84,7 @@ const Chat = () => {
         
       
 
-<div className='flex flex-col p-4 space-y-2'>
+<div className='flex flex-col p-4 space-y-2 overflow-y-auto no-scrollbar h-[450px] md:h-[500px] lg:h-[550px]'>
   {messages.length === 0 ? (
     <div className='text-center text-gray-500'>No messages, start a conversation with <span className='bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'>{userInfo.name}</span></div>
   ) : (
