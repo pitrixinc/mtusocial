@@ -100,7 +100,7 @@ const Sidebar = () => {
 
         
              {/* Use Tailwind CSS classes to conditionally display the bottom navigation bar */}
-      <div className='fixed bottom-0 left-0 w-full md:hidden lg:hidden bg-white border-t border-gray-400 p-4 flex justify-between'>
+      <div className='fixed bottom-0 left-0 w-full md:hidden lg:hidden bg-white border-t border-gray-400 p-4 flex justify-between mb-5'>
         
         <AiFillHome className='text-xl cursor-pointer' onClick={() => router.push('/')} />
         <BiHash className='text-xl cursor-pointer'/>
