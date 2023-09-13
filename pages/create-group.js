@@ -33,6 +33,11 @@ export default function CreateGroup() {
 
       const groupId = groupDocRef.id;
 
+     // Update the group document with the groupId
+    await updateDoc(doc(db, 'groups', groupId), {
+      id: groupId,
+    });
+
       // Upload group banner and profile picture files (if selected)
       if (groupBannerFile) {
         // Upload group banner file to storage and get the URL
