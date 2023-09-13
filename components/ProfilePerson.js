@@ -406,7 +406,7 @@ console.log('UID from URL:', id); */}
 
    {/* <!-- Header image --> */}
     <div>
-      <img src={updatedProfile?.headerImage ||"https://t3.ftcdn.net/jpg/02/16/47/50/360_F_216475029_YEdkzXdw97bvK9OioWRwRjfPG1IQkP69.jpg"} className="w-[100%] h-50 mx-auto" />
+      <img src={updatedProfile?.headerImage ||"https://t3.ftcdn.net/jpg/02/16/47/50/360_F_216475029_YEdkzXdw97bvK9OioWRwRjfPG1IQkP69.jpg"} className="w-[100%] h-[190px] mx-auto object-cover" />
     </div>
 
    {/* <!-- Profile picture and edit button --> */}

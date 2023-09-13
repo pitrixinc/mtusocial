@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { AiFillHome, AiOutlineInbox, AiOutlineUser } from "react-icons/ai"
 import { BiHash } from "react-icons/bi"
 import { BsBell, BsBookmark, BsThreeDots} from "react-icons/bs"
-import { HiOutlineClipboardList, HiOutlineDotsCircleHorizontal } from "react-icons/hi"
+import { HiOutlineClipboardList, HiOutlineDotsCircleHorizontal, HiOutlineUserGroup } from "react-icons/hi"
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { collection, getDocs, updateDoc, doc } from 'firebase/firestore'; // Import Firestore functions here
@@ -69,7 +69,9 @@ const Sidebar = () => {
                 <div onClick={() => router.push('/ConversationList')}>
                 <SidebarLink text="Messages" Icon={AiOutlineInbox} />
                 </div>
-                <SidebarLink text="Bookmarks" Icon={BsBookmark} />
+                <div onClick={() => router.push('/group/my-groups')}>
+                <SidebarLink text="Groups" Icon={HiOutlineUserGroup} />
+                </div>
                 <SidebarLink text="Lists" Icon={HiOutlineClipboardList} />
                 <div onClick={() => router.push(`/users/${session.user.uid}`)}>
                 <SidebarLink text="Profile" Icon={AiOutlineUser} />
