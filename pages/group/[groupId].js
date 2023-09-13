@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Sidebar from '../../components/Sidebar';
 import ProfileData from '../../components/ProfileData';
-import JoinViewGroup from '../../components/joinViewGroup';
+import JoinViewGroup from '../../components/JoinViewGroup';
 
 const Group = () => {
   const router = useRouter();
