@@ -392,13 +392,13 @@ const TheGroupChat = () => {
                         </div>
                     )}
 
-<div className='grid grid-cols-[48px,1fr] gap-4'>
+<div className='grid grid-cols-[48px,1fr] gap-4  mb-[11px] md:mb-0 lg:mb-0'>
 
     <div>
         <img className='h-12 w-12 rounded-full object-contain' src={session?.user?.image} alt="" />
     </div>
 
-    <div className='w-[90%] mb-[11px] md:mb-0 lg:mb-0'>
+    <div className='w-[90%]'>
         <textarea
             className='w-[100%] bg-transparent outline-none text-[20px]'
             rows="2"
