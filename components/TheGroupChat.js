@@ -323,7 +323,7 @@ const TheGroupChat = () => {
       className={
         message.userId === session.user.uid
           ? 'self-end bg-yellow-500 text-white rounded-tl-lg rounded-bl-lg rounded-tr-lg p-2 max-w-[70%]'
-          : 'self-start bg-gray-200 text-yellow-700 text-transparent rounded-tr-lg rounded-br-lg rounded-tl-lg p-2 max-w-[70%]    border  border-yellow-500'
+          : 'self-start bg-gray-100 text-yellow-700 text-transparent rounded-tr-lg rounded-br-lg rounded-tl-lg p-2 max-w-[70%]    border  border-yellow-500'
       }
     >
       <div className='flex items-center'>
