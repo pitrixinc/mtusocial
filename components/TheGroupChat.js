@@ -11,16 +11,16 @@ import {
 } from 'firebase/firestore';
 import { useSession } from 'next-auth/react';
 import { db, storage } from '../firebase';
-import {AiOutlineArrowLeft, AiOutlineVideoCameraAdd, AiOutlineClose} from 'react-icons/ai';
-import {VscSettings} from 'react-icons/vsc';
-import {HiOutlineDocumentAdd} from 'react-icons/hi';
-import {BsEmojiSmile, BsImage, BsFileEarmarkMusic} from 'react-icons/bs';
-import {FaFileDownload} from 'react-icons/fa'
+import { AiOutlineArrowLeft, AiOutlineVideoCameraAdd, AiOutlineClose } from 'react-icons/ai';
+import { VscSettings } from 'react-icons/vsc';
+import { HiOutlineDocumentAdd } from 'react-icons/hi';
+import { BsEmojiSmile, BsImage, BsFileEarmarkMusic } from 'react-icons/bs';
+import { FaFileDownload } from 'react-icons/fa';
 import Moment from 'react-moment';
-import data from '@emoji-mart/data'
-import Picker from '@emoji-mart/react'
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
-import {FcDocument} from 'react-icons/fc'
+import { FcDocument } from 'react-icons/fc';
 
 const TheGroupChat = () => {
   const router = useRouter();
@@ -28,91 +28,79 @@ const TheGroupChat = () => {
   const { data: session } = useSession();
   const [group, setGroup] = useState({});
   const [isMember, setIsMember] = useState(false);
-  const [isCreator, setIsCreator] = useState(false); // Add state for creator check
+  const [isCreator, setIsCreator] = useState(false);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
 
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [showEmojis, setShowEmojis] = useState(false);
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
 
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedMusic, setSelectedMusic] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
 
+  const addMusicToPost = (e) => {
+    const reader = new FileReader();
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
 
-  const [selectedFile, setSelectedFile] = useState(null)
-    const [showEmojis, setShowEmojis] = useState(false)
-    const [input, setInput] = useState("")
-    const [loading, setLoading] = useState(false)
-
-    const [selectedVideo, setSelectedVideo] = useState(null);
-    const [selectedMusic, setSelectedMusic] = useState(null);
-    const [selectedDocument, setSelectedDocument] = useState(null);
-
-
-    
-    const addMusicToPost = (e) => {
-      const reader = new FileReader();
-      if (e.target.files[0]) {
-        reader.readAsDataURL(e.target.files[0]);
-      }
-  
-      reader.onload = (readerEvent) => {
-        setSelectedMusic(readerEvent.target.result);
-      };
+    reader.onload = (readerEvent) => {
+      setSelectedMusic(readerEvent.target.result);
     };
+  };
 
-    
-    const addDocumentToPost = (e) => {
-      const reader = new FileReader();
-      if (e.target.files[0]) {
-        reader.readAsDataURL(e.target.files[0]);
-      }
-  
-      reader.onload = (readerEvent) => {
-        setSelectedDocument(readerEvent.target.result);
-      };
+  const addDocumentToPost = (e) => {
+    const reader = new FileReader();
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
+
+    reader.onload = (readerEvent) => {
+      setSelectedDocument(readerEvent.target.result);
     };
+  };
 
+  const addVideoToPost = (e) => {
+    const reader = new FileReader();
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
 
-    const addVideoToPost = (e) => {
-      const reader = new FileReader();
-      if (e.target.files[0]) {
-        reader.readAsDataURL(e.target.files[0]);
-      }
-  
-      reader.onload = (readerEvent) => {
-        setSelectedVideo(readerEvent.target.result);
-      };
+    reader.onload = (readerEvent) => {
+      setSelectedVideo(readerEvent.target.result);
     };
-
+  };
 
   const addImageToPost = (e) => {
+    const reader = new FileReader();
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
 
-      const reader = new FileReader()
-      if (e.target.files[0]) {
-          reader.readAsDataURL(e.target.files[0])
-      }
-
-      reader.onload = (readerEvent) => {
-          setSelectedFile(readerEvent.target.result)
-      }
-
-  }
+    reader.onload = (readerEvent) => {
+      setSelectedFile(readerEvent.target.result);
+    };
+  };
 
   const addEmoji = (e) => {
-      let sym = e.unified.split("-")
-      let codesArray = []
-      sym.forEach((el) => codesArray.push("0x" + el))
-      let emoji = String.fromCodePoint(...codesArray)
-      setInput(input + emoji)
-  }
+    let sym = e.unified.split('-');
+    let codesArray = [];
+    sym.forEach((el) => codesArray.push('0x' + el));
+    let emoji = String.fromCodePoint(...codesArray);
+    setInput(input + emoji);
+  };
 
   useEffect(() => {
     if (!groupId) return;
 
-    // Fetch group details
     const groupRef = doc(db, 'groups', groupId);
     getDoc(groupRef)
       .then((docSnap) => {
         if (docSnap.exists()) {
           setGroup(docSnap.data());
-          // Check if the current user is a member of the group
           if (session) {
             const groupMembersRef = collection(db, 'groups', groupId, 'members');
             const memberQuery = where('uid', '==', session.user.uid);
@@ -122,9 +110,8 @@ const TheGroupChat = () => {
               .then((memberDocSnap) => {
                 if (memberDocSnap.exists()) {
                   setIsMember(true);
-                  loadMessages(groupId); // Pass the groupId to loadMessages
+                  loadMessages(groupId);
 
-                  // Check if the current user is the creator of the group
                   if (group.creatorId === session.user.uid) {
                     setIsCreator(true);
                   }
@@ -132,30 +119,29 @@ const TheGroupChat = () => {
               })
               .catch((error) => {
                 console.error('Error checking membership', error);
-                router.push('/'); // Redirect to home or another page
+                router.push('/');
               });
           }
         } else {
           console.error('Group not found');
-          router.push('/'); // Redirect to home or another page
+          router.push('/');
         }
       })
       .catch((error) => {
         console.error('Error fetching group', error);
-        router.push('/'); // Redirect to home or another page
+        router.push('/');
       });
   }, [groupId, session]);
 
   const loadMessages = (groupId) => {
     if (!groupId) return;
 
-    // Create a reference to the group's messages subcollection
     const groupMessagesRef = collection(db, 'groups', groupId, 'messages');
 
     const unsubscribe = onSnapshot(groupMessagesRef, (querySnapshot) => {
       const updatedMessages = [];
       querySnapshot.forEach((doc) => {
-        updatedMessages.push(doc.data());
+        updatedMessages.push({ id: doc.id, ...doc.data() }); // Added unique ID
       });
       setMessages(updatedMessages);
     });
@@ -167,7 +153,6 @@ const TheGroupChat = () => {
     e.preventDefault();
     if (!input || !groupId) return;
 
-    // Create a new message document in the group's messages subcollection
     try {
       const messageData = {
         text: input,
@@ -175,58 +160,61 @@ const TheGroupChat = () => {
         senderImage: session.user.image,
         name: session.user.name,
         timestamp: serverTimestamp(),
-       // datePosted: serverTimestamp(),
-        
       };
-    
+
       if (selectedFile) {
-        // Upload the selected image to Firebase Storage
-        const imageRef = ref(storage, `groups/${groupId}/images/${selectedFile.name}`);
+        const imageRef = ref(
+          storage,
+          `groups/${groupId}/images/${Date.now()}_${selectedFile.name}`
+        );
         await uploadString(imageRef, selectedFile, 'data_url');
         const imageUrl = await getDownloadURL(imageRef);
-        messageData.image = imageUrl; // Update the image field in the message data
-      }
-    
-      if (selectedVideo) {
-        // Upload the selected video to Firebase Storage
-        const videoRef = ref(storage, `groups/${groupId}/videos/${selectedVideo.name}`);
-        await uploadString(videoRef, selectedVideo, 'data_url');
-        const videoUrl = await getDownloadURL(videoRef);
-        messageData.video = videoUrl; // Update the video field in the message data
+        messageData.image = imageUrl;
       }
 
-      // Upload selected music (if any)
+      if (selectedVideo) {
+        const videoRef = ref(
+          storage,
+          `groups/${groupId}/videos/${Date.now()}_${selectedVideo.name}`
+        );
+        await uploadString(videoRef, selectedVideo, 'data_url');
+        const videoUrl = await getDownloadURL(videoRef);
+        messageData.video = videoUrl;
+      }
+
       if (selectedMusic) {
-        const musicRef = ref(storage, `groups/${groupId}/music/${selectedMusic.name}`);
+        const musicRef = ref(
+          storage,
+          `groups/${groupId}/music/${Date.now()}_${selectedMusic.name}`
+        );
         await uploadString(musicRef, selectedMusic, 'data_url');
         const musicUrl = await getDownloadURL(musicRef);
         messageData.music = musicUrl;
       }
 
-       // Upload selected document (if any)
       if (selectedDocument) {
-        const documentRef = ref(storage, `groups/${groupId}/documents/${selectedDocument.name}`);
+        const documentRef = ref(
+          storage,
+          `groups/${groupId}/documents/${Date.now()}_${selectedDocument.name}`
+        );
         await uploadString(documentRef, selectedDocument, 'data_url');
         const documentUrl = await getDownloadURL(documentRef);
         messageData.document = documentUrl;
       }
-    
-      // Add the message data to Firestore
+
       await addDoc(collection(db, 'groups', groupId, 'messages'), messageData);
-    
-      // Clear the selected file and video
-      setLoading(false)
-        setInput("")
-        setSelectedFile(null);
-        setSelectedMusic(null);
-        setSelectedDocument(null);
-        setSelectedVideo(null); // Clear the selected video
-        setShowEmojis(false)
+
+      setLoading(false);
+      setInput('');
+      setSelectedFile(null);
+      setSelectedMusic(null);
+      setSelectedDocument(null);
+      setSelectedVideo(null);
+      setShowEmojis(false);
     } catch (error) {
       console.error('Error adding message:', error);
     }
-    
-  }
+  };
 
 
   // chat backround images change
@@ -314,7 +302,7 @@ const TheGroupChat = () => {
           backgroundRepeat: 'no-repeat',
         }}
       >
-      {messages
+     {messages
   .slice()
   .sort((a, b) => a.timestamp?.toDate() - b.timestamp?.toDate())
   .map((message) => (
@@ -323,7 +311,7 @@ const TheGroupChat = () => {
       className={
         message.userId === session.user.uid
           ? 'self-end bg-yellow-500 text-white rounded-tl-lg rounded-bl-lg rounded-tr-lg p-2 max-w-[70%]'
-          : 'self-start bg-gray-100 text-yellow-700 text-transparent rounded-tr-lg rounded-br-lg rounded-tl-lg p-2 max-w-[70%]    border  border-yellow-500'
+          : 'self-start bg-gray-100 text-yellow-700 text-transparent rounded-tr-lg rounded-br-lg rounded-tl-lg p-2 max-w-[70%] border  border-yellow-500'
       }
     >
       <div className='flex items-center'>
@@ -333,43 +321,40 @@ const TheGroupChat = () => {
           className='w-5 h-5 rounded-full'
         />
         <span className='text-gray-500 text-xs font-semibold ml-1'>
-          {' '}
-          {message.name}{' '}
+          {message.name}
         </span>
       </div>
       {message.text}
       {message?.image && (
-            <img
-            className='max-h-[450px] object-cover rounded-[20px] mt-2'
-            src={message?.image}
-            alt="post"
-             />
-          )}
-          {message?.music && (
-             <audio controls src={message.music} className="max-h-40 rounded-[20px] mt-2"></audio>
-          )}
-          {message?.document && (
-             <div className="flex items-center">
-                <FcDocument className="text-blue-500 mr-2" />
-                {/* Display the file name with a character slice of 15 characters */}
-                <span className="text-blue-500 hover:underline">
-                  {message?.document?.slice(message?.document?.lastIndexOf('/') + 1).slice(0, 15)}
-                </span>
-                {/* Display a link to download the selected document */}
+        <img
+          className='max-h-[450px] object-cover rounded-[20px] mt-2'
+          src={message?.image}
+          alt="post"
+        />
+      )}
+      {message?.music && (
+        <audio controls src={message.music} className="max-h-40 rounded-[20px] mt-2"></audio>
+      )}
+      {message?.document && (
+        <div className="flex items-center">
+          <FcDocument className="text-blue-500 mr-2" />
+          <span className="text-blue-500 hover:underline">
+            {message?.document?.slice(message?.document?.lastIndexOf('/') + 1).slice(0, 15)}
+          </span>
           <a href={message?.document} target="_blank" rel="noopener noreferrer" download className="text-blue-500 hover:underline cursor-pointer">
             <FaFileDownload className="text-blue-500 ml-2" />
           </a>      
-           </div>
-          )}
-          {message?.video && (
-            <video
-            controls
-            className="max-h-[450px] object-cover rounded-[20px] mt-2"
-          >
-            <source src={message?.video}  />
-            Your browser does not support the video tag.
-          </video>
-          )}
+        </div>
+      )}
+      {message?.video && (
+        <video
+          controls
+          className="max-h-[450px] object-cover rounded-[20px] mt-2"
+        >
+          <source src={message?.video} />
+          Your browser does not support the video tag.
+        </video>
+      )}
       <div className='text-gray-500 text-xs'>
         <Moment fromNow>{message.timestamp?.toDate()}</Moment>
       </div>
