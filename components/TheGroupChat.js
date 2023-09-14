@@ -228,12 +228,45 @@ const TheGroupChat = () => {
     
   }
 
+
+  // chat backround images change
+  const [backgroundImages, setBackgroundImages] = useState([
+    'url(https://e0.pxfuel.com/wallpapers/875/426/desktop-wallpaper-i-whatsapp-background-chat-whatsapp-graffiti-thumbnail.jpg)',
+    'url(https://w0.peakpx.com/wallpaper/649/225/HD-wallpaper-dark-seamless-pattern-black-cafe-chat-drawing-icon-love-social-theme.jpg)',
+    'url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8YonVIbNG1LNG3xpfRj8BwME9C6L0AZcy_6kqlLcIKD3F1TopzU53eSGo89w9kHoXBoM&usqp=CAU)',
+    'url(https://i.pinimg.com/236x/88/57/0e/88570e500312820cf8873d180d05f0c0.jpg)',
+    'url(https://i.pinimg.com/736x/35/69/e3/3569e3e18d8a5cc341751eeef5de367c.jpg)',
+    'url(https://e1.pxfuel.com/desktop-wallpaper/962/464/desktop-wallpaper-aesthetic-for-whatsapp-chat-backgrounds-chats-thumbnail.jpg)',
+  ]);
+
+  const [currentBackgroundImageIndex, setCurrentBackgroundImageIndex] = useState(0);
+
+  useEffect(() => {
+    const changeBackgroundImage = () => {
+      // Increment the index and wrap around when reaching the end
+      setCurrentBackgroundImageIndex((prevIndex) =>
+        prevIndex === backgroundImages.length - 1 ? 0 : prevIndex + 1
+      );
+    };
+
+    // Change the background image every minute
+    const backgroundImageInterval = setInterval(changeBackgroundImage, 60000);
+
+    return () => {
+      // Clear the interval when the component unmounts
+      clearInterval(backgroundImageInterval);
+    };
+  }, [backgroundImages]);
+
+
   if (!isMember) {
     return <p>You are not a member of this group.</p>;
   }
 
   return (
-    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto no-scrollbar'>
+    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto no-scrollbar'
+        
+    >
       <div className='flex items-center justify-between p-4 border-b border-b-gray-300 shadow-md'>
   <div className='flex items-center'>
     <button onClick={() => router.push(`/group/${[groupId]}`)} className='mr-2 text-blue-500 hover:underline'>
@@ -274,7 +307,13 @@ const TheGroupChat = () => {
       </div>
         */}
       {/* Display messages here */}
-      <div className='flex flex-col p-4 space-y-2 overflow-y-auto no-scrollbar h-[350px] md:h-[500px] lg:h-[550px]'>
+      <div className='flex flex-col p-4 space-y-2 overflow-y-auto no-scrollbar h-[350px] md:h-[500px] lg:h-[550px]'
+         style={{
+          backgroundImage: backgroundImages[currentBackgroundImageIndex],
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
       {messages
   .slice()
   .sort((a, b) => a.timestamp?.toDate() - b.timestamp?.toDate())
@@ -284,7 +323,7 @@ const TheGroupChat = () => {
       className={
         message.userId === session.user.uid
           ? 'self-end bg-yellow-500 text-white rounded-tl-lg rounded-bl-lg rounded-tr-lg p-2 max-w-[70%]'
-          : 'self-start bg-gray-200 rounded-tr-lg rounded-br-lg rounded-tl-lg p-2 max-w-[70%]      bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black border  border-yellow-500'
+          : 'self-start bg-gray-200 text-yellow-700 text-transparent rounded-tr-lg rounded-br-lg rounded-tl-lg p-2 max-w-[70%]    border  border-yellow-500'
       }
     >
       <div className='flex items-center'>
@@ -359,7 +398,7 @@ const TheGroupChat = () => {
         <img className='h-12 w-12 rounded-full object-contain' src={session?.user?.image} alt="" />
     </div>
 
-    <div className='w-[90%]'>
+    <div className='w-[90%] mb-5'>
         <textarea
             className='w-[100%] bg-transparent outline-none text-[20px]'
             rows="2"
