@@ -398,7 +398,7 @@ const TheGroupChat = () => {
         <img className='h-12 w-12 rounded-full object-contain' src={session?.user?.image} alt="" />
     </div>
 
-    <div className='w-[90%] mb-5'>
+    <div className='w-[90%] mb-[11px] md:mb-0 lg:mb-0'>
         <textarea
             className='w-[100%] bg-transparent outline-none text-[20px]'
             rows="2"
