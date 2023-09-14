@@ -76,12 +76,12 @@ export default function JoinViewGroup() {
 //console.log('Am i a member', isMember)
   return (
     <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto no-scrollbar'>
-    <div>
+    
 
-        <div>
+        <div className='mt-0'>
         {/* <!-- Header image --> */}
-    <div>
-      <img src={group.groupBanner ||"https://t3.ftcdn.net/jpg/02/16/47/50/360_F_216475029_YEdkzXdw97bvK9OioWRwRjfPG1IQkP69.jpg"} className="w-[100%] h-[190px] mx-auto object-cover" />
+    <div className='mt-0'>
+      <img src={group.groupBanner ||"https://t3.ftcdn.net/jpg/02/16/47/50/360_F_216475029_YEdkzXdw97bvK9OioWRwRjfPG1IQkP69.jpg"} className=" w-[100%] h-[190px] mx-auto object-cover" />
     </div>
 
    {/* <!-- Profile picture and edit button --> */}
@@ -112,7 +112,7 @@ export default function JoinViewGroup() {
         <span class="text-gray-700 dark:text-gray-400 capitalize">Created <Moment fromNow>{group?.createdAt?.toDate()}</Moment></span>
       </div>
     </div>
-    </div>
+    
 
 
       {isMember ? (

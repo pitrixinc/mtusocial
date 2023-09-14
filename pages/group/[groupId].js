@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Sidebar from '../../components/Sidebar';
-import ProfileData from '../../components/ProfileData';
 import JoinViewGroup from '../../components/JoinViewGroup';
+import JoinViewGroupDetails from '../../components/JoinViewGroupDetails';
 
 const Group = () => {
   const router = useRouter();
@@ -12,7 +12,7 @@ const Group = () => {
         <Sidebar />
         <div className='flex gap-6'>
         <JoinViewGroup />
-        <ProfileData />
+        <JoinViewGroupDetails />
         </div>
     </div>
   );

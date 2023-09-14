@@ -5,7 +5,7 @@ import { db } from '../firebase';
 import { useSession } from 'next-auth/react';
 import Moment from 'react-moment';
 
-export default function GroupDetails() {
+export default function JoinViewGroupDetails() {
   const router = useRouter();
   const { groupId } = router.query;
   const { data: session } = useSession(); // Get the user session
@@ -53,16 +53,6 @@ export default function GroupDetails() {
 
       // Fetch members
     fetchMembers();
-
-    // Fetch total number of messages
-    const messagesRef = collection(db, 'groups', groupId, 'messages');
-    getDocs(messagesRef)
-      .then((snapshot) => {
-        setTotalMessages(snapshot.size);
-      })
-      .catch((error) => {
-        console.error('Error fetching messages', error);
-      });
   }, [groupId, session]);
 
   const toggleMembersDropdown = () => {
@@ -70,7 +60,7 @@ export default function GroupDetails() {
   };
 
   return (
-    <div className='hidden lg:block w-[350px] mt-2 h-screen overflow-y-auto no-scrollbar'>
+    <div className='hidden lg:block w-[350px] mt-2 overflow-y-auto no-scrollbar'>
       <div  className='flex items-center p-4 border-b border-b-gray-300 shadow-md'>
          <h1 className='text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'>Group Details</h1>
       </div>
@@ -122,40 +112,17 @@ export default function GroupDetails() {
     </div>
 
 
-    <div className="p-4 border border-gray-200 shadow-md rounded-lg bg-white mt-5 overflow-y-auto">
-      <div className="text-lg font-semibold text-gray-800 mb-4">
-        Total Messages: {totalMessages}
-      </div>
+    <div className="p-4 border border-gray-200 shadow-md rounded-lg bg-white mt-5 text-center font-semibold items-center">
+      
       <div
-        className="flex items-center cursor-pointer text-gray-600 text-sm"
-        onClick={toggleMembersDropdown}
+        className="flex items-center cursor-pointer text-gray-600 text-sm text-center font-semibold justify-center"
       >
-        <div className="mr-2">
-          Total Members: {members.length}{' '}
-          {showMembersDropdown ? (
-            <span className="text-xl">&#9650;</span>
-          ) : (
-            <span className="text-xl">&#9660;</span>
-          )}
+        <div className="">
+          Total Members: {members.length}
+         
         </div>
       </div>
-      {showMembersDropdown && (
-        <ul className="mt-2 pl-4">
-          {members.map((member) => (
-            <li key={member.uid} className="text-gray-700 text-sm flex items-center p-3 border-b border-b-gray-200">
-              <img
-                src={member.image}
-                alt='member'
-                className='w-5 h-5 rounded-full'
-              />
-              <span className='text-gray-500 text-xs font-semibold ml-1'>
-                {' '}
-                {member.name}{' '}
-              </span>
-            </li>
-          ))}
-        </ul>
-      )}
+      
     </div>
     </div>
   );

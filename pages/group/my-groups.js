@@ -3,7 +3,7 @@ import MyGroups from '../../components/myGroupAndGroupsDiscovery';
 import Sidebar from '../../components/Sidebar';
 import ProfileData from '../../components/ProfileData';
 
-const ConversationPage = () => {
+const TheGroup = () => {
   const router = useRouter();
   const { id } = router.query; // Get the user ID from the URL
 
@@ -18,4 +18,4 @@ const ConversationPage = () => {
   );
 };
 
-export default ConversationPage;
+export default TheGroup;
