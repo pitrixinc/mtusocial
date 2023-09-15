@@ -494,7 +494,7 @@ const TheGroupChat = () => {
                             <input
                             id="audio"
                             type="file"
-                            accept=".mp3, .wav, .ogg" // Allow video files only
+                           // accept="audio/*" // Allow audio files only
                             hidden
                             onChange={addMusicToPost}
                             />
