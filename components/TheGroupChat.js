@@ -333,7 +333,12 @@ const TheGroupChat = () => {
         />
       )}
       {message?.music && (
-        <audio controls src={message.music} className="max-h-40 rounded-[20px] mt-2"></audio>
+        <audio controls className="max-h-40 rounded-[20px] w-full mt-2">
+        <source src={message.music} type="audio/mpeg" />
+        <source src={message.music} type="audio/ogg" />
+        <source src={message.music} type="audio/wav" />
+        Your browser does not support the audio element.
+      </audio>
       )}
       {message?.document && (
         <div className="flex items-center">
@@ -431,7 +436,13 @@ const TheGroupChat = () => {
                 <AiOutlineClose className='text-white h-5' />
               </div>
               {/* Display an audio player for the selected music */}
-              <audio controls src={selectedMusic} className="max-h-40"></audio>
+              <audio controls className="max-h-40">
+                <source src={selectedMusic} type="audio/mpeg" />
+                <source src={selectedMusic} type="audio/ogg" />
+                <source src={selectedMusic} type="audio/wav" />
+                Your browser does not support the audio element.
+              </audio>
+
             </div>
           )}
 
@@ -458,10 +469,12 @@ const TheGroupChat = () => {
                     <label htmlFor="file">
                         <BsImage className='cursor-pointer' />
                     </label>
-
-                    <input id="file" type="file"
-                        hidden
-                         onChange={addImageToPost}
+                    <input 
+                           id="file" 
+                           type="file"
+                           accept="image/*" 
+                           hidden
+                           onChange={addImageToPost}
                     />
 
                     <label htmlFor="video">
@@ -481,7 +494,7 @@ const TheGroupChat = () => {
                             <input
                             id="audio"
                             type="file"
-                            accept="audio/*" // Allow video files only
+                            accept=".mp3, .wav, .ogg" // Allow video files only
                             hidden
                             onChange={addMusicToPost}
                             />
