@@ -249,7 +249,7 @@ const TheGroupChat = () => {
 
   if (!isMember) {
     return <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-yellow-500 to-orange-500">
-              <p className="text-white text-2xl text-center p-4 bg-gray-300 rounded-lg shadow-lg">
+              <p className="text-white text-2xl text-center p-4 bg-gray-500 rounded-lg shadow-lg">
                 You are not a member of this group. Go Back and Join
               </p>
             </div>;
@@ -337,7 +337,7 @@ const TheGroupChat = () => {
         />
       )}
       {message?.music && (
-        <audio controls className="max-h-40 rounded-[20px] w-[140px] md:w-full lg:w-full mt-2">
+        <audio controls className="max-h-40 rounded-[20px] w-[60%] md:w-full lg:w-full mt-2">
         <source src={message.music} type="audio/mpeg" />
         <source src={message.music} type="audio/ogg" />
         <source src={message.music} type="audio/wav" />
