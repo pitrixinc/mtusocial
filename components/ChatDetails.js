@@ -116,7 +116,7 @@ useEffect(() => {
     <div  className='flex items-center p-4 border-b border-b-gray-300 shadow-md'>
        <h1 className='text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'>Chat Details</h1>
     </div>
-      <diV onClick={() => router.push(`/users/${id}`)}>
+      <div onClick={() => router.push(`/users/${id}`)}>
       {/* <!-- Header image --> */}
       <div>
       <img src={userInfo.headerImage ||"https://t3.ftcdn.net/jpg/02/16/47/50/360_F_216475029_YEdkzXdw97bvK9OioWRwRjfPG1IQkP69.jpg"} className="w-[350px] h-[110px] mx-auto object-cover rounded-[10px]" />
@@ -137,10 +137,15 @@ useEffect(() => {
     </div>
 
     <div className="p-4 border border-gray-200 shadow-md rounded-lg bg-white mt-5 text-center font-semibold items-center">
+    <div class="flex items-center space-x-1 justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 dark:text-gray-400">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+        </svg>
+
+        <span class="text-gray-700 dark:text-gray-400">Joined On { userInfo?.signupDate || ''}</span>
+      </div>
+      <div className="flex items-center cursor-pointer text-gray-600 text-sm text-center font-semibold justify-center">
       
-      <div
-        className="flex items-center cursor-pointer text-gray-600 text-sm text-center font-semibold justify-center"
-      >
         <div className="">
           Total Messages: {totalMessages}
          
@@ -149,7 +154,7 @@ useEffect(() => {
       
     </div>
     
-    </diV>
+    </div>
     </div>
   )
 }
