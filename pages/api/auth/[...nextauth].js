@@ -1,3 +1,98 @@
+import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import { db } from "../../../firebase";
+import {
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
+import moment from "moment";
+
+export const authOptions = {
+  // Configure authentication providers
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    // Add other providers here if needed
+  ],
+  callbacks: {
+    async session({ session, token }) {
+      const allowedDomains = ["@gmail.com", "@eugogatelogistics.com"];
+      const email = session.user.email;
+
+      // Check if the user's email ends with any of the allowed domains
+      const isAllowedDomain = allowedDomains.some((domain) =>
+        email.endsWith(domain)
+      );
+
+      if (!isAllowedDomain) {
+        // If the email domain is not allowed, sign the user out and return null
+        return null;
+      }
+
+      // Continue processing for allowed domains
+      session.user.tag = session.user.name
+        .split(" ")
+        .join("")
+        .toLocaleLowerCase();
+
+      session.user.uid = token.sub;
+
+      // Get the current date and format it as "Month Year"
+      const currentDate = moment();
+      const formattedDate = currentDate.format("MMMM YYYY"); // Example: "August 2021"
+
+      // Check if the user's data exists in the Firestore collection
+      const userDocRef = doc(db, "users", session.user.uid);
+      const userDocSnapshot = await getDoc(userDocRef);
+
+      if (!userDocSnapshot.exists()) {
+        // If the user's data doesn't exist, create a new document in the "users" collection
+        try {
+          const userData = {
+            id: session.user.uid,
+            name: session.user.name,
+            email: session.user.email,
+            tag: session.user.tag,
+            signupDate: formattedDate, // Include the formatted date
+            profileImage: session.user.image,
+            // Add other fields you want to store in the document
+          };
+
+          await setDoc(userDocRef, userData);
+        } catch (error) {
+          console.error("Error creating user document in Firestore:", error);
+          return null;
+        }
+      }
+
+      return session;
+    },
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+};
+
+export default NextAuth(authOptions);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{/*
+
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google";
 import { db, auth } from "../../../firebase";
@@ -49,7 +144,7 @@ export const authOptions = {
           }
         },
       },
-    }, */}
+    }, ////////////////////////////////////////////// put a bottom comment here to hide the firebase next auth 
     // ...add more providers here
   ],
   callbacks: {
@@ -95,3 +190,5 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 }
 export default NextAuth(authOptions)
+
+*/}

@@ -95,14 +95,16 @@ if (!conversation.lastMessageTimestamp || conversation.lastMessageTimestamp < me
   <h1 className="text-xl text-center font-semibold">Conversation List</h1>
   </div>
   {conversations.length === 0 ? (
-    <p className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black text-center">No conversation, all your conversations with other users will be shown here.</p>
+    <div className='flex justify-center items-center min-h-screen'>
+    <p className="bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center">No conversation, all your conversations with other users will be shown here.</p>
+    </div>
   ) : (
     <ul className="space-y-4">
       {conversations.map((conversation) => (
         <li
           key={conversation.userId}
           onClick={() => router.push(`/conversation/${conversation.userId}`)}
-          className="cursor-pointer flex items-center p-3 rounded-lg hover:bg-gray-100 transition duration-300"
+          className="cursor-pointer flex items-center p-3 rounded-lg hover:bg-gray-100 transition duration-300  border-b border-b-gray-300  border-t border-t-gray-200"
         >
           <img
             src={userInfo[conversation.userId]?.profileImage || '/default-avatar.png'}
