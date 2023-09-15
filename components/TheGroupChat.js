@@ -333,7 +333,7 @@ const TheGroupChat = () => {
         />
       )}
       {message?.music && (
-        <audio controls className="max-h-40 rounded-[20px] w-full mt-2">
+        <audio controls className="max-h-40 rounded-[20px] mt-2">
         <source src={message.music} type="audio/mpeg" />
         <source src={message.music} type="audio/ogg" />
         <source src={message.music} type="audio/wav" />
