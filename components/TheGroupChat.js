@@ -249,7 +249,7 @@ const TheGroupChat = () => {
 
   if (!isMember) {
     return <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-yellow-500 to-orange-500">
-              <p className="text-white text-2xl p-4 bg-gray-800 rounded-lg shadow-lg">
+              <p className="text-white text-xl text-center p-4 bg-gray-300 rounded-lg shadow-lg">
                 You are not a member of this group.
               </p>
             </div>;
