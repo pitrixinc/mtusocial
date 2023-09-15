@@ -163,8 +163,8 @@ const handleNotificationClick = async (notification) => {
               <li
                 key={index}
                 onClick={() => handleNotificationClick(notification)} // Handle click on notification
-                className={`cursor-pointer ${
-                  notification.read ? 'text-gray-500' : 'text-gray-900 font-bold'
+                className={`cursor-pointer  pointer-events-none ${
+                  notification.read ? 'text-gray-500' : 'text-gray-900 font-bold  pointer-events-none'
                 }`}
               >
                 

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Chat from '../../components/Chat';
 import Sidebar from '../../components/Sidebar';
-import ProfileData from '../../components/ProfileData';
+import ChatDetails from '../../components/ChatDetails';
 
 const ConversationPage = () => {
   const router = useRouter();
@@ -12,7 +12,7 @@ const ConversationPage = () => {
         <Sidebar />
         <div className='flex gap-6'>
         <Chat userId={id} />
-        <ProfileData />
+        <ChatDetails />
         </div>
     </div>
   );
