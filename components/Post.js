@@ -14,10 +14,11 @@ import { HiOutlineLocationMarker } from "react-icons/hi"
 
 import { db } from "../firebase"
 import { useRouter } from 'next/router'
-import { collection, deleteDoc, doc, onSnapshot, orderBy, query, setDoc, addDoc, serverTimestamp, updateDoc, getDoc, getDocs } from 'firebase/firestore'
+import { collection, deleteDoc, doc, onSnapshot, orderBy, query, setDoc, addDoc, serverTimestamp, updateDoc, getDoc, getDocs, where } from 'firebase/firestore'
 import { useSession } from "next-auth/react"
 import { AppContext } from '../contexts/AppContext'
 import SkeletonLoader from './SkeletonLoader'
+import {MdVerified} from 'react-icons/md';
 
 
 const Post = ({ id, post }) => {
@@ -43,7 +44,6 @@ const Post = ({ id, post }) => {
   const closeRepostModal = () => {
     setIsRepostModalOpen(false);
   };
-
 
 
   useEffect(
@@ -237,7 +237,7 @@ const Post = ({ id, post }) => {
   };
 
   return (
-    <div className='mt-4 border-t border-gray-300 px-4 pt-6 pb-4 cursor-pointer'>
+    <div className='mt-4 border-t border-gray-300 px-4 pt-6 pb-4 cursor-pointer  overflow-y-auto'>
       {loading ? (
       <SkeletonLoader /> // Display the SkeletonLoader while loading
     ) : (
@@ -249,8 +249,10 @@ const Post = ({ id, post }) => {
 
         <div>
           <div className='block sm:flex gap-1' onClick={() => router.push(`/users/${post.postedById}`)}>
+          <div className='flex items-center'>
             <h1 className='font-semibold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'>{post?.username}</h1>
-
+            {post.isVerified && (<MdVerified className="text-yellow-500 inline mt-1 ml-1" />) }
+            </div>
             <div className='flex'>
               <p className='text-gray-500'>@{post?.tag} &nbsp;·&nbsp;</p>
               <p className='text-gray-500'>

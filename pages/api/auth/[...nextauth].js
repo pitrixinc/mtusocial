@@ -58,6 +58,7 @@ export const authOptions = {
             tag: session.user.tag,
             signupDate: formattedDate, // Include the formatted date
             profileImage: session.user.image,
+            isVerified: false, // Add the isVerified field with the default value
             // Add other fields you want to store in the document
           };
 

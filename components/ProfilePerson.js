@@ -386,6 +386,26 @@ console.log('UID from URL:', id); */}
   };
 
 
+  const [isCurrentUserVerified, setIsCurrentUserVerified] = useState(false); // Initialize the state
+
+  useEffect(() => {
+    // Fetch the user's document and check isVerified
+    if (id) {
+      const userRef = doc(db, 'users', id);
+      getDoc(userRef)
+        .then((docSnapshot) => {
+          if (docSnapshot.exists()) {
+            const userData = docSnapshot.data();
+            setIsCurrentUserVerified(userData.isVerified || false);
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching user document:', error);
+        });
+    }
+  }, [id]);
+
+
   return (
     <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto no-scrollbar'>
        {/* <h1 className='font-semibold'>{session?.user?.name}</h1> */}
@@ -412,6 +432,7 @@ console.log('UID from URL:', id); */}
    {/* <!-- Profile picture and edit button --> */}
     <div class="flex items-start justify-between px-4 py-3">
       <img class="-mt-[4.5rem] h-32 w-32 cursor-pointer rounded-full ring-4 ring-gray-100" src={updatedProfile?.profileImage || 'https://media.idownloadblog.com/wp-content/uploads/2017/03/Twitter-new-2017-avatar-001.png'} />
+      {isCurrentUserVerified ? (<div>
        {/* Add a "Message" button/link */}
        {session && session.user.uid !== id && (
           <button className="bg-yellow-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full" onClick={() => router.push(`/conversation/${id}`)}>
@@ -437,7 +458,10 @@ console.log('UID from URL:', id); */}
         >
           Edit profile
       </button>
-
+      </div>)
+      : (
+        <button className='bg-yellow-500 p-2 rounded-[15px] text-white'>Verify</button>
+      )}
     </div>
     <UpdateProfileModal isOpen={isModalOpen} onClose={closeModal} />
    {/* <!-- Name and handle --> */}
