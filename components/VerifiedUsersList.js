@@ -14,7 +14,7 @@ const VerifiedUsersList = () => {
 
 
             <div className='bg-white rounded-[20px] text-[#16181C] mt-4 px-4 py-4 top-1 z-10 h-full sticky'>
-                <h1 className='text-[20px] font-medium'>What's Happening</h1>
+                <h1 className='text-[20px] font-medium'>Suggested Users</h1>
 
                 <VerifiedUsers />
 

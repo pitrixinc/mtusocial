@@ -7,14 +7,14 @@ import {MdVerified} from 'react-icons/md';
 
 // Define the VerifiedUsers component
 export default function VerifiedUsers() {
-  const [verifiedUsers, setVerifiedUsers] = useState([]);
+  const [usersWithBadge, setUsersWithBadge] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchVerifiedUsers = async () => {
       try {
         const usersRef = collection(db, 'users');
-        const q = query(usersRef, where('isVerified', '==', true));
+        const q = query(usersRef, where('isQualifiedForBadge', '==', true));
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {
@@ -38,7 +38,7 @@ export default function VerifiedUsers() {
         // Get up to 6 random verified users
         const limitedVerifiedUsers = shuffledVerifiedUsers.slice(0, 6);
 
-        setVerifiedUsers(limitedVerifiedUsers);
+        setUsersWithBadge(limitedVerifiedUsers);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching verified users', error);
@@ -53,9 +53,9 @@ export default function VerifiedUsers() {
     <div>
       {loading ? (
         <p>Loading...</p>
-      ) : verifiedUsers.length > 0 ? (
+      ) : usersWithBadge.length > 0 ? (
         <div className="w-[350px]">
-          {verifiedUsers.map((user) => (
+          {usersWithBadge.map((user) => (
             <div key={user.id} className="bg-white p-4 rounded shadow border-b border-gray-[110px]">
             <div className="flex items-center">
               <img

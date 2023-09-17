@@ -104,6 +104,7 @@ const Input = () => {
           timestamp: serverTimestamp(),
           postedById: userData.id,
           isVerified: userData.isVerified || false,
+          isQualifiedForBadge: userData.isQualifiedForBadge || false,
         });
 
         const imageRef = ref(storage, `posts/${docRef.id}/image`)
