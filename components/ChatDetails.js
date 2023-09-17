@@ -39,20 +39,19 @@ const ChatDetails = () => {
 
 
     useEffect(() => {
-    // Fetch the user's info and set it in state
-    const fetchUserInfo = async () => {
-        const userDoc = doc(db, 'users', id); // Assuming you have a 'users' collection
-        const userSnap = await getDoc(userDoc);
-        if (userSnap.exists()) {
-          setUserInfo(userSnap.data()); // Set the entire user document
-        }
-      };
-  
-      fetchUserInfo();
-
-  
-      return unsubscribe;
-    }, [session, id]);
+      if (id) {
+        // Fetch the user's info and set it in state
+        const fetchUserInfo = async () => {
+          const userDoc = doc(db, 'users', id); // Assuming you have a 'users' collection
+          const userSnap = await getDoc(userDoc);
+          if (userSnap.exists()) {
+            setUserInfo(userSnap.data()); // Set the entire user document
+          }
+        };
+    
+        fetchUserInfo();
+      }
+    }, [id]);
 
 
 

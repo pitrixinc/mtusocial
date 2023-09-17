@@ -13,6 +13,8 @@ const NotificationPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const [isLoading, setIsLoading] = useState(false)
+  
+
 {/* 
   useEffect(() => {
     const loadNotifications = async () => {

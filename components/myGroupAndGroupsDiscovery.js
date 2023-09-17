@@ -72,6 +72,7 @@ export default function MyGroups() {
   const [myGroups, setMyGroups] = useState([]);
   const [randomGroups, setRandomGroups] = useState([]);
   const [joinedGroups, setJoinedGroups] = useState([]);
+  const [isVerified, setIsVerified] = useState(false);
 
   useEffect(() => {
     if (!session) return;
@@ -146,34 +147,31 @@ export default function MyGroups() {
     fetchJoinedGroups();
   }, [session]);
 
+  useEffect(() => {
+    if (session) {
+      // Check if the user is verified (you might need to adjust the condition)
+      const userDoc = doc(db, 'users', session.user.uid);
+      getDoc(userDoc)
+        .then((userSnapshot) => {
+          const userData = userSnapshot.data();
+          if (userData && userData.isVerified) {
+            setIsVerified(true);
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching user data', error);
+        });
+    }
+  }, [session]);
+
   return (
     <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto no-scrollbar'>
       <h1 className="text-xl md:text-4xl font-semibold mb-6 border-b border-b-gray-100 shadow-md p-2">My Groups</h1>
       <div className="overflow-x-scroll no-scrollbar">
         <div className="flex flex-wrap -mx-2 mt-2">
-          {myGroups.map((group) => (
-            <div key={group.id} className="w-1/3 lg:w-1/3 xl:w-1/4 px-4 mb-8 ">
-              <Link href={`/group/${group.id}`}>
-                <a className="block rounded-lg overflow-hidden hover:shadow-lg hover:scale-105 transform transition-transform duration-300 shadow-md ring-offset-2 ring-4 ring-yellow-500">
-                  <img
-                    src={group.groupBanner}
-                    alt="Group Banner"
-                    className="w-full h-48 object-cover"
-                  />
-                  <p className="mt-2 text-sm font-semibold text-center">{group.title.slice(0, 8)}...</p>
-                </a>
-              </Link>
-            </div>
-          ))}
-        </div>
-      </div>
-      {joinedGroups.length > 0 && (
-        <section className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4">Joined Groups</h2>
-          <div className="overflow-x-auto no-scrollbar">
-            <div className="flex flex-wrap -mx-2 mt-2">
-              {joinedGroups.map((group) => (
-                <div key={group.id} className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-4 mb-8 ">
+          {isVerified && myGroups.length > 0 ? (
+            myGroups.map((group) => (
+              <div key={group.id} className="w-1/3 lg:w-1/3 xl:w-1/4 px-4 mb-8 ">
                 <Link href={`/group/${group.id}`}>
                   <a className="block rounded-lg overflow-hidden hover:shadow-lg hover:scale-105 transform transition-transform duration-300 shadow-md ring-offset-2 ring-4 ring-yellow-500">
                     <img
@@ -185,12 +183,38 @@ export default function MyGroups() {
                   </a>
                 </Link>
               </div>
+            ))
+          ) : (
+            <div className="w-full text-center font-semibold text-gray-500">
+              {isVerified ? 'You have not created any groups yet.' : 'Please verify your account to see your groups.'}
+            </div>
+          )}
+        </div>
+      </div>
+      {joinedGroups.length > 0 && (
+        <section className="mt-8">
+          <h2 className="text-2xl font-semibold mb-4">Joined Groups</h2>
+          <div className="overflow-x-auto no-scrollbar">
+            <div className="flex flex-wrap -mx-2 mt-2">
+              {joinedGroups.map((group) => (
+                <div key={group.id} className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-4 mb-8 ">
+                  <Link href={`/group/${group.id}`}>
+                    <a className="block rounded-lg overflow-hidden hover:shadow-lg hover:scale-105 transform transition-transform duration-300 shadow-md ring-offset-2 ring-4 ring-yellow-500">
+                      <img
+                        src={group.groupBanner}
+                        alt="Group Banner"
+                        className="w-full h-48 object-cover"
+                      />
+                      <p className="mt-2 text-sm font-semibold text-center">{group.title.slice(0, 8)}...</p>
+                    </a>
+                  </Link>
+                </div>
               ))}
             </div>
           </div>
         </section>
       )}
-      <GroupDiscovery groups={randomGroups} />
+      {isVerified && <GroupDiscovery groups={randomGroups} />}
     </section>
   );
 }
