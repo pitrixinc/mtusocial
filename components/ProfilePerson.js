@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { BiMessageSquareAdd } from "react-icons/bi"
-import { FaRetweet } from "react-icons/fa"
+import { RiUserFollowFill, RiUserUnfollowFill } from "react-icons/ri"
 import { AiOutlineHeart, AiOutlineShareAlt, AiFillHeart } from 'react-icons/ai'
 import { RiDeleteBin5Line } from 'react-icons/ri'
 import Moment from 'react-moment'
@@ -435,7 +435,7 @@ console.log('UID from URL:', id); */}
       {isCurrentUserVerified ? (<div>
        {/* Add a "Message" button/link */}
        {session && session.user.uid !== id && (
-          <button className="bg-yellow-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full" onClick={() => router.push(`/conversation/${id}`)}>
+          <button className="bg-yellow-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full mt-2 mr-1" onClick={() => router.push(`/conversation/${id}`)}>
            <BiMessageSquareAdd className='text-xl' /> 
           </button>
       )}
@@ -448,7 +448,8 @@ console.log('UID from URL:', id); */}
               : 'bg-yellow-500 text-white' //not followed ------ Use your preferred background and text colors
           } p-2 rounded-full`}
         >
-          {isFollowing ? 'Unfollow' : 'Follow'}
+          {/* {isFollowing ? 'Unfollow' : 'follow'} */}
+          {isFollowing ? <div className='flex items-center'><RiUserUnfollowFill/> <span className='ml-1'>Unfollow</span> </div> :<div className='flex items-center'><RiUserFollowFill/> <span className='ml-1'>Follow</span> </div>}
         </button>
       )}
       <button

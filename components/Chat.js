@@ -244,9 +244,28 @@ const Chat = () => {
     };
   }, [backgroundImages]);
 
+  const [isVerified, setIsVerified] = useState(false);
+  useEffect(() => {
+    if (session) {
+      // Check if the user is verified (you might need to adjust the condition)
+      const userDoc = doc(db, 'users', session.user.uid);
+      getDoc(userDoc)
+        .then((userSnapshot) => {
+          const userData = userSnapshot.data();
+          if (userData && userData.isVerified) {
+            setIsVerified(true);
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching user data', error);
+        });
+    }
+  }, [session]);
+
   return (
     <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] overflow-y-auto no-scrollbar bg-white'>
-   <div className='flex items-center p-4 border-b border-b-gray-300 shadow-md'>
+ {isVerified ? ( <>   
+    <div className='flex items-center p-4 border-b border-b-gray-300 shadow-md'>
           <button onClick={() => router.push(`/ConversationList`)} className='mr-2 text-blue-500 hover:underline sticky'>
             <AiOutlineArrowLeft className='text-2xl text-black'/>
           </button>
@@ -510,7 +529,9 @@ const Chat = () => {
 
 </div>
 
-</div>
+</div> </> ) : (
+          <p className="text-red-500 mt-5 text-center">Please verify your account to chat with <span className='text-yellow-800'>{userInfo.name} </span></p>
+        )}
 </section>
 
   );

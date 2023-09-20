@@ -247,6 +247,26 @@ const TheGroupChat = () => {
   }, [backgroundImages]);
 
 
+  const [isVerified, setIsVerified] = useState(false);
+  useEffect(() => {
+    if (session) {
+      // Check if the user is verified (you might need to adjust the condition)
+      const userDoc = doc(db, 'users', session.user.uid);
+      getDoc(userDoc)
+        .then((userSnapshot) => {
+          const userData = userSnapshot.data();
+          if (userData && userData.isVerified) {
+            setIsVerified(true);
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching user data', error);
+        });
+    }
+  }, [session]);
+
+
+
   if (!isMember) {
     return <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-yellow-500 to-orange-500">
               <p className="text-white text-2xl text-center p-4 bg-gray-500 rounded-lg shadow-lg">
@@ -256,10 +276,9 @@ const TheGroupChat = () => {
   }
 
   return (
-    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto no-scrollbar'
-        
-    >
-      <div className='flex items-center justify-between p-4 border-b border-b-gray-300 shadow-md'>
+    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto no-scrollbar'>
+ {isVerified ? ( <>    
+     <div className='flex items-center justify-between p-4 border-b border-b-gray-300 shadow-md'>
   <div className='flex items-center'>
     <button onClick={() => router.push(`/group/${[groupId]}`)} className='mr-2 text-blue-500 hover:underline'>
       <AiOutlineArrowLeft className='text-2xl text-black'/>
@@ -542,7 +561,9 @@ const TheGroupChat = () => {
 </div>
 
 </div>
-    </div>
+    </div></> ) : (
+          <p className="text-red-500 mt-5 text-center">Please verify your account to chat in this group.</p>
+        )}
     </section>
   );
 };
