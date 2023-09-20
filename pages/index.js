@@ -8,6 +8,8 @@ import Sidebar from '../components/Sidebar'
 import Trending from "../components/Trending"
 import { AppContext } from '../contexts/AppContext'
 import VerifiedUsersList from '../components/VerifiedUsersList'
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Home() {
 
@@ -33,7 +35,13 @@ export default function Home() {
           {appContext?.isModalOpen && <Modal />}
         </div>
       </main>
-
+      <ToastContainer
+        theme="light"
+        position="top-right"
+        autoClose={3000}
+        closeOnClick
+        pauseOnHover={false}
+      />
     </div>
   )
 }

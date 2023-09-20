@@ -11,6 +11,7 @@ import Picker from '@emoji-mart/react'
 import { addDoc, collection, doc, serverTimestamp, updateDoc, getDoc } from 'firebase/firestore'
 import { db, storage } from '../firebase'
 import { getDownloadURL, ref, uploadString } from 'firebase/storage'
+import {toast} from 'react-toastify';
 
 
 const Input = () => {
@@ -40,7 +41,7 @@ const Input = () => {
             setUserData(userDocData); // Set user data in state
           }
         } catch (error) {
-          console.error('Error fetching user data:', error);
+          toast.error('Error fetching user data');
         }
       };
 
@@ -90,7 +91,7 @@ const Input = () => {
         setLoading(true);
     
         if (!userData) {
-          console.error('User data is not available.');
+          toast.error('User data is not available.');
           setLoading(false);
           return;
         }
@@ -115,8 +116,11 @@ const Input = () => {
                     const downloadURL = await getDownloadURL(imageRef);
                     await updateDoc(doc(db, "posts", docRef.id), {
                         image: downloadURL,
-                    })
+                    });
                 })
+                .catch((error) => {
+                    toast.error('Error uploading image');
+                  });
         }
 
         const videoRef = ref(storage, `posts/${docRef.id}/video`);
@@ -130,10 +134,10 @@ const Input = () => {
           });
         })
         .catch((error) => {
-          console.error('Error uploading video:', error);
+          toast.error('Error uploading video');
         });
     }
-
+        toast.success("Your post was sent!");
         setLoading(false)
         setInput("")
         setSelectedFile(null)

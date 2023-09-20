@@ -72,11 +72,12 @@ const RepostModal = ({ post, onClose, id}) => {
     }}
 
       // Redirect to the reposted post
-      
+      toast.success("Your repost was sent!");
       router.push(`/${id}`);
       onClose();
+      
     } catch (error) {
-      console.error('Error reposting:', error);
+      toast.error('Error reposting');
     }
   };
 

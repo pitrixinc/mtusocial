@@ -19,6 +19,7 @@ import { useSession } from "next-auth/react"
 import { AppContext } from '../contexts/AppContext'
 import SkeletonLoader from './SkeletonLoader'
 import {MdVerified} from 'react-icons/md';
+import {toast} from 'react-toastify';
 
 
 const Post = ({ id, post }) => {
@@ -228,11 +229,12 @@ const Post = ({ id, post }) => {
     }}
 
       // Redirect to the reposted post
-      
+      toast.success("Your repost was sent!");
       router.push(`/${id}`);
       onClose();
+      
     } catch (error) {
-      console.error('Error reposting:', error);
+      toast.error('Error reposting');
     }
   };
 

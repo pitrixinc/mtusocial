@@ -35,6 +35,32 @@ const Feed = () => {
   }, [db, session]);
 
   return (
+    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto h-screen no-scrollbar'>
+  <div className='sticky top-0 bg-white text-[#16181C] flex justify-between font-bold text-[20px] px-4 py-2 mt-[0px]'>
+    Home
+    <div className='rounded-[1px] md:hidden lg:hidden'>
+      <Image className='rounded-[1px] md:hidden lg:hidden' src={mtuLogo} height='33px' width='29px' />
+    </div>
+    <HiOutlineSparkles />
+  </div>
+
+  {isCurrentUserVerified && <Input />}
+  
+  {isCurrentUserVerified ? (
+    posts.map((post) => (
+      <Post key={post.id} id={post.id} post={post.data()} />
+    ))
+  ) : (
+    <div className='flex flex-col items-center justify-center min-h-screen'>
+      <p className="bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center mb-4">
+        Please verify your account to view posts from people and also post as well.
+      </p>
+      <button className='bg-yellow-500 p-2 rounded-[15px] text-white'>Verify</button>
+    </div>
+  )}
+
+
+    {/*
     <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] min-h-screen border-r border-gray-400 text-[#16181C] py-2'>
       <div className='sticky top-0 bg-white text-[#16181C] flex justify-between font-bold text-[20px] px-4 py-2'>
         Home
@@ -62,6 +88,8 @@ const Feed = () => {
       
       )}
     </section>
+     */}
+     </section>
   );
 };
 
