@@ -36,26 +36,32 @@ const Feed = () => {
             const followingSnapshot = await getDocs(followingQuery);
             const followingIds = followingSnapshot.docs.map((doc) => doc.id);
 
-            postQuery = query(
-              collection(db, 'posts'),
-              where('postedById', 'in', followingIds),
-              orderBy('timestamp', 'desc')
-            );
+            if (followingIds.length > 0) {
+              postQuery = query(
+                collection(db, 'posts'),
+                where('postedById', 'in', followingIds),
+                orderBy('timestamp', 'desc')
+              );
+            } else {
+              // Handle the case where there are no followingIds
+              // For example, show a message to follow users.
+            }
           }
 
-          // Subscribe to changes in posts
-          const unsubscribe = onSnapshot(postQuery, (snapshot) => {
-            const postList = snapshot.docs.map((doc) => ({
-              id: doc.id,
-              data: doc.data(),
-            }));
-            setPosts(postList);
-          });
+          if (postQuery) {
+            const unsubscribe = onSnapshot(postQuery, (snapshot) => {
+              const postList = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                data: doc.data(),
+              }));
+              setPosts(postList);
+            });
 
-          return () => {
-            // Unsubscribe when component unmounts
-            unsubscribe();
-          };
+            return () => {
+              // Unsubscribe when component unmounts
+              unsubscribe();
+            };
+          }
         } catch (error) {
           console.error('Error fetching posts:', error);
         }
@@ -78,8 +84,9 @@ const Feed = () => {
   }, [session, activeTab]);
 
   return (
+    // Your JSX code remains the same
     <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto h-screen no-scrollbar'>
-      <div className='sticky top-0 bg-white text-[#16181C] flex justify-between font-bold text-[20px] px-4 py-2 mt-[0px]'>
+      <div className='top-0 bg-white text-[#16181C] flex justify-between font-bold text-[20px] px-4 py-2 mt-[0px]'>
         Home
         <div className='rounded-[1px] md:hidden lg:hidden'>
           <Image className='rounded-[1px] md:hidden lg:hidden' src={mtuLogo} height='33px' width='29px' />
