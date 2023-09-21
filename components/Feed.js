@@ -87,7 +87,7 @@ const Feed = () => {
         <HiOutlineSparkles />
       </div>
 
-      <div className='sticky top-0 bg-white text-[#16181C] flex justify-center gap-4 font-semibold text-[18px] px-4 py-2'>
+      <div className='sticky top-0 bg-white text-[#16181C] flex justify-between mx-5 font-semibold text-[16px] px-4 py-2'>
         <div
           className={`cursor-pointer ${
             activeTab === 'ForYou' ? 'text-yellow-500 border-b-2 border-b-yellow-500' : ''
