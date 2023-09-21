@@ -149,7 +149,7 @@ useEffect(() => {
 
   
   
-  const [activeTab, setActiveTab] = useState('Tweets'); // Initialize with the default tab
+  const [activeTab, setActiveTab] = useState('Posts'); // Initialize with the default tab
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
