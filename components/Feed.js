@@ -7,14 +7,14 @@ import Input from './Input';
 import Image from 'next/image';
 import mtuLogo from '../assets/images/mtulogo.jpg';
 import { HiOutlineSparkles } from 'react-icons/hi';
-import {toast} from 'react-toastify';
-
+import { toast } from 'react-toastify';
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
   const { data: session } = useSession();
   const [activeTab, setActiveTab] = useState('ForYou'); // Initialize with 'For You'
   const [isCurrentUserVerified, setIsCurrentUserVerified] = useState(false);
+  const [followingIsEmpty, setFollowingIsEmpty] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -25,16 +25,11 @@ const Feed = () => {
           if (activeTab === 'ForYou') {
             // Fetch posts based on your logic for the "For You" tab
             // Replace this with your specific query logic
-            postQuery = query(
-              collection(db, 'posts'),
-              orderBy('timestamp', 'desc')
-            );
+            postQuery = query(collection(db, 'posts'), orderBy('timestamp', 'desc'));
           } else if (activeTab === 'Following') {
             // Fetch posts from users the current user is following
             // Replace this with your specific query logic
-            const followingQuery = query(
-              collection(db, 'users', session.user.uid, 'following')
-            );
+            const followingQuery = query(collection(db, 'users', session.user.uid, 'following'));
             const followingSnapshot = await getDocs(followingQuery);
             const followingIds = followingSnapshot.docs.map((doc) => doc.id);
 
@@ -47,7 +42,7 @@ const Feed = () => {
             } else {
               // Handle the case where there are no followingIds
               // For example, show a message to follow users.
-              toast.error('No users are being followed.');
+              setFollowingIsEmpty(true);
             }
           }
 
@@ -119,8 +114,10 @@ const Feed = () => {
       {/* Your other components */}
       {isCurrentUserVerified ? (
         <>
-          {posts.length === 0 ? (
-            <p>No posts, follow people to see their posts or write a post to view it here.</p>
+          {followingIsEmpty ? (
+            <p>You are not following anyone. Follow people to see their posts.</p>
+          ) : posts.length === 0 ? (
+            <p>{activeTab === 'Following' ? 'No posts from followings.' : 'No posts, follow people to see their posts or write a post to view it here.'}</p>
           ) : (
             posts.map((post) => (
               <Post key={post.id} id={post.id} post={post.data} />
