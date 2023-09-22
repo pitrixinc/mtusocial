@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import VerifiedUsers from './VerifiedUsers'
-import { collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore';
+import { collection, query, where, getDocs, orderBy, limit, doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 const ProfileData = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => {
     const handleSearch = async () => {
@@ -62,8 +64,29 @@ const ProfileData = () => {
     }
   }, [searchQuery]);
 
+  const [isVerified, setIsVerified] = useState(false); // Add state for user verification
+  useEffect(() => {
+    const fetchUserVerification = async () => {
+      if (session) {
+        // Check if the user is verified (you might need to adjust the condition)
+        const userDoc = doc(db, 'users', session.user.uid);
+        const userSnapshot = await getDoc(userDoc);
+        const userData = userSnapshot.data();
+        
+        if (userData && userData.isVerified) {
+          setIsVerified(true);
+          // Fetch conversations if the user is verified
+          
+        }
+      }
+    };
+
+    fetchUserVerification();
+  }, [session]);
+
   return (
     <div className='hidden lg:block w-[350px] mt-2 overflow-y-auto no-scrollbar'>
+       {isVerified ? ( <>
       <div className='bg-gray-200 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[20px] sticky top-1 z-10'>
         <FiSearch />
         <input
@@ -73,7 +96,16 @@ const ProfileData = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-      </div>
+      </div> </>) : ( <>
+      <div className='bg-gray-200 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[20px] sticky top-1 z-10'>
+        <FiSearch />
+        <input
+          className='bg-transparent w-[100%] outline-none'
+          type='text'
+          placeholder='Verify to search'
+          disabled
+        />
+      </div> </>)}
 
       <div className='bg-white rounded-[20px] text-[#16181C] mt-4 px-4 py-4 sticky top-1 z-10 h-full'>
         {isLoading ? (
@@ -143,12 +175,13 @@ const ProfileData = () => {
              </div>
             ))}
           </>
-        )}
+        )} 
 
             <div className='bg-white rounded-[20px] text-[#16181C] mt-4 px-4 py-4 top-1 z-10 h-full sticky'>
                 <h1 className='text-[#16181C] font-bold text-[20px]'>Suggested Users</h1>
-
+                {isVerified ? ( <>
                 <VerifiedUsers />
+                </>) : (<div className='bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center'> Please verify to view other verified users </div>)}
 
             </div>
       </div>

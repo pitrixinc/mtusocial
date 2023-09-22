@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { FiSearch } from 'react-icons/fi';
-import { collection, query, getDocs, orderBy, limit } from 'firebase/firestore';
+import { collection, query, getDocs, orderBy, limit, getDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase';
 import Link from 'next/link';
 import Post from './Post'; // Import the Post component
+import { useSession } from 'next-auth/react';
 
 const ProfileData = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -11,6 +12,7 @@ const ProfileData = () => {
   const [groupResults, setGroupResults] = useState([]);
   const [postResults, setPostResults] = useState([]); // State for post search results
   const [isLoading, setIsLoading] = useState(false);
+  const { data: session } = useSession();
 
   // Tab state to switch between "Users", "Groups", and "Posts"
   const [activeTab, setActiveTab] = useState('Users');
@@ -83,8 +85,30 @@ const ProfileData = () => {
     }
   }, [searchQuery]);
 
+  const [isVerified, setIsVerified] = useState(false); // Add state for user verification
+  useEffect(() => {
+    const fetchUserVerification = async () => {
+      if (session) {
+        // Check if the user is verified (you might need to adjust the condition)
+        const userDoc = doc(db, 'users', session.user.uid);
+        const userSnapshot = await getDoc(userDoc);
+        const userData = userSnapshot.data();
+        
+        if (userData && userData.isVerified) {
+          setIsVerified(true);
+          // Fetch conversations if the user is verified
+          
+        }
+      }
+    };
+
+    fetchUserVerification();
+  }, [session]);
+
+
   return (
     <div className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto h-screen no-scrollbar'>
+     {isVerified ? ( <>
       <div className='bg-gray-200 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[20px] sticky top-1 z-10  mx-4'>
         <FiSearch />
         <input
@@ -170,7 +194,9 @@ const ProfileData = () => {
                     </div>
                   ))
                 ) : (
-                  <div className='text-gray-500'>No users found</div>
+                  <div className='flex justify-center items-center min-h-screen'>
+                    <p className="bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center">No user found </p>
+                  </div>
                 )}
               </div>
             )}
@@ -180,7 +206,7 @@ const ProfileData = () => {
                 {groupResults.length > 0 ? (
                   groupResults.map((result) => (
                     <div key={result.id} className='flex items-center mt-2 cursor-pointer border-b border-gray-300 p-2'>
-                      <Link href={`/groups/${result.id}`}>
+                      <Link href={`/group/${result.id}`}>
                         <a className='flex items-center'>
                           <img
                             src={result.data.groupProfilePic}
@@ -202,7 +228,9 @@ const ProfileData = () => {
                     </div>
                   ))
                 ) : (
-                  <div className='text-gray-500'>No groups found</div>
+                  <div className='flex justify-center items-center min-h-screen'>
+                    <p className="bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center">No group found </p>
+                  </div>
                 )}
               </div>
             )}
@@ -213,17 +241,27 @@ const ProfileData = () => {
                   postResults.map((result) => (
                     <div key={result.id} className='mt-4'>
                       {/* Render Post component for each post */}
+                      
                       <Post id={result.id} key={result.id} post={result.data} result={result.data} />
+                        
                     </div>
                   ))
                 ) : (
-                  <div className='text-gray-500'>No posts found</div>
+                  <div className='flex justify-center items-center min-h-screen'>
+                    <p className="bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center">No post found </p>
+                  </div>
                 )}
               </div>
             )}
           </>
         )}
       </div>
+      </>
+      ) : (
+        <div className='flex justify-center items-center min-h-screen'>
+          <p className="bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center">Verify your account to search users, posts and groups.</p>
+        </div>
+      )}
     </div>
   );
 };
