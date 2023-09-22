@@ -85,7 +85,7 @@ const ProfileData = () => {
   }, [session]);
 
   return (
-    <div className='hidden lg:block w-[350px] mt-2 overflow-y-auto no-scrollbar'>
+    <div className='hidden lg:block w-[350px] mt-2 h-screen overflow-y-auto no-scrollbar'>
        {isVerified ? ( <>
       <div className='bg-gray-200 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[20px] sticky top-1 z-10'>
         <FiSearch />
