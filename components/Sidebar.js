@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import SidebarLink from './SidebarLink'
 import { useRouter } from 'next/router'
 import { AiFillHome, AiOutlineInbox, AiOutlineUser } from "react-icons/ai"
-import { BiHash } from "react-icons/bi"
+import { BiHash, BiSearchAlt } from "react-icons/bi"
 import { BsBell, BsBookmark, BsThreeDots} from "react-icons/bs"
 import { HiOutlineClipboardList, HiOutlineDotsCircleHorizontal, HiOutlineUserGroup } from "react-icons/hi"
 import { signOut, useSession } from 'next-auth/react'
@@ -57,7 +57,9 @@ const Sidebar = () => {
                 <div onClick={() => router.push('/')}>
                 <SidebarLink text="Home" Icon={AiFillHome} />
                 </div>
-                <SidebarLink text="Explore" Icon={BiHash} />
+                <div onClick={() => router.push('search')}>
+                <SidebarLink text="Search" Icon={BiSearchAlt} />
+                </div>
                 <div onClick={() => router.push(`/notifications/${session.user.uid}`)}>
                 <div className='relative'>
                     <span className={`absolute top-0 right-0 -mt-1 -mr-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs text-center ${unreadNotifications > 0 ? 'block' : 'hidden'}`}>
@@ -105,7 +107,7 @@ const Sidebar = () => {
       <div className='fixed bottom-0 left-0 w-full md:hidden lg:hidden bg-white border-t border-gray-400 p-4 flex justify-between'>
         
         <AiFillHome className='text-xl cursor-pointer' onClick={() => router.push('/')} />
-        <BiHash className='text-xl cursor-pointer'/>
+        <BiSearchAlt className='text-xl cursor-pointer' onClick={() => router.push('/search')}/>
         <div onClick={() => router.push(`/notifications/${session.user.uid}`)}>
                 <div className='relative'>
                     <span className={`absolute top-0 right-0 -mt-1 -mr-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs text-center ${unreadNotifications > 0 ? 'block' : 'hidden'}`}>

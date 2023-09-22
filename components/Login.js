@@ -33,7 +33,7 @@ const Login = () => {
     <div className='grid grid-rows-2 md:grid-cols-2 lg:grid-cols-2'>
 
       <div className='bg-yellow-500 h-screen grid place-items-center '>
-        <Image className='rounded-[1px]' src={Logo} height="120px" width="200px" />
+        <Image className='rounded-[1px]' src={Logo} height="220px" width="500px" />
       </div>
 
       <div className='grid place-items-center'>
