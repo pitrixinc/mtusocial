@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { FcGoogle } from "react-icons/fc"
-import Logo from "../assets/images/mtu.png";
+import Logo from "../assets/images/mtu2.png";
 import Typewriter from "typewriter-effect";
 
 const Login = () => {
@@ -32,8 +32,14 @@ const Login = () => {
   return (
     <div className='grid grid-rows-2 md:grid-cols-2 lg:grid-cols-2'>
 
-      <div className='bg-yellow-500 h-screen grid place-items-center '>
-        <Image className='rounded-[1px]' src={Logo} height="220px" width="500px" />
+        <div className='bg-gradient-to-r from-yellow-500 to-black h-screen grid place-items-center '>
+          <div className='hidden md:block lg:block'>
+            <Image className='rounded-[1px]' src={Logo} height="220px" width="500px" />
+          </div>
+
+          <div className='block md:hidden lg:hidden'>
+            <Image className='rounded-[1px]' src={Logo} height="120px" width="300px" />
+          </div>
       </div>
 
       <div className='grid place-items-center'>
