@@ -267,7 +267,7 @@ const Post = ({ id, post }) => {
               </span>
             );
           } else {
-            return <span key={index}>{part} ...</span>;
+            return <span key={index}>{part}</span>;
           }
         })}
         {showMore ? (
@@ -275,7 +275,7 @@ const Post = ({ id, post }) => {
             className="text-gray-500 cursor-pointer ml-1"
             onClick={() => setShowMore(false)}
           >
-            Read more
+            ...Read more
           </span>
         ) : (
           <>
