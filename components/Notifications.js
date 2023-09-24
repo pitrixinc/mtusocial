@@ -167,7 +167,7 @@ const handleNotificationClick = async (notification) => {
                 key={index}
                 onClick={() => handleNotificationClick(notification)} // Handle click on notification
                 className={`cursor-pointer  pointer-events-none ${
-                  notification.read ? 'text-gray-500 ' : 'text-gray-900 font-bold  pointer-events-none  bg-yellow-100 p-2 rounded-[15px] mb-2 animate-pulse '
+                  notification.read ? 'text-gray-500 ' : 'text-gray-900  bg-yellow-100 p-2 rounded-[15px] mb-2 animate-pulse '
                 }`}
               >
                 

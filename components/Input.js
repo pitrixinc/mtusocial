@@ -2,7 +2,7 @@ import { BsImage, BsEmojiSmile } from "react-icons/bs"
 import { AiOutlineVideoCameraAdd, AiOutlineClose } from "react-icons/ai"
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { addDoc, collection, doc, serverTimestamp, updateDoc, getDoc, query, where, getDocs } from 'firebase/firestore';
+import { addDoc, collection, doc, serverTimestamp, updateDoc, getDoc, query, where, getDocs, } from 'firebase/firestore';
 import { db, storage } from '../firebase';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { toast } from 'react-toastify';
@@ -58,8 +58,28 @@ const Input = () => {
     }
   };
 
+  
+
   useEffect(() => {
-    // Fetch user suggestions based on the typed mention
+    // Function to shuffle an array randomly
+    const shuffleArray = (array) => {
+      let currentIndex = array.length,
+        randomIndex,
+        tempValue;
+
+      while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // Swap elements
+        tempValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = tempValue;
+      }
+
+      return array;
+    };
+
     const fetchUserSuggestions = async () => {
       if (mentionStartIndex !== null) {
         try {
@@ -68,7 +88,14 @@ const Input = () => {
           const querySnapshot = await getDocs(q);
 
           const users = querySnapshot.docs.map((doc) => doc.data());
-          setUserSuggestions(users);
+
+          // Shuffle the users array randomly
+          const shuffledUsers = shuffleArray(users);
+
+          // Limit the number of user suggestions to 4
+          const limitedUserSuggestions = shuffledUsers.slice(0, 4);
+
+          setUserSuggestions(limitedUserSuggestions);
         } catch (error) {
           console.error('Error fetching user suggestions:', error);
         }
@@ -221,7 +248,7 @@ const Input = () => {
 
         <div className="w-[90%]">
           <textarea
-            className="w-[100%] bg-transparent outline-none text-[20px]"
+            className="w-[100%] bg-transparent outline-none text-[20px] no-scrollbar"
             rows="2"
             placeholder="What's Happening?"
             value={input}
@@ -284,7 +311,7 @@ const Input = () => {
           )}
 
           {userSuggestions.length > 0 && (
-            <div className="mt-2 max-h-20 overflow-y-auto border rounded-md p-2 absolute bg-white shadow-md z-10">
+            <div className="mt-2 max-h-20 overflow-y-auto border rounded-md p-2 absolute bg-white shadow-md z-10 no-scrollbar">
               {userSuggestions.map((user) => (
                 <div
                   key={user.id}
