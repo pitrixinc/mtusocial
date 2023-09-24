@@ -267,7 +267,7 @@ const Post = ({ id, post }) => {
               </span>
             );
           } else {
-            return <span key={index}>{part}...</span>;
+            return <span key={index}>{part} ...</span>;
           }
         })}
         {showMore ? (
