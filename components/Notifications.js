@@ -126,15 +126,16 @@ useEffect(() => {
   loadNotifications();
 }, [session, id]);
 
+
 // Helper function to handle notification click
 const handleNotificationClick = async (notification) => {
-  if (notification.type === 'like' || notification.type === 'comment' || notification.type === 'follow' || notification.type === 'repost') {
+  if (notification.type === 'like' || notification.type === 'comment' || notification.type === 'follow' || notification.type === 'repost' || notification.type === 'tag') {
     // Update notification as read when clicked
     const notificationRef = doc(db, 'notifications', notification.id);
     await updateDoc(notificationRef, { read: true });
 
     // Redirect to the post or user profile based on the notification type
-    if (notification.type === 'like' || notification.type === 'comment' || notification.type === 'repost') {
+    if (notification.type === 'like' || notification.type === 'comment' || notification.type === 'repost' || notification.type === 'tag') {
       router.push(`/${notification.postId}`);
     } if (notification.type === 'follow') {
       router.push(`/users/${notification.senderUserId}`);
@@ -166,7 +167,7 @@ const handleNotificationClick = async (notification) => {
                 key={index}
                 onClick={() => handleNotificationClick(notification)} // Handle click on notification
                 className={`cursor-pointer  pointer-events-none ${
-                  notification.read ? 'text-gray-500' : 'text-gray-900 font-bold  pointer-events-none'
+                  notification.read ? 'text-gray-500 ' : 'text-gray-900 font-bold  pointer-events-none  bg-yellow-100 p-2 rounded-[15px] mb-2 animate-pulse '
                 }`}
               >
                 
@@ -216,6 +217,15 @@ const handleNotificationClick = async (notification) => {
                       id={notification.postId}
                       post={notificationPost.find((post) => post.id === notification.postId)} // Find the corresponding post in notificationPost
                     />
+                  </div>
+                )}
+                {notification.type === 'tag' && (
+                  <div className='ml-2 md:ml-0 lg:ml-0 border-b border-b-gray-200'>
+                    <div className='cursor-pointer mt-2'>
+                  <img className='h-12 w-12 rounded-full object-cover' src={notification.senderImage} alt="" />
+                </div>
+                <span className='font-bold cursor-pointer'>{notification.senderName}</span> {notification.message} <Moment fromNow>{notification.timestamp.toDate()}</Moment>
+               
                   </div>
                 )}
               </li>

@@ -10,7 +10,7 @@ import { BsImage, BsEmojiSmile } from "react-icons/bs"
 import { AiOutlineGif, AiOutlineClose } from "react-icons/ai"
 import { RiBarChart2Line } from "react-icons/ri"
 import { IoCalendarNumberOutline } from "react-icons/io5"
-import { HiOutlineLocationMarker } from "react-icons/hi"
+import { HiOutlineLocationMarker, HiOutlineChat, HiOutlineHeart } from "react-icons/hi"
 
 import { db } from "../firebase"
 import { useRouter } from 'next/router'
@@ -238,6 +238,30 @@ const Post = ({ id, post }) => {
     }
   };
 
+
+  // Function to format the post text, highlighting text after @ in blue
+  const formatPostText = (text) => {
+    return (
+      <p>
+        {text.split(/(@\w+)/).map((part, index) => {
+          if (part.startsWith('@')) {
+            return (
+              <span
+                key={index}
+                className="text-yellow-600 font-semibold"
+                onClick={() => router.push(`/${id}`)}
+              >
+                {part}
+              </span>
+            );
+          } else {
+            return <span key={index}>{part}</span>;
+          }
+        })}
+      </p>
+    );
+  };
+
   return (
     <div className='mt-4 border-t border-gray-300 px-4 pt-6 pb-4 cursor-pointer  overflow-y-auto'>
       {loading ? (
@@ -264,7 +288,7 @@ const Post = ({ id, post }) => {
 
 
           </div>
-          <p onClick={() => router.push(`/${id}`)}>{post?.text}</p>
+          <p onClick={() => router.push(`/${id}`)}> {formatPostText(post?.text)}</p>
           {post?.image && (
             <img
             className='max-h-[450px] object-cover rounded-[20px] mt-2'
@@ -292,7 +316,7 @@ const Post = ({ id, post }) => {
           <div className='flex justify-between text-[20px] mt-4 w-[80%]'>
 
             <div className='flex gap-1 items-center'>
-              <BsChat className='hoverEffect w-7 h-7 p-1' onClick={(e) => {
+              <HiOutlineChat className='hoverEffect w-7 h-7 p-1' onClick={(e) => {
                 e.stopPropagation()
                 openModal()
               }} />
@@ -322,7 +346,7 @@ const Post = ({ id, post }) => {
                 likePost()
               }}>
               {liked ? <AiFillHeart className='hoverEffect w-7 h-7 p-1 text-yellow-500' />
-                : <AiOutlineHeart className='hoverEffect w-7 h-7 p-1' />}
+                : <HiOutlineHeart className='hoverEffect w-7 h-7 p-1' />}
 
               {likes.length > 0 && (<span className={`${liked && "text-yellow-500"} text-sm`}>{likes.length}</span>)}
             </div>
