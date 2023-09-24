@@ -248,7 +248,7 @@ const Post = ({ id, post }) => {
             return (
               <span
                 key={index}
-                className="text-yellow-600 font-semibold"
+                className="text-blue-500 font-semibold"
                 onClick={() => router.push(`/${id}`)}
               >
                 {part}
