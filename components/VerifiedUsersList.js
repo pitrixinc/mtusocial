@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiSearch } from 'react-icons/fi';
-import VerifiedUsers from './VerifiedUsers'
+import VerifiedUsers from './VerifiedUsers';
+import PopularHashtags from './PopularHashtags';
 import { collection, query, where, getDocs, orderBy, limit, doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import Link from 'next/link';
@@ -176,6 +177,10 @@ const ProfileData = () => {
             ))}
           </>
         )} 
+            <div className='bg-white rounded-[20px] text-[#16181C] mt-4 px-4 py-4'>
+                <h1 className='text-[#16181C] font-bold text-[20px]'>Popular Hashtags</h1>
+                <PopularHashtags />
+            </div>
 
             <div className='bg-white rounded-[20px] text-[#16181C] mt-4 px-4 py-4 top-1 z-10 h-full sticky'>
                 <h1 className='text-[#16181C] font-bold text-[20px]'>Suggested Users</h1>
@@ -184,6 +189,7 @@ const ProfileData = () => {
                 </>) : (<div className='bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center'> Please verify to view other verified users </div>)}
 
             </div>
+            
       </div>
     </div>
   );

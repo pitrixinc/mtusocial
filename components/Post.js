@@ -239,29 +239,35 @@ const Post = ({ id, post }) => {
   };
 
 
-  // Function to format the post text, highlighting text after @ in blue
-  const [showMore, setShowMore] = useState(true);
-  const formatPostText = (text) => {
+  // Function to format the post text, highlighting text after @ in blue and styling hashtags
+const [showMore, setShowMore] = useState(true);
+const formatPostText = (text) => {
   const maxWords = 15; // Maximum number of words to show initially
-  const words = text.split(' ');
-  
+  const words = text && text.split(' ');
 
   // Check if the text exceeds the maximum number of words
-  if (words.length > maxWords) {
+  if (words?.length > maxWords) {
     const visibleWords = words.slice(0, maxWords).join(' ');
     const hiddenWords = words.slice(maxWords).join(' ');
 
-    
-
     return (
       <p>
-        {visibleWords.split(/(@\w+)/).map((part, index) => {
+        {visibleWords.split(/(@\w+|#\w+)/).map((part, index) => {
           if (part.startsWith('@')) {
             return (
               <span
                 key={index}
                 className="text-blue-500 font-semibold cursor-pointer"
                 onClick={() => router.push(`/${id}`)}
+              >
+                {part}
+              </span>
+            );
+          } else if (part.startsWith('#')) {
+            return (
+              <span
+                key={index}
+                className="text-blue-500 font-semibold cursor-pointer"
               >
                 {part}
               </span>
@@ -279,13 +285,22 @@ const Post = ({ id, post }) => {
           </span>
         ) : (
           <>
-            {hiddenWords.split(/(@\w+)/).map((part, index) => {
+            {hiddenWords.split(/(@\w+|#\w+)/).map((part, index) => {
               if (part.startsWith('@')) {
                 return (
                   <span
                     key={index}
                     className="text-blue-500 font-semibold cursor-pointer"
                     onClick={() => router.push(`/${id}`)}
+                  >
+                    {part}
+                  </span>
+                );
+              } else if (part.startsWith('#')) {
+                return (
+                  <span
+                    key={index}
+                    className="text-blue-500 font-semibold cursor-pointer"
                   >
                     {part}
                   </span>
@@ -309,13 +324,22 @@ const Post = ({ id, post }) => {
   // If the text doesn't exceed the maximum number of words, display it as is
   return (
     <p>
-      {text.split(/(@\w+)/).map((part, index) => {
+      {text.split(/(@\w+|#\w+)/).map((part, index) => {
         if (part.startsWith('@')) {
           return (
             <span
               key={index}
               className="text-blue-500 font-semibold cursor-pointer"
               onClick={() => router.push(`/${id}`)}
+            >
+              {part}
+            </span>
+          );
+        } else if (part.startsWith('#')) {
+          return (
+            <span
+              key={index}
+              className="text-blue-500 font-semibold cursor-pointer"
             >
               {part}
             </span>
@@ -327,6 +351,7 @@ const Post = ({ id, post }) => {
     </p>
   );
 };
+
 
   return (
     <div className='mt-4 border-t border-gray-300 px-4 pt-6 pb-4 cursor-pointer  overflow-y-auto'>

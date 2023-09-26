@@ -2,10 +2,11 @@ import { BsImage, BsEmojiSmile } from "react-icons/bs"
 import { AiOutlineVideoCameraAdd, AiOutlineClose } from "react-icons/ai"
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { addDoc, collection, doc, serverTimestamp, updateDoc, getDoc, query, where, getDocs, } from 'firebase/firestore';
+import { addDoc, collection, doc, serverTimestamp, updateDoc, getDoc, query, where, getDocs } from 'firebase/firestore';
 import { db, storage } from '../firebase';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { toast } from 'react-toastify';
+import { Picker } from 'emoji-mart';
 
 const Input = () => {
   const { data: session } = useSession();
@@ -16,9 +17,11 @@ const Input = () => {
   const [mentionInput, setMentionInput] = useState('');
   const [userSuggestions, setUserSuggestions] = useState([]);
   const [mentionStartIndex, setMentionStartIndex] = useState(null);
-
+  const [hashtagInput, setHashtagInput] = useState('');
+  const [hashtagSuggestions, setHashtagSuggestions] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [tempHashtags, setTempHashtags] = useState([]); // Temporary storage for hashtags
 
   // Fetch user data when the session is available
   useEffect(() => {
@@ -57,8 +60,6 @@ const Input = () => {
       setUserSuggestions([]);
     }
   };
-
-  
 
   useEffect(() => {
     // Function to shuffle an array randomly
@@ -114,6 +115,67 @@ const Input = () => {
 
     setInput(inputValue);
     setUserSuggestions([]);
+  };
+
+  const handleHashtagInputChange = (e) => {
+    const hashtagValue = e.target.value;
+    setHashtagInput(hashtagValue);
+
+    // Check if the user has typed #
+    if (hashtagValue.includes('#')) {
+      const hashtagIndex = hashtagValue.lastIndexOf('#');
+      const currentHashtag = hashtagValue.substring(hashtagIndex + 1);
+
+      // Fetch hashtag suggestions based on current input
+      fetchHashtagSuggestions(currentHashtag);
+    } else {
+      setHashtagSuggestions([]);
+    }
+  };
+
+  const fetchHashtagSuggestions = async (currentHashtag) => {
+    try {
+      const hashtagsCollectionRef = collection(db, 'hashtags');
+      const q = query(hashtagsCollectionRef, where('name', '>=', currentHashtag), where('name', '<=', currentHashtag + '\uf8ff'));
+      const querySnapshot = await getDocs(q);
+
+      const hashtags = querySnapshot.docs.map((doc) => doc.data());
+
+      setHashtagSuggestions(hashtags);
+    } catch (error) {
+      console.error('Error fetching hashtag suggestions:', error);
+    }
+  };
+
+  const handleHashtagSelect = (hashtag) => {
+    const inputValue = input + `#${hashtag.name} `;
+    setInput(inputValue);
+    setHashtagSuggestions([]);
+  };
+
+  const createNewHashtag = async () => {
+    if (hashtagInput.trim() === '') {
+      return;
+    }
+
+    try {
+      // Add the new hashtag to Firestore
+  {/*    const hashtagsCollectionRef = collection(db, 'hashtags');
+      await addDoc(hashtagsCollectionRef, {
+        name: hashtagInput.trim(),
+        timestamp: serverTimestamp(),
+      });
+    */}
+      // Append the new hashtag to the input
+      const inputValue = input + `${hashtagInput.trim()} `;
+      setInput(inputValue);
+      setHashtagInput('');
+      setHashtagSuggestions([]);
+      // Store the hashtag temporarily
+      setTempHashtags([...tempHashtags, `${hashtagInput.trim()}`]);
+    } catch (error) {
+      console.error('Error creating new hashtag:', error);
+    }
   };
 
   const addVideoToPost = (e) => {
@@ -202,9 +264,10 @@ const Input = () => {
           toast.error('Error uploading video');
         });
     }
+
     // Check for mentions and send notifications
     if (mentions) {
-        mentions.forEach(async (mention) => {
+      mentions.forEach(async (mention) => {
         // Extract the username from the mention (remove '@' character)
         const username = mention.slice(1);
 
@@ -213,30 +276,49 @@ const Input = () => {
         const userQuerySnapshot = await getDocs(userQuery);
 
         userQuerySnapshot.forEach(async (userDoc) => {
-            // Create a notification for the mentioned user
-            const mentionedUserId = userDoc.id;
+          // Create a notification for the mentioned user
+          const mentionedUserId = userDoc.id;
 
-            await addDoc(collection(db, 'notifications'), {
-                senderUserId: userData.id,
-                recipientUserId: mentionedUserId,
-                postId: docRef.id, // Include the post ID here
-                type: 'tag',
-                senderName: session.user.name,
-                senderImage: session.user.image,
-                message:  'tagged you in a recent post.',
-                timestamp: new Date(),
-                read: false,
-            });
+          await addDoc(collection(db, 'notifications'), {
+            senderUserId: userData.id,
+            recipientUserId: mentionedUserId,
+            postId: docRef.id, // Include the post ID here
+            type: 'tag',
+            senderName: session.user.name,
+            senderImage: session.user.image,
+            message:  'tagged you in a recent post.',
+            timestamp: new Date(),
+            read: false,
+          });
         });
-        });
+      });
     }
 
-    toast.success('Your post was sent!');
-    setLoading(false);
+    // Store hashtags in the "hashtags" collection
+    tempHashtags.forEach(async (tempHashtag) => {
+      try {
+        // Add the new hashtag to Firestore
+        const hashtagsCollectionRef = collection(db, 'hashtags');
+        await addDoc(hashtagsCollectionRef, {
+          postId: docRef.id,
+          name: tempHashtag.substring(1), // Remove the '#' character
+          timestamp: serverTimestamp(),
+        });
+      } catch (error) {
+        console.error('Error creating new hashtag:', error);
+      }
+    });
+
+
+    // Clear temporary hashtags and input
+    setTempHashtags([]);
     setInput('');
     setSelectedFile(null);
     setSelectedVideo(null);
     setShowEmojis(false);
+
+    toast.success('Your post was sent!');
+    setLoading(false);
   };
 
   return (
@@ -306,7 +388,7 @@ const Input = () => {
 
           {showEmojis && (
             <div className="absolute mt-[10px] -ml-[40px] max-w-[320px] rounded-[20px]">
-              <Picker onEmojiSelect={addEmoji} data={data} theme="dark" />
+              <Picker onEmojiSelect={addEmoji} theme="dark" />
             </div>
           )}
 
@@ -322,6 +404,44 @@ const Input = () => {
                   <span>{user.name}</span>
                 </div>
               ))}
+            </div>
+          )}
+
+          {hashtagSuggestions.length > 0 && (
+            <div className="mt-2 max-h-20 overflow-y-auto border rounded-md p-2 absolute bg-white shadow-md z-10 no-scrollbar">
+              {hashtagSuggestions.map((hashtag) => (
+                <div
+                  key={hashtag.id}
+                  className="flex items-center cursor-pointer hover:bg-gray-100 p-1 rounded-md"
+                  onClick={() => handleHashtagSelect(hashtag)}
+                >
+                  <span className="text-blue-500">#</span>
+                  <span>{hashtag.name}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="mt-2 flex items-center">
+            <input
+              type="text"
+              className="w-[100%] bg-transparent outline-none text-[15px] no-scrollbar"
+              placeholder="Add hashtags"
+              value={hashtagInput}
+              onChange={handleHashtagInputChange}
+              onBlur={createNewHashtag}
+            />
+          </div>
+
+          {tempHashtags.length > 0 && (
+            <div className="mt-2 flex items-center">
+              <div className="text-gray-500">
+                {tempHashtags.map((tag) => (
+                  <span key={tag} className="mr-2">
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
           )}
         </div>
