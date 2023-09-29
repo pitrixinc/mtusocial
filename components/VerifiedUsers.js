@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react';
 import { db } from '../firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import {MdVerified} from 'react-icons/md';
+import { useRouter } from 'next/router'
 
 
 // Define the VerifiedUsers component
 export default function VerifiedUsers() {
   const [usersWithBadge, setUsersWithBadge] = useState([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter()
 
   useEffect(() => {
     const fetchVerifiedUsers = async () => {
@@ -56,8 +58,8 @@ export default function VerifiedUsers() {
       ) : usersWithBadge.length > 0 ? (
         <div className="w-[350px]">
           {usersWithBadge.map((user) => (
-            <div key={user.id} className="bg-white p-4 rounded shadow border-b border-gray-[110px]">
-            <div className="flex items-center">
+            <div key={user.id} className="bg-white p-4 rounded shadow border-b border-gray-[110px] ">
+            <div className="flex items-center cursor-pointer" onClick={() => router.push(`/users/${user.id}`)}>
               <img
                 src={user.profileImage}
                 alt={user.name}
