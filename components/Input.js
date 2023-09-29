@@ -6,7 +6,8 @@ import { addDoc, collection, doc, serverTimestamp, updateDoc, getDoc, query, whe
 import { db, storage } from '../firebase';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { toast } from 'react-toastify';
-import { Picker } from 'emoji-mart';
+import Picker from '@emoji-mart/react'
+import data from '@emoji-mart/data'
 
 const Input = () => {
   const { data: session } = useSession();
@@ -373,7 +374,7 @@ const Input = () => {
                 </label>
                 <input id="video" type="file" accept="video/*" hidden onChange={addVideoToPost} />
 
-                <BsEmojiSmile className="cursor-pointer" onClick={() => setShowEmojis(!showEmojis)} />
+                <BsEmojiSmile className='cursor-pointer' onClick={() => setShowEmojis(!showEmojis)} />
               </div>
 
               <button
@@ -386,11 +387,16 @@ const Input = () => {
             </div>
           )}
 
-          {showEmojis && (
-            <div className="absolute mt-[10px] -ml-[40px] max-w-[320px] rounded-[20px]">
-              <Picker onEmojiSelect={addEmoji} theme="dark" />
-            </div>
-          )}
+{showEmojis && (
+                        <div className='absolute mt-[10px] -ml-[40px] max-w-[320px] rounded-[20px]'>
+                            <Picker
+                                onEmojiSelect={addEmoji}
+                                data={data}
+
+                                theme="dark"
+                            />
+                        </div>
+                    )}
 
           {userSuggestions.length > 0 && (
             <div className="mt-2 max-h-20 overflow-y-auto border rounded-md p-2 absolute bg-white shadow-md z-10 no-scrollbar">

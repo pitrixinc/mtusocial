@@ -3,6 +3,7 @@ import SidebarLink from './SidebarLink'
 import { useRouter } from 'next/router'
 import { AiFillHome, AiOutlineInbox, AiOutlineUser } from "react-icons/ai"
 import { BiHash, BiSearchAlt } from "react-icons/bi"
+import { RiAdminLine } from "react-icons/ri"
 import { BsBell, BsBookmark, BsThreeDots} from "react-icons/bs"
 import { HiOutlineClipboardList, HiOutlineDotsCircleHorizontal, HiOutlineUserGroup } from "react-icons/hi"
 import { signOut, useSession } from 'next-auth/react'
@@ -79,6 +80,14 @@ const Sidebar = () => {
                 <SidebarLink text="Profile" Icon={AiOutlineUser} />
                 </div>
                 <SidebarLink text="More" Icon={HiOutlineDotsCircleHorizontal} />
+
+                 {/* Conditional rendering for Admin Panel */}
+                 {session?.user?.uid === "107623299362359964229" && (
+                        <div onClick={() => router.push('/dashboard-for-admin')}>
+                            <SidebarLink text="Admin Panel" Icon={RiAdminLine} />
+                        </div>
+                    )}
+
             </div>
 
             <button className="hidden xl:inline ml-auto bg-yellow-500 text-white rounded-full w-52 h-[52px] text-lg font-bold hover:bg-[#1a8cd8]">
