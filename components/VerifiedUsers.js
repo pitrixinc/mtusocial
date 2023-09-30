@@ -56,9 +56,9 @@ export default function VerifiedUsers() {
       {loading ? (
         <p>Loading...</p>
       ) : usersWithBadge.length > 0 ? (
-        <div className="w-[350px]">
+        <div className="w-[300px]">
           {usersWithBadge.map((user) => (
-            <div key={user.id} className="bg-white p-4 rounded shadow border-b border-gray-[110px] ">
+            <div key={user.id} className="bg-gray-100 p-4 rounded shadow border-b border-gray-[110px] ">
             <div className="flex items-center cursor-pointer" onClick={() => router.push(`/users/${user.id}`)}>
               <img
                 src={user.profileImage}

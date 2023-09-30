@@ -60,7 +60,7 @@ const PopularHashtags = () => {
   };
 
   return (
-    <div className="popular-hashtags-container bg-white p-2 rounded-lg shadow-sm">
+    <div className="popular-hashtags-container bg-gray-100 p-2 rounded-lg shadow-sm">
       {loading ? (
         <p className="text-gray-500">Loading...</p>
       ) : popularHashtags.length === 0 ? (
@@ -70,10 +70,11 @@ const PopularHashtags = () => {
           {popularHashtags.map((hashtag, index) => (
             <li
               key={index}
-              className="text-lg text-gray-700 cursor-pointer hover:underline"
+              className="text-lg text-gray-700 cursor-pointer hover:underline mb-3"
               onClick={() => handleHashtagClick(hashtag.name)} // Handle the click event
             >
-              #{hashtag.name}: {hashtag.count} times
+              <span className='text-sm text-gray-500'>Trending Now</span>
+             <p className='font-bold text-md'>#{hashtag.name}</p> <span className='text-sm text-gray-500'>{hashtag.count} posts </span>
             </li>
           ))}
         </ul>

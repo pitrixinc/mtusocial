@@ -87,6 +87,7 @@ const ProfileData = () => {
 
   return (
     <div className='hidden lg:block w-[350px] mt-2 h-screen overflow-y-auto no-scrollbar'>
+      <div className='h-full'>
        {isVerified ? ( <>
       <div className='bg-gray-200 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[20px] sticky top-1 z-10'>
         <FiSearch />
@@ -127,7 +128,7 @@ const ProfileData = () => {
         ) : (
           <>
             {searchResults.map((result) => (
-               <div key={result.id} className='flex items-center mt-2 cursor-pointer border-b border-gray-300 p-2'>
+               <div key={result.id} className='bg-gray-100 rounded-[20px] flex items-center mt-2 cursor-pointer border-b border-gray-300 p-2'>
                {result.type === 'user' && (
                  <Link href={`/users/${result.id}`}>
                    {/* Wrap the user element with Link */}
@@ -177,19 +178,19 @@ const ProfileData = () => {
             ))}
           </>
         )} 
-            <div className='bg-white rounded-[20px] text-[#16181C] mt-4 px-4 py-4'>
+            <div className='bg-gray-100 rounded-[20px] text-[#16181C] mt-4 px-4 py-4'>
                 <h1 className='text-[#16181C] font-bold text-[20px]'>Popular Hashtags</h1>
                 <PopularHashtags />
             </div>
 
-            <div className='bg-white rounded-[20px] text-[#16181C] mt-4 px-4 py-4 top-1 z-10 h-full sticky'>
+            <div className='bg-gray-100 rounded-[20px] text-[#16181C] mt-4 px-4 py-4 '>
                 <h1 className='text-[#16181C] font-bold text-[20px]'>Suggested Users</h1>
                 {isVerified ? ( <>
                 <VerifiedUsers />
                 </>) : (<div className='bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center'> Please verify to view other verified users </div>)}
 
             </div>
-            
+            </div>     
       </div>
     </div>
   );
