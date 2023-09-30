@@ -59,7 +59,8 @@ export const authOptions = {
             signupDate: formattedDate, // Include the formatted date
             profileImage: session.user.image,
             isVerified: false, // Add the isVerified field with the default value
-            isQualifiedForBadge,
+            isQualifiedForBadge: false,
+            isQualifiedForGoldBadge: false,
             // Add other fields you want to store in the document
           };
 

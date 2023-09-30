@@ -234,6 +234,7 @@ const Input = () => {
       postedById: userData.id,
       isVerified: userData.isVerified || false,
       isQualifiedForBadge: userData.isQualifiedForBadge || false,
+      isQualifiedForGoldBadge: userData.isQualifiedForGoldBadge || false,
     });
 
     const imageRef = ref(storage, `posts/${docRef.id}/image`);

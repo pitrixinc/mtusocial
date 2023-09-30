@@ -16,7 +16,7 @@ export default function VerifiedUsers() {
     const fetchVerifiedUsers = async () => {
       try {
         const usersRef = collection(db, 'users');
-        const q = query(usersRef, where('isQualifiedForBadge', '==', true));
+        const q = query(usersRef, where('isQualifiedForGoldBadge', '==', true));
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {

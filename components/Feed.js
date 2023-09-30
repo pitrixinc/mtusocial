@@ -8,6 +8,7 @@ import Image from 'next/image';
 import mtuLogo from '../assets/images/mtulogo.jpg';
 import { HiOutlineSparkles } from 'react-icons/hi';
 import { toast } from 'react-toastify';
+import { BsNewspaper } from 'react-icons/bs'
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
@@ -15,6 +16,7 @@ const Feed = () => {
   const [activeTab, setActiveTab] = useState('ForYou'); // Initialize with 'For You'
   const [isCurrentUserVerified, setIsCurrentUserVerified] = useState(false);
   const [followingIsEmpty, setFollowingIsEmpty] = useState(false);
+  const [newsIsEmpty, setNewsIsEmpty] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -44,6 +46,13 @@ const Feed = () => {
               // For example, show a message to follow users.
               setFollowingIsEmpty(true);
             }
+          } else if (activeTab === 'News') {
+            // Fetch posts where isQualifiedForGoldBadge is true
+            postQuery = query(
+              collection(db, 'posts'),
+              where('isQualifiedForGoldBadge', '==', true),
+              orderBy('timestamp', 'desc')
+            );
           }
 
           if (postQuery) {
@@ -53,6 +62,12 @@ const Feed = () => {
                 data: doc.data(),
               }));
               setPosts(postList);
+              // Check if the News tab is empty
+              if (activeTab === 'News' && postList.length === 0) {
+                setNewsIsEmpty(true);
+              } else {
+                setNewsIsEmpty(false);
+              }
             });
 
             return () => {
@@ -109,6 +124,14 @@ const Feed = () => {
         >
           Following
         </div>
+        <div
+          className={`cursor-pointer ${
+            activeTab === 'News' ? 'text-yellow-500 border-b-2 border-b-yellow-500' : ''
+          }`}
+          onClick={() => setActiveTab('News')}
+        >
+          <BsNewspaper/>
+        </div>
       </div>
       {isCurrentUserVerified && <Input />}
       {/* Your other components */}
@@ -116,8 +139,10 @@ const Feed = () => {
         <>
           {followingIsEmpty ? (
             <p>You are not following anyone. Follow people to see their posts.</p>
-          ) : posts.length === 0 ? (
-            <p>{activeTab === 'Following' ? 'No posts from followings.' : 'No posts, follow people to see their posts or write a post to view it here.'}</p>
+          ) : newsIsEmpty ? ( // Check if News tab is empty
+          <p>No News</p>
+        )  : posts.length === 0 ? (
+            <p>{activeTab === 'News' ? 'No News.' : 'No posts, follow people to see their posts or write a post to view it here.'}</p>
           ) : (
             posts.map((post) => (
               <Post key={post.id} id={post.id} post={post.data} />

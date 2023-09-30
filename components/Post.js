@@ -368,7 +368,7 @@ const formatPostText = (text) => {
           <div className='block sm:flex gap-1' onClick={() => router.push(`/users/${post.postedById}`)}>
           <div className='flex items-center'>
             <h1 className='font-semibold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'>{post?.username}</h1>
-            {post?.isQualifiedForBadge && (<MdVerified className="text-yellow-500 inline mt-1 ml-1" />) }
+            {post?.isQualifiedForBadge && (<MdVerified className="text-blue-500 inline mt-1 ml-1" />) } {post?.isQualifiedForGoldBadge && (<MdVerified className="text-yellow-500 inline mt-1 ml-1" />) }
             </div>
             <div className='flex'>
               <p className='text-gray-500'>@{post?.tag} &nbsp;·&nbsp;</p>
