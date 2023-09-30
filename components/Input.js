@@ -367,7 +367,7 @@ const Input = () => {
                   <BsImage className="cursor-pointer" />
                 </label>
 
-                <input id="file" type="file" hidden onChange={addImageToPost} />
+                <input id="file" type="file" accept="image/*"  hidden onChange={addImageToPost} />
 
                 <label htmlFor="video">
                   <AiOutlineVideoCameraAdd className="cursor-pointer" />

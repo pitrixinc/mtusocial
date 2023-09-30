@@ -23,6 +23,8 @@ import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { FcDocument } from 'react-icons/fc';
+import CryptoJS from 'crypto-js';
+
 
 const Chat = () => {
   const { data: session } = useSession();
@@ -42,6 +44,11 @@ const Chat = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [selectedMusic, setSelectedMusic] = useState(null);
   const [selectedDocument, setSelectedDocument] = useState(null);
+
+  
+    // Encrypt the message using a secret key (you should securely manage this key)
+    const secretKey = 'E9n8C7r6Y5p4T3e2D1m0E9s8S7a6G5e4321'; // Replace with your actual secret key
+    const encryptedMessage = CryptoJS.AES.encrypt(input, secretKey).toString();
 
   const addMusicToPost = (e) => {
     const reader = new FileReader();
@@ -117,11 +124,22 @@ const Chat = () => {
         // Check if the message is between the current user and the specified user
         if ((message.fromId === session.user.uid && message.toId === id) ||
             (message.fromId === id && message.toId === session.user.uid)) {
-          updatedMessages.push(message);
-        }
-      });
-      setMessages(updatedMessages);
-    });
+              // Decrypt the message here
+              const decryptedMessage = CryptoJS.AES.decrypt(
+                message.text,
+                secretKey
+              ).toString(CryptoJS.enc.Utf8);
+      
+              // Check if decryption was successful before adding to updatedMessages
+              if (decryptedMessage !== '' && decryptedMessage.length > 0) {
+                // Replace the original message with the decrypted message
+                message.text = decryptedMessage;
+                updatedMessages.push(message);
+              }
+            }
+          });
+          setMessages(updatedMessages);
+        });
 
     // Fetch the user's info and set it in state
     const fetchUserInfo = async () => {
@@ -150,9 +168,15 @@ const Chat = () => {
       // });
 
     // setNewMessage('');
+
+
+
+
+
+
     try {
       const messageData = {
-        text: input,
+        text: encryptedMessage,
         fromId: session.user.uid,
         toId: id,
         timestamp: serverTimestamp(),
@@ -213,6 +237,9 @@ const Chat = () => {
       console.error('Error adding message:', error);
     }
   };
+
+
+
 
 
    // chat backround images change

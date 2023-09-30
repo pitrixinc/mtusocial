@@ -21,6 +21,7 @@ import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { FcDocument } from 'react-icons/fc';
+import CryptoJS from 'crypto-js';
 
 const TheGroupChat = () => {
   const router = useRouter();
@@ -40,6 +41,10 @@ const TheGroupChat = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [selectedMusic, setSelectedMusic] = useState(null);
   const [selectedDocument, setSelectedDocument] = useState(null);
+
+  // Encrypt the message using a secret key (you should securely manage this key)
+  const secretKey = 'E9n8C7r6Y5p4T3e2D1m0E9s8S7a6G5e4321'; // Replace with your actual secret key
+  const encryptedMessage = CryptoJS.AES.encrypt(input, secretKey).toString();
 
   const addMusicToPost = (e) => {
     const reader = new FileReader();
@@ -132,22 +137,36 @@ const TheGroupChat = () => {
         router.push('/');
       });
   }, [groupId, session]);
+  
 
   const loadMessages = (groupId) => {
     if (!groupId) return;
-
+  
     const groupMessagesRef = collection(db, 'groups', groupId, 'messages');
-
+  
     const unsubscribe = onSnapshot(groupMessagesRef, (querySnapshot) => {
       const updatedMessages = [];
       querySnapshot.forEach((doc) => {
-        updatedMessages.push({ id: doc.id, ...doc.data() }); // Added unique ID
+        const message = doc.data();
+        // Decrypt the message here
+        const decryptedMessage = CryptoJS.AES.decrypt(
+          message.text,
+          secretKey
+        ).toString(CryptoJS.enc.Utf8);
+  
+        // Check if decryption was successful before adding to updatedMessages
+        if (decryptedMessage !== '' && decryptedMessage.length > 0) {
+          // Replace the original message with the decrypted message
+          message.text = decryptedMessage;
+          updatedMessages.push({ id: doc.id, ...message });
+        }
       });
       setMessages(updatedMessages);
     });
-
+  
     return unsubscribe;
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -155,7 +174,7 @@ const TheGroupChat = () => {
 
     try {
       const messageData = {
-        text: input,
+        text: encryptedMessage,
         userId: session.user.uid,
         senderImage: session.user.image,
         name: session.user.name,

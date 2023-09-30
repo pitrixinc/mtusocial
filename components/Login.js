@@ -30,7 +30,7 @@ const Login = () => {
     }
   };
   return (
-    <div className='grid grid-rows-2 md:grid-cols-2 lg:grid-cols-2'>
+    <div className='grid md:grid-cols-2 lg:grid-cols-2'>
 
         <div className='bg-gradient-to-r from-yellow-500 to-black h-screen grid place-items-center '>
           <div className='hidden md:block lg:block'>

@@ -4,6 +4,8 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { db } from '../firebase';
 import { AiOutlineArrowLeft } from "react-icons/ai"
+import CryptoJS from 'crypto-js';
+
 
 const ListConversation = () => {
   const { data: session } = useSession();
@@ -11,6 +13,10 @@ const ListConversation = () => {
   const [userInfo, setUserInfo] = useState({});
   const [isVerified, setIsVerified] = useState(false); // Add state for user verification
   const router = useRouter();
+  const [decryptedMessages, setDecryptedMessages] = useState({});
+
+  // Encrypt the message using a secret key (you should securely manage this key)
+  const secretKey = 'E9n8C7r6Y5p4T3e2D1m0E9s8S7a6G5e4321'; // Replace with your actual secret key
 
   useEffect(() => {
     const fetchUserVerification = async () => {
@@ -57,9 +63,25 @@ const ListConversation = () => {
           lastMessage: message.text,
         };
 
+        // Update the last message in the conversation if the message is the most recent
         if (!conversation.lastMessageTimestamp || conversation.lastMessageTimestamp < message.timestamp) {
-          conversation.lastMessage = message.text;
-          conversation.lastMessageTimestamp = message.timestamp;
+          // Decrypt the message here
+          const decryptedMessage = CryptoJS.AES.decrypt(
+            message.text,
+            secretKey
+          ).toString(CryptoJS.enc.Utf8);
+
+          // Check if decryption was successful before updating the conversation
+          if (decryptedMessage !== '' && decryptedMessage.length > 0) {
+            conversation.lastMessage = decryptedMessage;
+            conversation.lastMessageTimestamp = message.timestamp;
+
+            // Store the decrypted message in the state
+            setDecryptedMessages((prevState) => ({
+              ...prevState,
+              [otherUserId]: decryptedMessage,
+            }));
+          }
         }
 
         conversationMap.set(otherUserId, conversation);
