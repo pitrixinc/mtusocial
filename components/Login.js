@@ -7,30 +7,9 @@ import Logo from "../assets/images/mtu2.png";
 import Typewriter from "typewriter-effect";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Call the NextAuth.js signIn method to authenticate with Firebase credentials
-    const result = await signIn('firebase', {
-      email,
-      password,
-      callbackUrl: '/dashboard', // Redirect URL after successful login
-    });
-
-    if (result.error) {
-      console.error('Authentication failed:', result.error);
-      // Handle authentication error (e.g., display an error message)
-    } else {
-      // Authentication succeeded, redirect to the dashboard or another page
-      // (You can also use router.push('/dashboard') from 'next/router')
-      window.location.href = '/dashboard';
-    }
-  };
+  
   return (
-    <div className='grid md:grid-cols-2 lg:grid-cols-2'>
+    <div className='grid grid-rows-2 md:grid-cols-2 lg:grid-cols-2'>
 
         <div className='bg-gradient-to-r from-yellow-500 to-black h-screen grid place-items-center '>
           <div className='hidden md:block lg:block'>
