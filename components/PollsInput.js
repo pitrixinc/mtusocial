@@ -9,7 +9,7 @@ import data from '@emoji-mart/data';
 import { BsImage, BsEmojiSmile } from "react-icons/bs"
 import { AiOutlineVideoCameraAdd, AiOutlineClose } from "react-icons/ai"
 import {CiTextAlignCenter} from 'react-icons/ci'
-import {BiAddToQueue} from 'react-icons/bi'
+import {BiAddToQueue, BiText} from 'react-icons/bi'
 import {MdOutlineRemoveCircleOutline} from 'react-icons/md'
 
 const Input = () => {
@@ -288,7 +288,7 @@ const Input = () => {
               onClick={() => setPollType('text')}
               className={`cursor-pointer ${pollType === 'text' && 'text-yellow-700'}`}
             >
-              <CiTextAlignCenter className='text-lg text-yellow-500'/>
+              <BiText className='text-lg text-yellow-500'/>
             </button>
             <button
               onClick={() => setPollType('image')}
