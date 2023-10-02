@@ -147,7 +147,7 @@ const handleNotificationClick = async (notification) => {
     <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto no-scrollbar'>
       <div className="mx-auto flex h-screen w-full items-start justify-center bg-white text-sm text-gray-900 antialiased">
         <div>
-          <h1 className='text-2xl font-bold text-center'>Notifications</h1>
+          <h1 className='text-2xl font-bold text-center sticky top-1 z-10 bg-gray-100 border-b border-gray-100 shadow-sm p-2 rounded-[20px]'>Notifications</h1>
           {/* 
           <ul>
             {notifications.map((notification, index) => (
@@ -166,14 +166,14 @@ const handleNotificationClick = async (notification) => {
               <li
                 key={index}
                 onClick={() => handleNotificationClick(notification)} // Handle click on notification
-                className={`cursor-pointer  pointer-events-none ${
+                className={`cursor-pointer px-2 pointer-events-none ${
                   notification.read ? 'text-gray-500 ' : 'text-gray-900  bg-yellow-100 p-2 rounded-[15px] mb-2 animate-pulse '
                 }`}
               >
                 
                 {/* Display additional content based on notification type */}
                 {notification.type === 'like' && (
-                  <div className='ml-2 md:ml-0 lg:ml-0 border-b border-b-gray-200'>
+                  <div className='ml-2 md:ml-0 lg:ml-0 border-b border-b-gray-200 px-3'>
                     <div className='cursor-pointer mt-2'>
                   <img className='h-12 w-12 rounded-full object-cover' src={notification.senderImage} alt="" />
                 </div>
@@ -186,7 +186,7 @@ const handleNotificationClick = async (notification) => {
                   </div>
                 )}
                 {notification.type === 'comment' && (
-                  <div className='ml-2 md:ml-0 lg:ml-0 border-b border-b-gray-200'>
+                  <div className='ml-2 md:ml-0 lg:ml-0 border-b border-b-gray-200 px-3'>
                     <div className='cursor-pointer mt-2'>
                   <img className='h-12 w-12 rounded-full object-cover' src={notification.senderImage} alt="" />
                 </div>
@@ -199,7 +199,7 @@ const handleNotificationClick = async (notification) => {
                   </div>
                 )}
                {notification.type === 'follow' && (
-                <div className='ml-2 md:ml-0 lg:ml-0 border-b border-b-gray-200 py-2'>
+                <div className='ml-2 md:ml-0 lg:ml-0 border-b border-b-gray-200 py-2 px-3'>
                    <div className='cursor-pointer mt-2'>
                    <img className='h-12 w-12 rounded-full object-cover' src={notification.senderImage} alt="" />
                    </div>
@@ -207,7 +207,7 @@ const handleNotificationClick = async (notification) => {
                  </div>
                )}
                {notification.type === 'repost' && (
-                  <div className='ml-2 md:ml-0 lg:ml-0 border-b border-b-gray-200'>
+                  <div className='ml-2 md:ml-0 lg:ml-0 border-b border-b-gray-200 px-3'>
                     <div className='cursor-pointer mt-2'>
                   <img className='h-12 w-12 rounded-full object-cover' src={notification.senderImage} alt="" />
                 </div>
@@ -220,7 +220,7 @@ const handleNotificationClick = async (notification) => {
                   </div>
                 )}
                 {notification.type === 'tag' && (
-                  <div className='ml-2 md:ml-0 lg:ml-0 border-b border-b-gray-200'>
+                  <div className='ml-2 md:ml-0 lg:ml-0 border-b border-b-gray-200 px-3'>
                     <div className='cursor-pointer mt-2'>
                   <img className='h-12 w-12 rounded-full object-cover' src={notification.senderImage} alt="" />
                 </div>
