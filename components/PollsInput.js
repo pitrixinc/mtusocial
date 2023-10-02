@@ -260,12 +260,12 @@ const Input = () => {
                 onChange={(e) => handleOptionChange(index, e.target.value)}
               />
               <button onClick={() => removePollOption(index)}>
-                <MdOutlineRemoveCircleOutline className='text-md text-red-500' />
+                <MdOutlineRemoveCircleOutline className='text-lg text-red-500' />
               </button>
             </div>
           ))}
 
-          <button onClick={addPollOption}><BiAddToQueue className='text-md text-yellow-500'/></button>
+          <button onClick={addPollOption}><BiAddToQueue className='text-lg text-yellow-500'/></button>
 
            {/* Input field for setting the end date/time */}
         <div>
