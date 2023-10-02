@@ -6,7 +6,9 @@ import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { toast } from 'react-toastify';
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
-import { AiOutlineClose } from 'react-icons/ai';
+import { BsImage, BsEmojiSmile } from "react-icons/bs"
+import { AiOutlineVideoCameraAdd, AiOutlineClose } from "react-icons/ai"
+import {CiTextAlignCenter} from 'react-icons/ci'
 import {BiAddToQueue} from 'react-icons/bi'
 import {MdOutlineRemoveCircleOutline} from 'react-icons/md'
 
@@ -286,19 +288,19 @@ const Input = () => {
               onClick={() => setPollType('text')}
               className={`cursor-pointer ${pollType === 'text' && 'text-yellow-700'}`}
             >
-              Text
+              <CiTextAlignCenter className='text-lg text-yellow-500'/>
             </button>
             <button
               onClick={() => setPollType('image')}
               className={`cursor-pointer ${pollType === 'image' && 'text-yellow-700'}`}
             >
-              Image
+              <BsImage className='text-lg text-yellow-500'/>
             </button>
             <button
               onClick={() => setPollType('video')}
               className={`cursor-pointer ${pollType === 'video' && 'text-yellow-700'}`}
             >
-              Video
+              < AiOutlineVideoCameraAdd className='text-lg text-yellow-500' />
             </button>
           </div>
 
@@ -306,7 +308,7 @@ const Input = () => {
             <div className="flex justify-between items-center">
               <div className="flex gap-4 text-[20px] text-yellow-500">
                 <button onClick={() => setShowEmojis(!showEmojis)}>
-                  Show Emojis
+                  <BsEmojiSmile className='text-lg text-yellow-500'/>
                 </button>
               </div>
 
