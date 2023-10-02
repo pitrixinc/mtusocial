@@ -8,7 +8,6 @@ import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
 import { BsImage, BsEmojiSmile } from "react-icons/bs"
 import { AiOutlineVideoCameraAdd, AiOutlineClose } from "react-icons/ai"
-import {CiTextAlignCenter} from 'react-icons/ci'
 import {BiAddToQueue, BiText} from 'react-icons/bi'
 import {MdOutlineRemoveCircleOutline} from 'react-icons/md'
 
