@@ -7,6 +7,8 @@ import { toast } from 'react-toastify';
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
 import { AiOutlineClose } from 'react-icons/ai';
+import {BiAddToQueue} from 'react-icons/bi'
+import {MdOutlineRemoveCircleOutline} from 'react-icons/md'
 
 const Input = () => {
   const { data: session } = useSession();
@@ -258,12 +260,12 @@ const Input = () => {
                 onChange={(e) => handleOptionChange(index, e.target.value)}
               />
               <button onClick={() => removePollOption(index)}>
-                Remove
+                <MdOutlineRemoveCircleOutline />
               </button>
             </div>
           ))}
 
-          <button onClick={addPollOption}>Add Option</button>
+          <button onClick={addPollOption}><BiAddToQueue /></button>
 
            {/* Input field for setting the end date/time */}
         <div>
