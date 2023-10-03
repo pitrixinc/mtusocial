@@ -101,26 +101,44 @@ const Input = () => {
 
   const sendPoll = async () => {
     if (loading) return;
-
+  
     setLoading(true);
-
+  
     if (!userData) {
       toast.error('User data is not available.');
       setLoading(false);
       return;
     }
-
-     // Calculate the end date/time (e.g., 1 hour from the current time)
-     const endTimestamp = new Date(endDate);
-     const currentTimestamp = new Date();
- 
-     if (endTimestamp <= currentTimestamp) {
-       toast.error('End date/time should be in the future.');
-       setLoading(false);
-       return;
-     }
-
+  
+    // Calculate the end date/time (e.g., 1 hour from the current time)
+    const endTimestamp = new Date(endDate);
+    const currentTimestamp = new Date();
+  
+    if (endTimestamp <= currentTimestamp) {
+      toast.error('End date/time should be in the future.');
+      setLoading(false);
+      return;
+    }
+  
     try {
+      // Initialize variables for storing media URLs
+      let imageUrl = '';
+      let videoUrl = '';
+  
+      // Upload the pollImage to Firebase Storage (if it exists)
+      if (pollImage) {
+        const imageRef = ref(storage, `pollImages/${Date.now()}_${session?.user?.uid}`);
+        await uploadString(imageRef, pollImage, 'data_url');
+        imageUrl = await getDownloadURL(imageRef);
+      }
+  
+      // Upload the pollVideo to Firebase Storage (if it exists)
+      if (pollVideo) {
+        const videoRef = ref(storage, `pollVideos/${Date.now()}_${session?.user?.uid}`);
+        await uploadString(videoRef, pollVideo, 'data_url');
+        videoUrl = await getDownloadURL(videoRef);
+      }
+  
       const pollData = {
         id: userData.id,
         username: userData.name,
@@ -130,17 +148,17 @@ const Input = () => {
         pollType,
         pollOptions,
         timestamp: serverTimestamp(),
-        pollImage: pollImage || '',
-        pollVideo: pollVideo || '',
+        pollImage: imageUrl, // Use the URL instead of the data
+        pollVideo: videoUrl, // Use the URL instead of the data
         isVerified: userData.isVerified || false,
         isQualifiedForBadge: userData.isQualifiedForBadge || false,
         isQualifiedForGoldBadge: userData.isQualifiedForGoldBadge || false,
         endDate: endTimestamp.toISOString(), // Store the end date/time as a string
         isClosed: false, // Initialize isClosed as false
       };
-
-      const docRef = await addDoc(collection(db, 'polls'), pollData); // Assign docRef here
-
+  
+      const docRef = await addDoc(collection(db, 'polls'), pollData);
+  
       // Schedule a function to automatically close the poll when the end date/time is reached
       const pollId = docRef.id;
       const timeRemaining = endTimestamp - serverTimestamp();
@@ -148,11 +166,11 @@ const Input = () => {
         setTimeout(async () => {
           try {
             const pollRef = doc(db, 'polls', pollId);
-
+  
             // Check if the poll is already closed
             const pollDocSnapshot = await getDoc(pollRef);
             const pollData = pollDocSnapshot.data();
-
+  
             if (!pollData.isClosed) {
               // Update the poll document to indicate that it's closed
               await updateDoc(pollRef, {
@@ -165,14 +183,14 @@ const Input = () => {
           }
         }, timeRemaining);
       }
-
-      
+  
       setInput('');
       setPollOptions([{ text: 'Option 1', votes: 0 }, { text: 'Option 2', votes: 0 }]);
       setPollType('text');
       setPollImage(null);
       setPollVideo(null);
-
+      setEndDate(null);
+  
       toast.success('Your poll was created!');
     } catch (error) {
       console.error('Error creating poll:', error);
@@ -181,6 +199,7 @@ const Input = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className={`mt-4 px-4 ${loading && 'opacity-60'}`}>
