@@ -169,7 +169,7 @@ const Polls = () => {
               {poll.pollOptions.map((option, index) => (
                 <li key={index} className="relative  justify-start mb-2">
                   {/* Background color based on the percentage value */}
-                  <div className={`w-1/6 h-8 ${new Date() >= new Date(poll.endDate) ? 'bg-green-400' : 'bg-blue-400'} rounded-l-lg`} style={{ width: `${option.percentage}%` }}>
+                  <div className={`w-1/6 h-8 ${new Date() >= new Date(poll.endDate) ? 'bg-green-400' : 'bg-yellow-400'} rounded-l-lg`} style={{ width: `${option.percentage}%` }}>
                     {/* Placeholder for the background color */}
                   </div>
                   {/* Disable voting options when the poll is closed */}
@@ -180,7 +180,7 @@ const Polls = () => {
                   ) : (
                     <button
                       onClick={() => handleVote(poll.id, index)}
-                      className={`absolute inset-0 w-full h-8 rounded-r-lg text-lg font-semibold flex px-2 ${new Date() >= new Date(poll.endDate) ? 'bg-green-200 text-green-800 hover:bg-green-300' : 'bg-blue-200 text-blue-800 hover:bg-blue-300'}`}
+                      className={`absolute inset-0 w-full h-8 rounded-r-lg text-lg font-semibold flex px-2 ${new Date() >= new Date(poll.endDate) ? 'bg-green-200 text-green-800 hover:bg-green-300' : ' text-yellow-900 hover:bg-yellow-200'}`}
                     >
                       {option.text} ({option.votes} votes, {option.percentage}%)
                     </button>
