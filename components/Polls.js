@@ -169,7 +169,7 @@ const Polls = () => {
               {poll.pollOptions.map((option, index) => (
                 <li key={index} className="relative  justify-start mb-2">
                   {/* Background color based on the percentage value */}
-                  <div className={`w-1/6 h-8 ${new Date() >= new Date(poll.endDate) ? 'bg-green-400' : 'bg-yellow-400'} rounded-l-lg`} style={{ width: `${option.percentage}%` }}>
+                  <div className={`w-1/6 h-8 ${new Date() >= new Date(poll.endDate) ? 'bg-green-400' : 'bg-yellow-200'} rounded-l-lg`} style={{ width: `${option.percentage}%` }}>
                     {/* Placeholder for the background color */}
                   </div>
                   {/* Disable voting options when the poll is closed */}
