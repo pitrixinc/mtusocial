@@ -23,7 +23,7 @@ const Login = () => {
 
       <div className='grid place-items-center'>
       <h1 className="font-bold text-xl md:text-5xl lg:text-5xl p-5">
-         <span className="bg-gradient-to-r text-white from-yellow-500 to-black p-5 rounded-lg">Welcome To MTU Social</span>
+         <span className="bg-gradient-to-r text-white from-yellow-500 to-black p-5 rounded-lg shadow-lg">Welcome To MTU Social</span>
       </h1>
       <h1 className="font-semibold text-xl bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black p-5 text-center">
         <Typewriter 

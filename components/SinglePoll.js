@@ -9,12 +9,18 @@ import Moment from 'react-moment';
 import CountdownTimer from './CountdownTimer';
 import { BsArrowLeft } from 'react-icons/bs';
 import { toast } from 'react-toastify';
+import {RiRadioButtonLine} from 'react-icons/ri'
 
 const SinglePoll = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const { id } = router.query;
   const [poll, setPoll] = useState(null);
+   // New state variables for password handling
+   const [passwordFormVisible, setPasswordFormVisible] = useState(false);
+   const [enteredPassword, setEnteredPassword] = useState('');
+   const [correctPasswordEntered, setCorrectPasswordEntered] = useState(false);
+ 
 
   useEffect(() => {
     const fetchPoll = async () => {
@@ -113,45 +119,66 @@ const SinglePoll = () => {
 
   // Calculate the winner and total votes
   const totalVotes = poll.pollOptions.reduce((total, option) => total + option.votes, 0);
-  const pollOptionsWithPercentages = poll.pollOptions.map((option) => ({
-    ...option,
-    percentage: totalVotes === 0 ? '0.00%' : `${((option.votes / totalVotes) * 100).toFixed(2)}%`,
-  }));
   const winner = totalVotes > 0
     ? poll.pollOptions.reduce((prev, current) => (current.votes > prev.votes ? current : prev)).text
     : 'No Votes';
 
+
+    // password polls -----------------------------------------------------------
+const handlePasswordInputChange = (e) => {
+  setEnteredPassword(e.target.value);
+};
+
+const handlePasswordSubmit = async (id) => {
+  try {
+    // Check if the entered password matches the actual poll password
+    const actualPollPassword = poll.password; // Use the password from the fetched poll data
+      
+    if (enteredPassword === actualPollPassword) {
+      setCorrectPasswordEntered(true);
+    } else {
+      toast.error('Incorrect poll password. Please try again.');
+    }
+  } catch (error) {
+    console.error('Error checking poll password:', error);
+    toast.error('Error checking poll password. Please try again later.');
+  }
+};
+
+  // -------------------------------------------------------------------------------------
+
   return (
     <div className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto h-screen no-scrollbar'>
-      <div className='sticky top-0 bg-white flex items-center gap-4 font-bold text-[20px] px-4 py-2'>
+      <div className='sticky top-0 bg-white flex items-center gap-4 font-bold text-[20px] px-4 py-2 shadow-md'>
         <BsArrowLeft className='cursor-pointer' onClick={() => router.push(`/polls`)} />
         <div className='text-center items-center justify-center'> MTU Social Poll</div>
       </div>
 
       <div key={poll.id} className="bg-white shadow-md rounded-md p-4 mb-4">
         {/* Display the poll details similar to your existing code */}
-        <div className="grid grid-cols-12 gap-4">
-              <div className="col-span-2">
-                <img className="h-12 w-12 rounded-full object-cover" src={poll?.userImg} alt="" />
-              </div>
-              <div className="col-span-10">
-                <div className="block sm:flex gap-1 items-center">
-                  <div className="flex items-center">
-                    <h1 className="text-xl font-semibold text-black bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black">{poll?.username}</h1>
-                    {poll?.isQualifiedForBadge && <MdVerified className="text-blue-500 inline mt-1 ml-1" />}
-                    {poll?.isQualifiedForGoldBadge && <MdVerified className="text-yellow-500 inline mt-1 ml-1" />}
-                  </div>
-                  <div className="flex text-gray-500">
-                    <p>@{poll?.tag} &nbsp;·&nbsp;</p>
-                    <p>
-                      <Moment fromNow>{poll?.timestamp?.toDate()}</Moment>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div className='grid grid-cols-[48px,1fr] gap-4'>
         
-        <p className="mt-4 text-lg">{poll.pollQuestion}</p>
+        <div>
+          <img className='h-12 w-12 rounded-full object-cover' src={poll?.userImg} alt="" />
+        </div>
+        <div>
+        <div className='block sm:flex gap-1'>
+          <div className='flex items-center'>
+            <h1 className='font-semibold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'>{poll?.username}</h1>
+            {poll?.isQualifiedForBadge && (<MdVerified className="text-blue-500 inline mt-1 ml-1" />) } {poll?.isQualifiedForGoldBadge && (<MdVerified className="text-yellow-500 inline mt-1 ml-1" />) }
+            </div>
+            <div className='flex'>
+              <p className='text-gray-500'>@{poll?.tag} &nbsp;·&nbsp;</p>
+              <p className='text-gray-500'>
+                <Moment fromNow>{poll?.timestamp?.toDate()}</Moment>
+              </p>
+            </div>
+
+
+          </div></div>
+          </div>
+        
+        <p className="mt-4 text-md">{poll.pollQuestion}</p>
         {poll?.pollImage && (
           <img
             className='max-h-[450px] object-cover rounded-lg mt-4'
@@ -171,45 +198,94 @@ const SinglePoll = () => {
 
         {/* Display the countdown timer */}
         {new Date() >= new Date(poll.endDate) ? (
-          <div className="mt-4 text-red-600 font-semibold">
-            <p>Poll Time Up.</p>
-            <p className="mt-2 text-lg font-semibold">Winner: {winner}</p>
-            <p>Total Votes: {totalVotes}</p>
+          <div className="mt-4 text-red-600">
+            <p className="mt-2 text-sm font-bold">Poll Time Up.</p>
+            <p className="mt-2 text-sm font-semibold">Winner: {winner}</p>
+            <p className="mt-2 text-sm font-semibold">Total Votes: {totalVotes}</p>
           </div>
         ) : (
-          <div className="mt-4">
-            <p className="text-lg font-semibold">Time Remaining:</p>
-            <CountdownTimer endDate={poll.endDate} />
+          <div className="mt-4 flex items-center">
+            <p className="text-sm mr-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black">Time Remaining:</p>
+            <p className="text-sm font-semibold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black"> <CountdownTimer endDate={poll.endDate} /> </p>
           </div>
         )}
 
-        {session ? (
+        {/* Check if the poll is private */}
+        {poll.isPrivate ? (
+                correctPasswordEntered ? (
           <ul className="mt-4">
-            {pollOptionsWithPercentages.map((option, index) => (
-              <li key={index} className="relative  justify-start mb-2">
-              {/* Background color based on the percentage value */}
-              <div className={`w-1/6 h-8 ${new Date() >= new Date(poll.endDate) ? 'bg-green-400' : 'bg-blue-400'} rounded-l-lg`} style={{ width: `${option.percentage}%` }}>
-                {/* Placeholder for the background color */}
-              </div>
-              {/* Disable voting options when the poll is closed */}
-              {new Date() >= new Date(poll.endDate) ? (
-                <span className="text-lg font-semibold absolute inset-0 flex px-2">
-                  {option.text} ({option.votes} votes, {option.percentage}%)
-                </span>
-              ) : (
-                <button
-                  onClick={() => handleVote(poll.id, index)}
-                  className={`absolute inset-0 w-full h-8 rounded-r-lg text-lg font-semibold flex px-2 ${new Date() >= new Date(poll.endDate) ? 'bg-green-200 text-green-800 hover:bg-green-300' : 'bg-blue-200 text-blue-800 hover:bg-blue-300'}`}
-                >
-                  {option.text} ({option.votes} votes, {option.percentage}%)
-                </button>
-              )}
-            </li>
-            ))}
+            {poll.pollOptions.map((option, index) => {
+              const percentage = totalVotes === 0 ? 0 : ((option.votes / totalVotes) * 100).toFixed(2);
+              const isPollClosed = new Date() >= new Date(poll.endDate);
+
+              return (
+                <li key={index} className="relative  justify-start mb-2">
+                  {/* Background color based on the percentage value */}
+                  <div className={`w-1/6 h-8 ${isPollClosed ? 'bg-green-400' : 'bg-yellow-100'} rounded-l-lg`} style={{ width: `${percentage}%` }}></div>
+                  {/* Display the option text and votes */}
+                  <div className="w-5/6 flex items-center justify-between">
+                   
+                    {isPollClosed ? (
+                      <span className="text-sm font-semibold absolute inset-0 flex items-center px-2 text-gray-500"> <RiRadioButtonLine className='mr-1' /> {option.text} {option.votes} votes, {percentage}%</span>
+                    ) : (
+                      <button
+                        onClick={() => handleVote(index)}
+                        className={`absolute inset-0 w-full h-8 rounded-r-lg text-sm font-semibold flex px-2 text-yellow-800 items-center`}
+                      >
+                      <RiRadioButtonLine className='mr-1' /> {option.text} {option.votes} Votes, ({percentage}%)
+                      </button>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
           </ul>
+          ) : (
+            // Render password form if the correct password is not entered
+            <div className="bg-gray-200 mt-2 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[20px] sticky top-1 z-10 justify-between mx-3">
+              
+              <input
+                id="passwordInput"
+                type="password"
+                value={enteredPassword}
+                onChange={handlePasswordInputChange}
+                placeholder="Enter Poll Password to view and vote"
+                className="bg-transparent w-[100%] outline-none"
+              />
+              <button
+                onClick={() => handlePasswordSubmit(poll.id)}
+                className="border-l border-l-gray-400 px-1 text-md font-bold cursor-pointer"
+              >
+                View
+              </button>
+            </div>
+          )
         ) : (
-          <p className="mt-4 text-lg">Login to see and vote on polls</p>
-        )}
+           // Render poll options for public polls
+          <ul className="mt-4">
+            {poll.pollOptions.map((option, index) => (
+              <li key={index} className="relative  justify-start mb-2">
+                {/* Background color based on the percentage value */}
+                <div className={`w-1/6 h-8 ${new Date() >= new Date(poll.endDate) ? 'bg-green-400' : 'bg-yellow-200'} rounded-tl-lg rounded-bl-lg rounded-tr-lg`} style={{ width: `${option.percentage}%` }}>
+                  {/* Placeholder for the background color */}
+                </div>
+                {/* Disable voting options when the poll is closed */}
+                {new Date() >= new Date(poll.endDate) ? (
+                  <span className="text-sm font-semibold absolute inset-0 flex items-center px-2 text-gray-600">
+                    <RiRadioButtonLine className='mr-1' />  {option.text} ({option.votes} votes, {option.percentage}%)
+                  </span>
+                ) : (
+                  <button
+                    onClick={() => handleVote(poll.id, index)}
+                    className={`absolute inset-0 w-full h-8  text-sm font-semibold flex px-2 text-gray-600 items-center`}
+                  >
+                   <RiRadioButtonLine className='mr-1' /> {option.text} ({option.votes} votes, {option.percentage}%)
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>)}
+       
       </div>
     </div>
   );

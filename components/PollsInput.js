@@ -19,6 +19,9 @@ const Input = () => {
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState(null);
   const [endDate, setEndDate] = useState(null); // State to track the end date/time
+  const [privatePoll, setPrivatePoll] = useState(false); // State to track whether the poll is private
+  const [pollPassword, setPollPassword] = useState(''); // State to store the poll password
+
 
   const [pollOptions, setPollOptions] = useState([
     { text: 'Option 1', votes: 0 },
@@ -99,6 +102,16 @@ const Input = () => {
     return ((votes / totalVotes) * 100).toFixed(2);
   };
 
+  // private poll--------------------------
+  const togglePrivatePoll = () => {
+    setPrivatePoll(!privatePoll);
+  };
+
+  const handlePollPasswordChange = (e) => {
+    setPollPassword(e.target.value);
+  };
+  // --------------------------------------
+
   const sendPoll = async () => {
     if (loading) return;
   
@@ -155,6 +168,8 @@ const Input = () => {
         isQualifiedForGoldBadge: userData.isQualifiedForGoldBadge || false,
         endDate: endTimestamp.toISOString(), // Store the end date/time as a string
         isClosed: false, // Initialize isClosed as false
+        isPrivate: privatePoll, // Store whether the poll is private
+        password: privatePoll ? pollPassword : '', // Store the poll password if it's a private poll
       };
   
       const docRef = await addDoc(collection(db, 'polls'), pollData);
@@ -189,7 +204,9 @@ const Input = () => {
       setPollType('text');
       setPollImage(null);
       setPollVideo(null);
-      setEndDate(null);
+      setEndDate('');
+      setPollPassword(''); // Clear the password field
+      setPrivatePoll(false); // Clear the private poll flag
   
       toast.success('Your poll was created!');
     } catch (error) {
@@ -320,6 +337,34 @@ const Input = () => {
             >
               < AiOutlineVideoCameraAdd className='text-lg text-yellow-500' />
             </button>
+
+            {/* password */}
+            <div className="mt-4">
+        <label htmlFor="privatePollCheckbox" className="cursor-pointer">
+          Make Poll Private
+        </label>
+        <input
+          id="privatePollCheckbox"
+          type="checkbox"
+          checked={privatePoll}
+          onChange={togglePrivatePoll}
+        />
+      </div>
+
+      {privatePoll && (
+        <div className="mt-4">
+          <label htmlFor="pollPasswordField" className="block mb-2">
+            Poll Password
+          </label>
+          <input
+            id="pollPasswordField"
+            type="password"
+            value={pollPassword}
+            onChange={handlePollPasswordChange}
+            className="w-full border p-1"
+          />
+        </div>
+      )}
           </div>
 
           {!loading && (
