@@ -18,6 +18,7 @@ const Polls = () => {
   const [passwordFormVisible, setPasswordFormVisible] = useState(false);
   const [enteredPassword, setEnteredPassword] = useState('');
   const [correctPasswordEntered, setCorrectPasswordEntered] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchPolls = async () => {
@@ -161,14 +162,53 @@ const handlePasswordSubmit = async (pollId) => {
 
   // -------------------------------------------------------------------------------------
 
+
+
+  const handleSearchInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredPolls = polls.filter((poll) => {
+    const searchText = searchQuery.toLowerCase();
+    const pollId = poll.id.toLowerCase();
+    const pollQuestion = poll.pollQuestion.toLowerCase();
+    const createdBy = poll.createdBy.toLowerCase();
+
+    return (
+      pollId.includes(searchText) ||
+      pollQuestion.includes(searchText) ||
+      createdBy.includes(searchText)
+    );
+  });
+
   return (
     <div className="mt-4 border-t border-gray-300 px-4 pt-6 pb-4 cursor-pointer overflow-y-auto">
-      <h1 className="text-3xl font-semibold text-gray-800">Display Polls</h1>
+      
+
+       {/* Add the search input */}
+       <div className="bg-gray-200 mt-2 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[18px] sticky top-1 z-10 justify-between mx-3">
+        <input
+          type="text"
+          placeholder="Search for a Poll by ID, question, or creator name"
+          value={searchQuery}
+          onChange={handleSearchInputChange}
+          className="bg-transparent w-[100%] outline-none"
+        />
+      </div>
+
       {loading ? (
       <SkeletonLoader /> // Display the SkeletonLoader while loading
     ) : (<>
+    <><>
+    {searchQuery === '' ? (
+            <p className='my-4'>You can search for a Poll by typing its ID, question, or Poll creator name.</p>
+          ) :
+          filteredPolls.length === 0 ? (
+            <p className='my-4'>No poll is related to your search.</p>
+          ) : (
       <ul className="mt-4">
-        {polls.map((poll) => (
+         {filteredPolls.map((poll) => (<>
+        
           <li key={poll.id} className="bg-white shadow-sm border-t border-gray-300 rounded-md p-4 mb-4">
             <div className="grid grid-cols-[48px,1fr] gap-4">
               
@@ -294,11 +334,14 @@ const handlePasswordSubmit = async (pollId) => {
             
 
            
-          </li>
+          </li></>
         ))}
-      </ul>
+      </ul>)}
+        </>
+        </>
       </>
       )}
+      
     </div>
   );
 };

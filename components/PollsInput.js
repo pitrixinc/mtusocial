@@ -10,6 +10,7 @@ import { BsImage, BsEmojiSmile } from "react-icons/bs"
 import { AiOutlineVideoCameraAdd, AiOutlineClose } from "react-icons/ai"
 import {BiAddToQueue, BiText} from 'react-icons/bi'
 import {MdOutlineRemoveCircleOutline} from 'react-icons/md'
+import {RiLockPasswordLine} from 'react-icons/ri'
 
 const Input = () => {
   const { data: session } = useSession();
@@ -220,16 +221,17 @@ const Input = () => {
 
   return (
     <div className={`mt-4 px-4 ${loading && 'opacity-60'}`}>
-      <div className="grid grid-cols-[48px,1fr] gap-4">
+      <div className="w-full">
+        {/* 
         <div>
           <img className="h-12 w-12 rounded-full object-contain" src={session?.user?.image} alt="" />
         </div>
-
+         */}
         <div className="w-[90%]">
           <textarea
             className="w-[100%] bg-transparent outline-none text-[20px] no-scrollbar"
             rows="2"
-            placeholder="What's Happening?"
+            placeholder="Write a poll..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
@@ -288,37 +290,60 @@ const Input = () => {
 
           {/* Poll options */}
           {pollOptions.map((option, index) => (
-            <div key={index} className="flex items-center gap-2">
+            <div key={index} className="bg-gray-200 mt-2 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[15px] w-full justify-between mx-3">
               <input
                 type="text"
-                className="border p-1"
+                className="bg-transparent w-[90%] outline-none"
                 placeholder={`Option ${index + 1}`}
                 value={option.text}
                 onChange={(e) => handleOptionChange(index, e.target.value)}
               />
-              <button onClick={() => removePollOption(index)}>
-                <MdOutlineRemoveCircleOutline className='text-lg text-red-500' />
+              <button onClick={() => removePollOption(index)} className='border-l border-l-gray-400 px-1'>
+                <MdOutlineRemoveCircleOutline className='font-bold text-xl text-red-500' />
               </button>
             </div>
           ))}
-
-          <button onClick={addPollOption}><BiAddToQueue className='text-lg text-yellow-500'/></button>
+      
+          <button onClick={addPollOption}><BiAddToQueue className='text-xl mx-3 text-yellow-500 text-center justify-center'/></button>
+          
 
            {/* Input field for setting the end date/time */}
-        <div>
-          <label htmlFor="endDateInput" className="block mb-2">
+           <label htmlFor="endDateInput" className="block mb-2 mx-3 font-semibold text-[17px]">
             End Date/Time
           </label>
+        <div  className="bg-gray-200 mt-2 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[15px] w-full mx-3">
+          
           <input
             id="endDateInput"
             type="datetime-local"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="w-full border p-1"
+            className="bg-transparent w-[100%] outline-none"
           />
         </div>
 
-          <div className="flex gap-4 text-[20px] text-yellow-500">
+        
+        {privatePoll && (
+          <>
+        <label htmlFor="endDateInput" className="block mb-2 mx-3 font-semibold text-[17px]">
+        Poll Password
+      </label>
+        <div className="bg-gray-200 mt-2 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[15px] w-full mx-3">
+          
+          <input
+            id="pollPasswordField"
+            type="password"
+            value={pollPassword}
+            onChange={handlePollPasswordChange}
+            placeholder='Poll Password'
+            className="bg-transparent w-[100%] outline-none"
+          />
+        </div>
+        </>
+      )}
+
+
+          <div className="mt-2 flex gap-4 text-[20px] text-yellow-500 mx-3">
             <button
               onClick={() => setPollType('text')}
               className={`cursor-pointer ${pollType === 'text' && 'text-yellow-700'}`}
@@ -338,10 +363,14 @@ const Input = () => {
               < AiOutlineVideoCameraAdd className='text-lg text-yellow-500' />
             </button>
 
+            <button onClick={() => setShowEmojis(!showEmojis)}  className={`cursor-pointer`}>
+                  <BsEmojiSmile className='text-lg text-yellow-500'/>
+                </button>
+
             {/* password */}
-            <div className="mt-4">
+            <div className=" flex items-center">
         <label htmlFor="privatePollCheckbox" className="cursor-pointer">
-          Make Poll Private
+          <RiLockPasswordLine className='text-lg text-yellow-500' />
         </label>
         <input
           id="privatePollCheckbox"
@@ -350,29 +379,12 @@ const Input = () => {
           onChange={togglePrivatePoll}
         />
       </div>
-
-      {privatePoll && (
-        <div className="mt-4">
-          <label htmlFor="pollPasswordField" className="block mb-2">
-            Poll Password
-          </label>
-          <input
-            id="pollPasswordField"
-            type="password"
-            value={pollPassword}
-            onChange={handlePollPasswordChange}
-            className="w-full border p-1"
-          />
-        </div>
-      )}
           </div>
 
           {!loading && (
             <div className="flex justify-between items-center">
               <div className="flex gap-4 text-[20px] text-yellow-500">
-                <button onClick={() => setShowEmojis(!showEmojis)}>
-                  <BsEmojiSmile className='text-lg text-yellow-500'/>
-                </button>
+                
               </div>
 
               <button
