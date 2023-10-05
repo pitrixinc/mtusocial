@@ -308,10 +308,10 @@ const Input = () => {
           
 
            {/* Input field for setting the end date/time */}
-           <label htmlFor="endDateInput" className="block mb-2 mx-3 font-semibold text-[17px]">
+           <label htmlFor="endDateInput" className="block mb-1 mt-1 mx-3 font-semibold text-[17px]">
             End Date/Time
           </label>
-        <div  className="bg-gray-200 mt-2 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[15px] w-full mx-3">
+        <div  className="bg-gray-200 mt-1 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[15px] w-full mx-3">
           
           <input
             id="endDateInput"
@@ -325,10 +325,10 @@ const Input = () => {
         
         {privatePoll && (
           <>
-        <label htmlFor="endDateInput" className="block mb-2 mx-3 font-semibold text-[17px]">
+        <label htmlFor="endDateInput" className="block mb-1 mt-1 mx-3 font-semibold text-[17px]">
         Poll Password
       </label>
-        <div className="bg-gray-200 mt-2 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[15px] w-full mx-3">
+        <div className="bg-gray-200 mt-1 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[15px] w-full mx-3">
           
           <input
             id="pollPasswordField"
@@ -343,7 +343,7 @@ const Input = () => {
       )}
 
 
-          <div className="mt-2 flex gap-4 text-[20px] text-yellow-500 mx-3">
+          <div className="mt-2 mb-2 flex gap-4 text-[20px] text-yellow-500 mx-3">
             <button
               onClick={() => setPollType('text')}
               className={`cursor-pointer ${pollType === 'text' && 'text-yellow-700'}`}
