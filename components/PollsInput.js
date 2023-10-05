@@ -51,6 +51,7 @@ const Input = () => {
           }
         } catch (error) {
           console.error('Error fetching user data:', error);
+          toast.error('No Internet Connection.');
           toast.error('Error fetching user data. Please try again later.');
         }
       };
