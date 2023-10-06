@@ -2,9 +2,9 @@ import { useRouter } from 'next/router';
 import PollsInput from '../components/PollsInput'
 import PollsFeed from '../components/PollsFeed'
 import Sidebar from '../components/Sidebar';
-import ProfileData from '../components/ProfileData';
+import VerifiedUsersList from '../components/VerifiedUsersList'
 
-const ConversationList = () => {
+const polls = () => {
   const router = useRouter();
   const { id } = router.query; // Get the user ID from the URL
 
@@ -13,10 +13,10 @@ const ConversationList = () => {
         <Sidebar />
         <div className='flex gap-6'>
         <PollsFeed />
-        <ProfileData />
+        <VerifiedUsersList />
         </div>
     </div>
   );
 };
 
-export default ConversationList;
+export default polls;

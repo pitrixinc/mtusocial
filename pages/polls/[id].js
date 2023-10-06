@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import SinglePoll from '../../components/SinglePoll';
 import Sidebar from '../../components/Sidebar';
-import ProfileData from '../../components/ProfileData';
+import VerifiedUsersList from '../../components/VerifiedUsersList';
 
 const ConversationList = () => {
   const router = useRouter();
@@ -12,7 +12,7 @@ const ConversationList = () => {
         <Sidebar />
         <div className='flex gap-6'>
         <SinglePoll />
-        <ProfileData />
+        <VerifiedUsersList />
         </div>
     </div>
   );

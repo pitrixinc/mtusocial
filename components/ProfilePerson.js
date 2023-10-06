@@ -434,7 +434,7 @@ console.log('UID from URL:', id); */}
       <img class="-mt-[4.5rem] h-32 w-32 cursor-pointer rounded-full ring-4 ring-gray-100" src={updatedProfile?.profileImage || 'https://media.idownloadblog.com/wp-content/uploads/2017/03/Twitter-new-2017-avatar-001.png'} />
       {isCurrentUserVerified ? (<div>
        {/* Add a "Message" button/link */}
-       {session && session.user.uid !== id && (
+       {session && session.user.uid !== id && isFollowing && (
           <button className="bg-yellow-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full mt-2 mr-1" onClick={() => router.push(`/conversation/${id}`)}>
            <BiMessageSquareAdd className='text-xl' /> 
           </button>
@@ -476,8 +476,8 @@ console.log('UID from URL:', id); */}
       <span>{updatedProfile?.bio || 'No Bio'}</span>
     </div>
 
-  {/*}  <!-- Location, CTA and join date --> */}
-    <div class="mt-3 flex items-center space-x-4 px-4">
+  {/*}  <!-- Location, CTA and join date for large screens --> */}
+    <div class="mt-3 hidden md:flex lg:flex items-center space-x-4 px-4 ">
       <div class="flex items-center space-x-1">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 dark:text-gray-400">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -499,6 +499,33 @@ console.log('UID from URL:', id); */}
         <span class="text-gray-700 dark:text-gray-400">{ updatedProfile?.signupDate || ''}</span>
       </div>
     </div>
+
+    {/*}  <!-- Location, CTA and join date for smaller devices--> */}
+    <div className='md:hidden lg:hidden xl:hidden'>
+    <div class="mt-3 flex items-center justify-between   space-x-4 px-4 ">
+      <div class="flex items-center space-x-1">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 dark:text-gray-400">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+        </svg>
+        <span class="text-gray-500 dark:text-gray-400">{updatedProfile?.location || 'No Location'}{/* &nbsp;&nbsp;→ */} </span>
+      </div>
+      <div class="flex items-center space-x-1">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 dark:text-gray-400">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+        </svg>
+
+        <span class="text-gray-700 dark:text-gray-400">{ updatedProfile?.signupDate || ''}</span>
+      </div>
+      </div>
+      <div class="flex items-center space-x-4 px-4 ">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 dark:text-gray-400">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+        </svg>
+        <a class="text-sky-500 hover:underline" href={updatedProfile?.website || "#"} target="_blank">{updatedProfile?.website || 'No Website'}</a>
+      </div>
+      </div>
+    
 
   {/*  <!-- Following/follower count --> */}
     <div class="mt-3 flex items-center space-x-4 px-4">

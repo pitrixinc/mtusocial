@@ -45,6 +45,7 @@ const Input = () => {
           if (userDocSnapshot.exists()) {
             const userDocData = userDocSnapshot.data();
             setUserData(userDocData);
+            toast.success('User data exist')
           } else {
             // User document does not exist
             toast.error('User data not found.');

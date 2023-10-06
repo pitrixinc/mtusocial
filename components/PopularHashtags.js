@@ -62,9 +62,9 @@ const PopularHashtags = () => {
   return (
     <div className="popular-hashtags-container bg-gray-100 p-2 rounded-lg shadow-sm">
       {loading ? (
-        <p className="text-gray-500">Loading...</p>
+        <p className="bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center">Loading...</p>
       ) : popularHashtags.length === 0 ? (
-        <p className="text-gray-500">No hashtags found.</p>
+        <p className="bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center">No hashtags found.</p>
       ) : (
         <ul>
           {popularHashtags.map((hashtag, index) => (

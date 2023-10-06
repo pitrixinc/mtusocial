@@ -200,7 +200,7 @@ const handlePasswordSubmit = async (id) => {
         {new Date() >= new Date(poll.endDate) ? (
           <div className="mt-4 text-red-600">
             <p className="mt-2 text-sm font-bold">Poll Time Up.</p>
-            <p className="mt-2 text-sm font-semibold">Winner: {winner}</p>
+            <p className="mt-2 text-sm font-semibold capitalize">Winner: {winner}</p>
             <p className="mt-2 text-sm font-semibold">Total Votes: {totalVotes}</p>
           </div>
         ) : (
@@ -263,27 +263,29 @@ const handlePasswordSubmit = async (id) => {
         ) : (
            // Render poll options for public polls
           <ul className="mt-4">
-            {poll.pollOptions.map((option, index) => (
+            {poll.pollOptions.map((option, index) => {
+              const percentage = totalVotes === 0 ? 0 : ((option.votes / totalVotes) * 100).toFixed(2);
+              return (
               <li key={index} className="relative  justify-start mb-2">
                 {/* Background color based on the percentage value */}
-                <div className={`w-1/6 h-8 ${new Date() >= new Date(poll.endDate) ? 'bg-green-400' : 'bg-yellow-200'} rounded-tl-lg rounded-bl-lg rounded-tr-lg`} style={{ width: `${option.percentage}%` }}>
+                <div className={`w-1/6 h-8 ${new Date() >= new Date(poll.endDate) ? 'bg-green-400' : 'bg-yellow-200'} rounded-tl-lg rounded-bl-lg rounded-tr-lg`} style={{ width: `${percentage}%` }}>
                   {/* Placeholder for the background color */}
                 </div>
                 {/* Disable voting options when the poll is closed */}
                 {new Date() >= new Date(poll.endDate) ? (
-                  <span className="text-sm font-semibold absolute inset-0 flex items-center px-2 text-gray-600">
-                    <RiRadioButtonLine className='mr-1' />  {option.text} ({option.votes} votes, {option.percentage}%)
+                  <span className="text-sm font-semibold absolute inset-0 flex items-center px-2 text-gray-600 cursor-not-allowed">
+                    <RiRadioButtonLine className='mr-1' />  {option.text} ({option.votes} votes, {percentage}%)
                   </span>
                 ) : (
                   <button
                     onClick={() => handleVote(poll.id, index)}
                     className={`absolute inset-0 w-full h-8  text-sm font-semibold flex px-2 text-gray-600 items-center`}
                   >
-                   <RiRadioButtonLine className='mr-1' /> {option.text} ({option.votes} votes, {option.percentage}%)
+                   <RiRadioButtonLine className='mr-1' /> {option.text} ({option.votes} votes, {percentage}%)
                   </button>
                 )}
               </li>
-            ))}
+            )})}
           </ul>)}
        
       </div>

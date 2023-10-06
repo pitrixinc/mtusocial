@@ -54,7 +54,7 @@ export default function VerifiedUsers() {
   return (
     <div>
       {loading ? (
-        <p>Loading...</p>
+        <p className='bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center'>Loading...</p>
       ) : usersWithBadge.length > 0 ? (
         <div className="w-[300px]">
           {usersWithBadge.map((user) => (

@@ -249,7 +249,7 @@ const handlePasswordSubmit = async (pollId) => {
             {new Date() >= new Date(poll.endDate) ? (
               <div className="mt-4 text-red-600" onClick={() => router.push(`/polls/${poll?.id}`)}>
                 <p className="mt-2 text-sm font-bold">Poll Time Up.</p>
-                <p className="mt-2 text-sm font-semibold"> Winner: {poll.totalVotes === 0 ? "No Votes" : poll.pollOptions.reduce((prev, current) => (current.votes > prev.votes ? current : prev)).text}</p>
+                <p className="mt-2 text-sm font-semibold capitalize"> Winner: {poll.totalVotes === 0 ? "No Votes" : poll.pollOptions.reduce((prev, current) => (current.votes > prev.votes ? current : prev)).text}</p>
                 <p className="mt-2 text-sm font-semibold">Total Votes: {poll.totalVotes}</p>
               </div>
             ) : (
