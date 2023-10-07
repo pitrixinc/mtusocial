@@ -4,7 +4,7 @@ import Sidebar from '../../components/Sidebar'
 import ProfilePerson from '../../components/ProfilePerson'
 import Login from '../../components/Login'
 import { AppContext } from '../../contexts/AppContext'
-import Trending from '../../components/Trending'
+import UserProfileDetails from '../../components/UserProfileDetails'
 
 const Profile = () => {
     
@@ -13,7 +13,7 @@ const Profile = () => {
         <Sidebar />
         <div className='flex gap-6'>
         <ProfilePerson />
-        <Trending />
+        <UserProfileDetails />
         </div>
     </div>
   )

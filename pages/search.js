@@ -1,7 +1,7 @@
 import React from 'react'
 import TheSearch from '../components/TheSearch';
 import Sidebar from '../components/Sidebar';
-import ProfileData from '../components/ProfileData';
+import VerifiedUsersLists from '../components/VerifiedUsersList';
 
 const search = () => {
 
@@ -10,7 +10,7 @@ const search = () => {
         <Sidebar />
         <div className='flex gap-6'>
         <TheSearch />
-        <ProfileData />
+        <VerifiedUsersLists />
         </div>
     </div>
   );

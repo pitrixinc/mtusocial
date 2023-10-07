@@ -12,6 +12,8 @@ import { useSession, getSession  } from "next-auth/react"
 import { AppContext } from '../contexts/AppContext'
 import Post from '../components/Post';
 import UpdateProfileModal from './UpdateProfileModal';
+import { MdClose } from 'react-icons/md'
+import Link from 'next/link'
 
 const ProfilePerson = ({ post, allPosts }) => {
 
@@ -223,11 +225,13 @@ console.log('UID from URL:', id); */}
     try {
       // Get the updated name from the updatedProfile state
       const updatedName = updatedProfile ? updatedProfile.name : session.user.name;
+      const updatedImage = updatedProfile ? updatedProfile.profileImage : session.user.image;
   
       // Add the follower to the user being followed's followers subcollection
       await setDoc(doc(db, 'users', id, 'followers', session.user.uid), {
         id: session.user.uid,
         name: updatedName, // Use the updated name
+        profileImage: updatedImage,
         dateFollowed: new Date(),
       });
   
@@ -241,6 +245,7 @@ console.log('UID from URL:', id); */}
         await setDoc(doc(db, 'users', session.user.uid, 'following', id), {
           id: id, // Use the id of UPS PI
           name: userBeingFollowedData.name, // Use UPS PI's name
+          profileImage: userBeingFollowedData.profileImage,
           dateFollowed: new Date(),
         });
   
@@ -250,6 +255,7 @@ console.log('UID from URL:', id); */}
         await setDoc(doc(db, 'users', id, 'followers', session.user.uid), {
           id: session.user.uid,
           name: session.user.name, // Use Queen Cynthia's name
+          profileImage: session.user.image,
           dateFollowed: new Date(),
         });
 
@@ -540,33 +546,60 @@ console.log('UID from URL:', id); */}
     </div>
 
     {showFollowingModal && (
-        <div className="fixed top-0 left-0 z-20 h-screen w-screen bg-[#242d34bb] overflow-y-auto">
-          <div className="bg-white w-[350px] md:w-[650px] text-black absolute left-[50%] translate-x-[-50%] mt-[40px] p-4 rounded-[20px]">
-            <h2>List of Following</h2>
+      <div className={`fixed top-0 left-0 z-20 h-screen w-screen bg-[#242d34bb] overflow-y-auto shadow-md `}>
+      <div className='bg-white w-[350px] md:w-[650px] text-black absolute left-[50%] translate-x-[-50%] mt-[40px] p-4 rounded-[20px]     overflow-y-auto no-scrollbar h-[380px] md:h-[450px]'>
+        
+      <div className='flex justify-end'>
+        <MdClose className='text-[22px] cursor-pointer ' onClick={closeFollowingModal} />
+      </div>
+
+      <h1 className='font-bold text-xl mb-1'>List of Following</h1>
             <ul>
               {followingList.map((user, index) => (
                 <li key={index}>
-                  {user.name} - {user.dateFollowed.toDate().toLocaleDateString()}
+                  <Link href={`/users/${user.id}`}>
+                  <div className='grid grid-cols-[48px,1fr] gap-4 mb-2 border-b border-b-gray-300 p-2 cursor-pointer'>
+
+                  <div>
+                    <img className='h-12 w-12 rounded-full object-cover' src={user?.profileImage} alt="" />
+                  </div>
+                  <div  className='mt-3'>
+                    <span className='font-semibold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'>{user.name}</span> - <span className='text-gray-500'><Moment fromNow>{user.dateFollowed.toDate()}</Moment></span>
+                  </div>
+                  </div>
+                  </Link>
                 </li>
               ))}
             </ul>
-            <button onClick={closeFollowingModal}>Close</button>
           </div>
         </div>
       )}
 
       {showFollowersModal && (
-        <div className="fixed top-0 left-0 z-20 h-screen w-screen bg-[#242d34bb] overflow-y-auto">
-        <div className="bg-white w-[350px] md:w-[650px] text-black absolute left-[50%] translate-x-[-50%] mt-[40px] p-4 rounded-[20px]">
-            <h2>List of Followers</h2>
+        <div className={`fixed top-0 left-0 z-20 h-screen w-screen bg-[#242d34bb] overflow-y-auto shadow-md `}>
+        <div className='bg-white w-[350px] md:w-[650px] text-black absolute left-[50%] translate-x-[-50%] mt-[40px] p-4 rounded-[20px]     overflow-y-auto no-scrollbar h-[380px] md:h-[450px]'>
+          
+        <div className='flex justify-end'>
+        <MdClose className='text-[22px] cursor-pointer ' onClick={closeFollowersModal} />
+        </div>
+
+          <h1 className='font-bold text-xl mb-1'>List of Followers</h1>
             <ul>
               {followersList.map((user, index) => (
                 <li key={index}>
-                  {user.name} - {user.dateFollowed.toDate().toLocaleDateString()}
+                  <div className='grid grid-cols-[48px,1fr] gap-4 mb-2 border-b border-b-gray-300 p-2 cursor-pointer' onClick={() => router.push(`/users/${user.id}`)}>
+
+                  <div>
+                    <img className='h-12 w-12 rounded-full object-cover' src={user?.profileImage} alt="" />
+                  </div>
+                  <div  className='mt-3'>
+                    <span className='font-semibold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'>{user.name}</span> - <span className='text-gray-500'><Moment fromNow>{user.dateFollowed.toDate()}</Moment></span>
+                  </div>
+                  </div>
                 </li>
               ))}
             </ul>
-            <button onClick={closeFollowersModal}>Close</button>
+            
           </div>
         </div>
       )}

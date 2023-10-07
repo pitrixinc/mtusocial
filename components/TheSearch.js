@@ -5,6 +5,7 @@ import { db } from '../firebase';
 import Link from 'next/link';
 import Post from './Post'; // Import the Post component
 import { useSession } from 'next-auth/react';
+import PopularHashtags from './PopularHashtags';
 
 const ProfileData = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -110,7 +111,7 @@ const ProfileData = () => {
     <div className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto h-screen no-scrollbar'>
      {isVerified ? ( <>
       <div className='bg-gray-200 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[20px] sticky top-1 z-10  mx-4'>
-        <FiSearch />
+        <FiSearch className='text-gray-400' />
         <input
           className='bg-transparent w-[100%] outline-none'
           type='text'
@@ -255,6 +256,10 @@ const ProfileData = () => {
             )}
           </>
         )}
+      </div>
+      <div className='bg-gray-100 rounded-[20px] text-[#16181C] mt-4 px-4 py-4 block md:hidden lg:hidden'>
+          <h1 className='text-[#16181C] font-bold text-[20px]'>Popular Hashtags</h1>
+          <PopularHashtags />
       </div>
       </>
       ) : (
