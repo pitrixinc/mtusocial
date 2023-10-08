@@ -33,9 +33,15 @@ const verify = () => {
     }, [session]);
 
   return (
+    <>
+    {isVerified ? (
+      <p> You are verified </p>
+      ) : (
     <div className='relative max-w-[100%] mx-auto'>
         <Verify />
     </div>
+    )}
+    </>
   );
 };
 
