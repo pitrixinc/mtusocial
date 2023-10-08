@@ -36,7 +36,7 @@ const verify = () => {
     <>
     {isVerified ? (
       <div className='flex justify-center items-center min-h-screen'>
-      <p className='bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center '> You are already verified </p>
+      <p className='bg-clip-text text-transparent font-bold text-[20px] bg-gradient-to-r from-yellow-500 to-black text-center '> You are already verified </p>
       </div>
       ) : (
     <div className='relative max-w-[100%] mx-auto'>
