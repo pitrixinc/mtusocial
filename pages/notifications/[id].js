@@ -1,7 +1,7 @@
 import React from 'react'
 import Sidebar from '../../components/Sidebar'
 import Notifications from '../../components/Notifications'
-import ProfileData from '../../components/ProfileData'
+import VerifiedUsersList from '../../components/VerifiedUsersList'
 
 const NotificationPage = () => {
   return (
@@ -9,7 +9,7 @@ const NotificationPage = () => {
         <Sidebar />
         <div className='flex gap-6'>
         <Notifications/>
-        <ProfileData />
+        <VerifiedUsersList />
         </div>
     </div>
   )
