@@ -10,7 +10,7 @@ const Verify = () => {
   return (
     <div className='grid grid-rows-2 md:grid-cols-2 lg:grid-cols-2 h-screen'>
 
-    <div className='bg-gradient-to-r from-yellow-500 to-black h-screen grid place-items-center '>
+    <div className='bg-gradient-to-r from-yellow-500 to-black h-screen hidden md:grid lg:grid place-items-center '>
           <div className='hidden md:block lg:block'>
             <Image className='rounded-[1px]' src={Logo} height="220px" width="500px" />
           </div>
