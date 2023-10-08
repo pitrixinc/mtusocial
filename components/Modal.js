@@ -62,12 +62,17 @@ const Modal = () => {
      
 
     return (
-        <div className='fixed to-0 left-0 z-[20] h-screen w-screen bg-[#242d34bb] overflow-y-auto no-scrollbar' onClick={closeModal}>
+        <div className={`fixed top-0 left-0 z-20 h-screen w-screen bg-[#242d34bb] overflow-y-auto shadow-md `} onClick={closeModal}>
 
-            <div className='bg-white w-[350px] md:w-[650px] text-black absolute left-[50%] translate-x-[-50%] mt-[40px] p-4 rounded-[20px]'
+        <div className='bg-white w-[350px] md:w-[650px] text-black absolute left-[50%] translate-x-[-50%] mt-[40px] p-4 rounded-[20px]     overflow-y-auto no-scrollbar h-[380px] md:h-[450px]'
                 onClick={(e) => e.stopPropagation()}>
-
-                <MdClose className='text-[22px] cursor-pointer' onClick={closeModal} />
+ 
+               <div className='flex justify-end'>
+                    <MdClose 
+                        className='text-[22px] cursor-pointer ' 
+                        onClick={closeModal}
+                    />
+                </div>
 
                 <div className='relative mt-8 grid grid-cols-[48px,1fr] gap-4'>
 
@@ -112,7 +117,7 @@ const Modal = () => {
                         <textarea
                             className='w-[100%] bg-transparent outline-none text-[18px]'
                             rows="4"
-                            placeholder="Tweet your reply"
+                            placeholder="Write your reply"
                             value={input}
                             onChange={(e) => setInput(e.target.value)} />
 
@@ -134,7 +139,7 @@ const Modal = () => {
                                 className="bg-yellow-500 text-white rounded-full px-4 py-1.5 font-bold shadow-md hover:bg-yellow-400 disabled:hover:bg-yellow-200 disabled:opacity-50 disabled:cursor-default"
                                 disabled={!input.trim()}
                                 onClick={sendComment}>
-                                Tweet
+                                Comment
                             </button>
                         </div>
 

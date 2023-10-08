@@ -445,12 +445,15 @@ const formatPostText = (text) => {
             <AiOutlineShareAlt className='hoverEffect w-7 h-7 p-1' />
           </div>
           {isRepostModalOpen && (
-           <div className='fixed top-0 left-0 z-20 h-screen w-screen bg-[#242d34bb] overflow-y-auto no-scrollbar'>
-           <div className='bg-white w-[350px] md:w-[650px] text-black absolute left-[50%] translate-x-[-50%] mt-[40px] p-4 rounded-[20px]'>
-             <MdClose
-               className='text-[22px] cursor-pointer'
-               onClick={closeRepostModal}
-             />
+           <div className={`fixed top-0 left-0 z-20 h-screen w-screen bg-[#242d34bb] overflow-y-auto shadow-md `}>
+           <div className='bg-white w-[350px] md:w-[650px] text-black absolute left-[50%] translate-x-[-50%] mt-[40px] p-4 rounded-[20px]     overflow-y-auto no-scrollbar h-[380px] md:h-[450px]'>
+            
+           <div className='flex justify-end'>
+            <MdClose 
+                className='text-[22px] cursor-pointer ' 
+                onClick={closeRepostModal}
+            />
+          </div>
      
              <div className='relative mt-8 grid grid-cols-[48px,1fr] gap-4'>
                <div>
@@ -484,7 +487,7 @@ const formatPostText = (text) => {
                  )}
      
                  <p className='mt-4 text-gray-500'>
-                   Replying to: <span className='text-yellow-500'>@{post?.tag}</span>
+                   Reposting: <span className='text-yellow-500'>@{post?.tag}</span> post
                  </p>
                </div>
      

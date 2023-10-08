@@ -8,14 +8,35 @@ import { BsBell, BsBookmark, BsThreeDots} from "react-icons/bs"
 import { HiOutlineClipboardList, HiOutlineDotsCircleHorizontal, HiOutlineUserGroup } from "react-icons/hi"
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
-import { collection, getDocs, updateDoc, doc } from 'firebase/firestore'; // Import Firestore functions here
+import { collection, getDocs, updateDoc, doc, getDoc } from 'firebase/firestore'; // Import Firestore functions here
 import { db } from '../firebase';
 import mtuLogo from "../assets/images/mtulogo.jpg";
+
 
 const Sidebar = () => {
     const router = useRouter()
     const {data: session} = useSession()
     const [unreadNotifications, setUnreadNotifications] = useState(0); // Count of unread notifications
+    const [isVerified, setIsVerified] = useState(false); // Add state for user verification
+
+
+    useEffect(() => {
+      const fetchUserVerification = async () => {
+        if (session) {
+          // Check if the user is verified (you might need to adjust the condition)
+          const userDoc = doc(db, 'users', session.user.uid);
+          const userSnapshot = await getDoc(userDoc);
+          const userData = userSnapshot.data();
+          
+          if (userData && userData.isVerified) {
+            setIsVerified(true);
+          }
+        }
+      };
+  
+      fetchUserVerification();
+    }, [session]);
+
 
     useEffect(() => {
         // Fetch the count of unread notifications and update the state
@@ -92,9 +113,16 @@ const Sidebar = () => {
 
             </div>
 
+           {isVerified ? (
             <button className="hidden xl:inline ml-auto bg-yellow-500 text-white rounded-full w-52 h-[52px] text-lg font-bold hover:bg-[#1a8cd8]">
                 Write
             </button>
+            ) : (
+              <button className="hidden xl:inline ml-auto bg-yellow-500 text-white rounded-full w-52 h-[52px] text-lg font-bold hover:bg-[#1a8cd8]" onClick={() => router.push('/verify')}>
+                Verify
+            </button>
+            )}
+
             <div
                 className="text-[#d9d9d9] flex items-center justify-center mt-auto hoverEffect xl:ml-auto xl:-mr-5 px-4 py-2"
                 onClick={signOut}

@@ -256,10 +256,10 @@ const ProfileData = () => {
             )}
           </>
         )}
-      </div>
-      <div className='bg-gray-100 rounded-[20px] text-[#16181C] mt-4 px-4 py-4 block md:hidden lg:hidden'>
+        <div className='bg-gray-100 rounded-[20px] text-[#16181C] mt-4 px-4 py-4 block md:hidden lg:hidden'>
           <h1 className='text-[#16181C] font-bold text-[20px]'>Popular Hashtags</h1>
           <PopularHashtags />
+      </div>
       </div>
       </>
       ) : (

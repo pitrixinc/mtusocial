@@ -82,12 +82,16 @@ const RepostModal = ({ post, onClose, id}) => {
   };
 
   return (
-    <div className='fixed top-0 left-0 z-20 h-screen w-screen bg-[#242d34bb] overflow-y-auto no-scrollbar'>
-      <div className='bg-white w-[350px] md:w-[650px] text-black absolute left-[50%] translate-x-[-50%] mt-[40px] p-4 rounded-[20px]'>
-        <MdClose
-          className='text-[22px] cursor-pointer'
-          onClick={() => onClose()}
-        />
+    <div className={`fixed top-0 left-0 z-20 h-screen w-screen bg-[#242d34bb] overflow-y-auto shadow-md `}>
+      <div className='bg-white w-[350px] md:w-[650px] text-black absolute left-[50%] translate-x-[-50%] mt-[40px] p-4 rounded-[20px]     overflow-y-auto no-scrollbar h-[380px] md:h-[450px]'>
+        
+      <div className='flex justify-end'>
+        <MdClose 
+            className='text-[22px] cursor-pointer ' 
+            onClick={() => onClose()}
+         />
+      </div>
+        
 
         <div className='relative mt-8 grid grid-cols-[48px,1fr] gap-4'>
           <div>
