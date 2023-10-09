@@ -117,11 +117,15 @@ const Feed = () => {
   }, [session, activeTab, showMore]);
 
   const scrollToTop = () => {
-    if (postContainerRef.current) {
-      postContainerRef.current.scrollTop = 0;
+    if (typeof window !== 'undefined') {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth', // Add smooth scrolling behavior
+      });
     }
     setIsNewPostsAvailable(false);
   };
+
 
   const showMorePosts = () => {
     setShowMore((prevShowMore) => prevShowMore + 20);
