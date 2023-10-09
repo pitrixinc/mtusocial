@@ -192,7 +192,7 @@ const Feed = () => {
               ))
             )}
             {posts.length > showMore && (
-              <div className='text-center mt-3 mb-[15px]'>
+              <div className='text-center mt-3 mb-[30px]'>
                 <button className='text-yellow-500' onClick={showMorePosts}>
                   Show Another 20 Posts
                 </button>
