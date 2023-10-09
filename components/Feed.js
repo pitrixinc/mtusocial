@@ -9,6 +9,7 @@ import mtuLogo from '../assets/images/mtulogo.jpg';
 import { HiOutlineSparkles } from 'react-icons/hi';
 import { toast } from 'react-toastify';
 import { BsNewspaper } from 'react-icons/bs';
+import { useRouter } from 'next/router'
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
@@ -21,6 +22,7 @@ const Feed = () => {
   const [isNewPostsAvailable, setIsNewPostsAvailable] = useState(false);
   const postContainerRef = useRef(null);
   const latestPostTimestampRef = useRef(null);
+  const router = useRouter()
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -192,7 +194,7 @@ const Feed = () => {
               ))
             )}
             {posts.length > showMore && (
-              <div className='text-center mt-3 mb-[30px]'>
+              <div className='text-center mt-3 mb-[60px]'>
                 <button className='text-yellow-500' onClick={showMorePosts}>
                   Show Another 20 Posts
                 </button>
@@ -204,7 +206,7 @@ const Feed = () => {
             <p className='bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center mb-4'>
               Please verify your account to view posts from people and also post as well.
             </p>
-            <button className='bg-yellow-500 p-2 rounded-[15px] text-white'>Verify</button>
+            <button className='bg-yellow-500 p-2 rounded-[15px] text-white' onClick={() => router.push('/verify')}>Verify</button>
           </div>
         )}
       </div>
