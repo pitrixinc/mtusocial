@@ -118,12 +118,10 @@ const Feed = () => {
     fetchPosts();
   }, [session, activeTab, showMore]);
 
-  const isBrowser = () => typeof window !== 'undefined'; //The approach recommended by Next.js
-  function scrollToTop() {
-      if (!isBrowser()) return;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setIsNewPostsAvailable(false);
-  }
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIsNewPostsAvailable(false);
+  };
 
   const showMorePosts = () => {
     setShowMore((prevShowMore) => prevShowMore + 20);
@@ -174,7 +172,7 @@ const Feed = () => {
         {isCurrentUserVerified ? (
           <>
             {isNewPostsAvailable && (
-              <div className='fixed top-0 text-center bg-white py-2'>
+              <div className='fixed top-0 text-center bg-white py-2 w-full justify-center'>
                 <button className='text-yellow-500' onClick={scrollToTop}>
                   New Posts
                 </button>
