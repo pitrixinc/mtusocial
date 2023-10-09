@@ -11,6 +11,25 @@ import { toast } from 'react-toastify';
 import { BsNewspaper } from 'react-icons/bs';
 import { useRouter } from 'next/router'
 
+
+
+// ScrollToTopButton component
+const ScrollToTopButton = ({ isVisible, onClick }) => {
+  return (
+    <div
+      className={`fixed bottom-4 right-4 p-2 bg-white text-yellow-500 rounded-full shadow-md cursor-pointer ${
+        isVisible ? 'visible' : 'hidden'
+      }`}
+      onClick={onClick}
+    >
+     New Posts ▲
+    </div>
+  );
+};
+
+
+
+
 const Feed = () => {
   const [posts, setPosts] = useState([]);
   const { data: session } = useSession();
@@ -119,7 +138,9 @@ const Feed = () => {
   }, [session, activeTab, showMore]);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (postContainerRef.current) {
+      postContainerRef.current.scrollTop = 0;
+    }
     setIsNewPostsAvailable(false);
   };
 
@@ -171,13 +192,6 @@ const Feed = () => {
 
         {isCurrentUserVerified ? (
           <>
-            {isNewPostsAvailable && (
-              <div className='fixed top-0 text-center bg-white py-2 w-full justify-center'>
-                <button className='text-yellow-500' onClick={scrollToTop}>
-                  New Posts
-                </button>
-              </div>
-            )}
             {followingIsEmpty ? (
               <p>You are not following anyone. Follow people to see their posts.</p>
             ) : newsIsEmpty ? (
@@ -187,6 +201,9 @@ const Feed = () => {
                 <Post key={post.id} id={post.id} post={post.data} />
               ))
             )}
+            {isNewPostsAvailable && (
+              <ScrollToTopButton isVisible={isNewPostsAvailable} onClick={scrollToTop} />
+            )}
             {posts.length > showMore && (
               <div className='text-center mt-3 mb-[60px]'>
                 <button className='text-yellow-500' onClick={showMorePosts}>
@@ -194,6 +211,7 @@ const Feed = () => {
                 </button>
               </div>
             )}
+            
           </>
         ) : (
           <div className='flex flex-col items-center justify-center min-h-screen'>
