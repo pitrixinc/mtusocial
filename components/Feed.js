@@ -184,13 +184,11 @@ const Feed = () => {
               <p>No News</p>
             ) : (
               posts.slice(0, showMore).map((post) => (
-                <div className='mb-5'>
                 <Post key={post.id} id={post.id} post={post.data} />
-                </div>
               ))
             )}
             {posts.length > showMore && (
-              <div className='text-center mt-3 mb-2'>
+              <div className='text-center mt-3 mb-10'>
                 <button className='text-yellow-500' onClick={showMorePosts}>
                   Show Another 20 Posts
                 </button>
