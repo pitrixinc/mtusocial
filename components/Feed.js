@@ -173,7 +173,7 @@ const Feed = () => {
         {isCurrentUserVerified ? (
           <>
             {isNewPostsAvailable && (
-              <div className='sticky top-0 text-center bg-white py-2'>
+              <div className='fixed top-0 text-center bg-white py-2'>
                 <button className='text-yellow-500' onClick={scrollToTop}>
                   New Posts
                 </button>
