@@ -184,7 +184,9 @@ const Feed = () => {
               <p>No News</p>
             ) : (
               posts.slice(0, showMore).map((post) => (
+                <div className='mb-5'>
                 <Post key={post.id} id={post.id} post={post.data} />
+                </div>
               ))
             )}
             {posts.length > showMore && (

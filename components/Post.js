@@ -354,7 +354,7 @@ const formatPostText = (text) => {
 
 
   return (
-    <div className='mt-4 mb-4 border-t border-gray-300 px-4 pt-6 pb-4 cursor-pointer  overflow-y-auto'>
+    <div className='mt-4 mb-5 border-t border-gray-300 px-4 pt-6 pb-4 cursor-pointer  overflow-y-auto'>
       {loading ? (
       <SkeletonLoader /> // Display the SkeletonLoader while loading
     ) : (
