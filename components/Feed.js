@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { onSnapshot, collection, query, orderBy, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useSession } from 'next-auth/react';
@@ -8,15 +8,19 @@ import Image from 'next/image';
 import mtuLogo from '../assets/images/mtulogo.jpg';
 import { HiOutlineSparkles } from 'react-icons/hi';
 import { toast } from 'react-toastify';
-import { BsNewspaper } from 'react-icons/bs'
+import { BsNewspaper } from 'react-icons/bs';
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
   const { data: session } = useSession();
-  const [activeTab, setActiveTab] = useState('ForYou'); // Initialize with 'For You'
+  const [activeTab, setActiveTab] = useState('ForYou');
   const [isCurrentUserVerified, setIsCurrentUserVerified] = useState(false);
   const [followingIsEmpty, setFollowingIsEmpty] = useState(false);
   const [newsIsEmpty, setNewsIsEmpty] = useState(false);
+  const [showMore, setShowMore] = useState(20); // Number of additional posts to show
+  const [isNewPostsAvailable, setIsNewPostsAvailable] = useState(false);
+  const postContainerRef = useRef(null);
+  const latestPostTimestampRef = useRef(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -25,12 +29,8 @@ const Feed = () => {
           let postQuery;
 
           if (activeTab === 'ForYou') {
-            // Fetch posts based on your logic for the "For You" tab
-            // Replace this with your specific query logic
             postQuery = query(collection(db, 'posts'), orderBy('timestamp', 'desc'));
           } else if (activeTab === 'Following') {
-            // Fetch posts from users the current user is following
-            // Replace this with your specific query logic
             const followingQuery = query(collection(db, 'users', session.user.uid, 'following'));
             const followingSnapshot = await getDocs(followingQuery);
             const followingIds = followingSnapshot.docs.map((doc) => doc.id);
@@ -42,8 +42,6 @@ const Feed = () => {
                 orderBy('timestamp', 'desc')
               );
             } else {
-              // Handle the case where there are no followingIds
-              // For example, show a message to follow users.
               setFollowingIsEmpty(true);
             }
           } else if (activeTab === 'News') {
@@ -59,11 +57,9 @@ const Feed = () => {
                 orderBy('timestamp', 'desc')
               );
             } else {
-              // Handle the case where there are no followingIds
-              // For example, show a message to follow users.
               setFollowingIsEmpty(true);
+            }
           }
-        }
 
           if (postQuery) {
             const unsubscribe = onSnapshot(postQuery, (snapshot) => {
@@ -71,17 +67,32 @@ const Feed = () => {
                 id: doc.id,
                 data: doc.data(),
               }));
+
+              // Check for new posts
+              if (latestPostTimestampRef.current) {
+                const newPosts = postList.filter(
+                  (post) => post.data.timestamp > latestPostTimestampRef.current
+                );
+                if (newPosts.length > 0) {
+                  setIsNewPostsAvailable(true);
+                }
+              }
+               // Set the latest post timestamp
+               if (postList.length > 0) {
+                latestPostTimestampRef.current = postList[0].data.timestamp;
+              }
+
               setPosts(postList);
-              // Check if the News tab is empty
+
               if (activeTab === 'News' && postList.length === 0) {
                 setNewsIsEmpty(true);
               } else {
                 setNewsIsEmpty(false);
               }
+              
             });
 
             return () => {
-              // Unsubscribe when component unmounts
               unsubscribe();
             };
           }
@@ -91,7 +102,6 @@ const Feed = () => {
       }
     };
 
-    // Fetch the user's document and check isVerified
     if (session && session.user) {
       const userRef = collection(db, 'users');
       const userQuery = query(userRef, where('id', '==', session.user.uid));
@@ -104,12 +114,22 @@ const Feed = () => {
     }
 
     fetchPosts();
-  }, [session, activeTab]);
+  }, [session, activeTab, showMore]);
+
+  const scrollToTop = () => {
+    if (postContainerRef.current) {
+      postContainerRef.current.scrollTop = 0;
+    }
+    setIsNewPostsAvailable(false);
+  };
+
+  const showMorePosts = () => {
+    setShowMore((prevShowMore) => prevShowMore + 20);
+  };
 
   return (
-    // Your JSX code remains the same
     <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto h-screen no-scrollbar'>
-      <div className=' top-0 bg-white text-[#16181C] flex justify-between font-bold text-[20px] px-4 py-2 mt-[0px]'>
+      <div className='top-0 bg-white text-[#16181C] flex justify-between font-bold text-[20px] px-4 py-2 mt-[0px]'>
         Home
         <div className='rounded-[1px] md:hidden lg:hidden'>
           <Image className='rounded-[1px] md:hidden lg:hidden' src={mtuLogo} height='33px' width='29px' />
@@ -138,35 +158,52 @@ const Feed = () => {
           className={`cursor-pointer ${
             activeTab === 'News' ? 'text-yellow-500 border-b-2 border-b-yellow-500' : ''
           }`}
-          onClick={() => setActiveTab('News')}
+          onClick={() => {
+            setActiveTab('News');
+            scrollToTop();
+          }}
         >
-          <BsNewspaper/>
+          <BsNewspaper />
         </div>
       </div>
       {isCurrentUserVerified && <Input />}
-      {/* Your other components */}
-      {isCurrentUserVerified ? (
-        <>
-          {followingIsEmpty ? (
-            <p>You are not following anyone. Follow people to see their posts.</p>
-          ) : newsIsEmpty ? ( // Check if News tab is empty
-          <p>No News</p>
-        )  : posts.length === 0 ? (
-            <p>{activeTab === 'News' ? 'No News.' : 'No posts, follow people to see their posts or write a post to view it here.'}</p>
-          ) : (
-            posts.map((post) => (
-              <Post key={post.id} id={post.id} post={post.data} />
-            ))
-          )}
-        </>
-      ) : (
-        <div className='flex flex-col items-center justify-center min-h-screen'>
-          <p className="bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center mb-4">
-            Please verify your account to view posts from people and also post as well.
-          </p>
-          <button className='bg-yellow-500 p-2 rounded-[15px] text-white'>Verify</button>
-        </div>
-      )}
+      <div ref={postContainerRef} className='px-4 pt-2'>
+
+        {isCurrentUserVerified ? (
+          <>
+            {isNewPostsAvailable && (
+              <div className='sticky top-0 text-center bg-white py-2'>
+                <button className='text-yellow-500' onClick={scrollToTop}>
+                  New Posts
+                </button>
+              </div>
+            )}
+            {followingIsEmpty ? (
+              <p>You are not following anyone. Follow people to see their posts.</p>
+            ) : newsIsEmpty ? (
+              <p>No News</p>
+            ) : (
+              posts.slice(0, showMore).map((post) => (
+                <Post key={post.id} id={post.id} post={post.data} />
+              ))
+            )}
+            {posts.length > showMore && (
+              <div className='text-center'>
+                <button className='text-yellow-500' onClick={showMorePosts}>
+                  Show Another 20 Posts
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className='flex flex-col items-center justify-center min-h-screen'>
+            <p className='bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center mb-4'>
+              Please verify your account to view posts from people and also post as well.
+            </p>
+            <button className='bg-yellow-500 p-2 rounded-[15px] text-white'>Verify</button>
+          </div>
+        )}
+      </div>
     </section>
   );
 };
