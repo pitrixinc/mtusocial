@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import SidebarLink from './SidebarLink'
 import { useRouter } from 'next/router'
 import { AiFillHome, AiOutlineInbox, AiOutlineUser } from "react-icons/ai"
-import { BiHash, BiSearchAlt, BiPoll } from "react-icons/bi"
+import { BiHash, BiSearchAlt, BiPoll, BiMessageAltAdd } from "react-icons/bi"
 import { RiAdminLine } from "react-icons/ri"
 import { BsBell, BsBookmark, BsThreeDots} from "react-icons/bs"
 import { HiOutlineClipboardList, HiOutlineDotsCircleHorizontal, HiOutlineUserGroup } from "react-icons/hi"
@@ -91,7 +91,7 @@ const Sidebar = () => {
                 </div>
                 </div>
                 <div onClick={() => router.push('/ConversationList')}>
-                <SidebarLink text="Messages" Icon={AiOutlineInbox} />
+                <SidebarLink text="Messages" Icon={BiMessageAltAdd} />
                 </div>
                 <div onClick={() => router.push('/group/my-groups')}>
                 <SidebarLink text="Groups" Icon={HiOutlineUserGroup} />
@@ -156,7 +156,7 @@ const Sidebar = () => {
                 </div>
                 </div>
                 <div onClick={() => router.push('/ConversationList')}>
-                 <AiOutlineInbox className='text-xl cursor-pointer' />
+                 <BiMessageAltAdd className='text-xl cursor-pointer' />
                 </div>
                 <div onClick={() => router.push(`/users/${session.user.uid}`)}>
                 <img

@@ -47,13 +47,23 @@ const Feed = () => {
               setFollowingIsEmpty(true);
             }
           } else if (activeTab === 'News') {
-            // Fetch posts where isQualifiedForGoldBadge is true
-            postQuery = query(
-              collection(db, 'posts'),
-              where('isQualifiedForGoldBadge', '==', true),
-              orderBy('timestamp', 'desc')
-            );
+            const followingQuery = query(collection(db, 'users', session.user.uid, 'following'));
+            const followingSnapshot = await getDocs(followingQuery);
+            const followingIds = followingSnapshot.docs.map((doc) => doc.id);
+
+            if (followingIds.length > 0) {
+              postQuery = query(
+                collection(db, 'posts'),
+                where('postedById', 'in', followingIds),
+                where('isQualifiedForGoldBadge', '==', true),
+                orderBy('timestamp', 'desc')
+              );
+            } else {
+              // Handle the case where there are no followingIds
+              // For example, show a message to follow users.
+              setFollowingIsEmpty(true);
           }
+        }
 
           if (postQuery) {
             const unsubscribe = onSnapshot(postQuery, (snapshot) => {
