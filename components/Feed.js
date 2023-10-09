@@ -118,16 +118,11 @@ const Feed = () => {
     fetchPosts();
   }, [session, activeTab, showMore]);
 
-  const scrollToTop = () => {
-    if (typeof window !== 'undefined') {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth', // Add smooth scrolling behavior
-      });
-    }
-    setIsNewPostsAvailable(false);
-  };
-
+  const isBrowser = () => typeof window !== 'undefined'; //The approach recommended by Next.js
+  function scrollToTop() {
+      if (!isBrowser()) return;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   const showMorePosts = () => {
     setShowMore((prevShowMore) => prevShowMore + 20);
