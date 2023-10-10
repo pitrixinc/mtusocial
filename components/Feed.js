@@ -119,17 +119,15 @@ const Feed = () => {
     fetchPosts();
   }, [session, activeTab, showMore]);
 
-  function scrollToTop() {
-    if (!isBrowser()) return;
-  
-    const currentPosition = window.scrollY; // Get the current vertical scroll position
-  
-    if (currentPosition > 0) {
-      // Scroll to the top only if not already at the top
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setIsNewPostsAvailable(false);
+  const scrollToTop = () => {
+    if (postContainerRef.current) {
+      postContainerRef.current.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
     }
-  }
+    setIsNewPostsAvailable(false);
+  };
   
 
   const showMorePosts = () => {
