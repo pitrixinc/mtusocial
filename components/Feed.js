@@ -12,24 +12,6 @@ import { BsNewspaper } from 'react-icons/bs';
 import { useRouter } from 'next/router'
 
 
-
-// ScrollToTopButton component
-const ScrollToTopButton = ({ isVisible, onClick }) => {
-  return (
-    <div
-      className={`fixed bottom-[50px] right-[50px] p-2  bg-white text-yellow-500 rounded-full shadow-md cursor-pointer ${
-        isVisible ? 'visible' : 'hidden'
-      }`}
-      onClick={onClick}
-    >
-     New Posts ▲
-    </div>
-  );
-};
-
-
-
-
 const Feed = () => {
   const [posts, setPosts] = useState([]);
   const { data: session } = useSession();
@@ -138,10 +120,10 @@ const Feed = () => {
   }, [session, activeTab, showMore]);
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    })
+    window.scrollTo({ 
+      top: 0, 
+      behavior: 'smooth'
+     });
     setIsNewPostsAvailable(false);
   };
 
@@ -190,7 +172,13 @@ const Feed = () => {
       </div>
       {isCurrentUserVerified && <Input />}
       <div ref={postContainerRef} className='px-4 pt-2'>
-
+      {isNewPostsAvailable && (
+              <div className='fixed w-full top-0 text-center bg-white py-2'>
+                <button className='text-yellow-500' onClick={scrollToTop}>
+                  New Posts ▲
+                </button>
+              </div>
+            )}
         {isCurrentUserVerified ? (
           <>
             {followingIsEmpty ? (
@@ -201,9 +189,6 @@ const Feed = () => {
               posts.slice(0, showMore).map((post) => (
                 <Post key={post.id} id={post.id} post={post.data} />
               ))
-            )}
-            {isNewPostsAvailable && (
-              <ScrollToTopButton isVisible={isNewPostsAvailable} onClick={scrollToTop} />
             )}
             {posts.length > showMore && (
               <div className='text-center mt-3 mb-[60px]'>
