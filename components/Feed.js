@@ -17,7 +17,7 @@ import { useRouter } from 'next/router'
 const ScrollToTopButton = ({ isVisible, onClick }) => {
   return (
     <div
-      className={`fixed bottom-4 right-4 p-2 bg-white text-yellow-500 rounded-full shadow-md cursor-pointer ${
+      className={`fixed bottom-[50px] right-[50px] p-2  bg-white text-yellow-500 rounded-full shadow-md cursor-pointer ${
         isVisible ? 'visible' : 'hidden'
       }`}
       onClick={onClick}
@@ -138,9 +138,10 @@ const Feed = () => {
   }, [session, activeTab, showMore]);
 
   const scrollToTop = () => {
-    if (postContainerRef.current) {
-      postContainerRef.current.scrollTop = 0;
-    }
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    })
     setIsNewPostsAvailable(false);
   };
 
