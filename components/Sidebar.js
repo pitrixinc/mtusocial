@@ -178,7 +178,7 @@ const Sidebar = () => {
         {/* Sidebar */}
       {showSidebar && (
         <div 
-          className="xl:hidden fixed top-0 z-10 left-0 w-64 h-full bg-gray-100 p-4 transition-transform transform duration-300 ease-in-out"
+          className="xl:hidden fixed top-0 z-10 left-0 w-[90%] h-full bg-gray-100 p-4 transition-transform transform duration-300 ease-in-out"
           
         >
           <div
