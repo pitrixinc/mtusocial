@@ -166,12 +166,12 @@ export default function MyGroups() {
 
   return (
     <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto no-scrollbar'>
-      <h1 className="text-xl md:text-4xl font-semibold mb-6 border-b border-b-gray-100 shadow-md p-2">My Groups</h1>
+      <h1 className="text-xl md:text-xl font-semibold mb-6 border-b border-b-gray-100 shadow-md p-2">My Groups</h1>
       <div className="overflow-x-scroll no-scrollbar">
         <div className="flex flex-wrap -mx-2 mt-2">
           {isVerified && myGroups.length > 0 ? (
             myGroups.map((group) => (
-              <div key={group.id} className="w-1/3 lg:w-1/3 xl:w-1/4 px-4 mb-8 ">
+              <div key={group.id} className="w-1/3 lg:w-1/3 xl:w-1/4 px-4 mb-8">
                 <Link href={`/group/${group.id}`}>
                   <a className="block rounded-lg overflow-hidden hover:shadow-lg hover:scale-105 transform transition-transform duration-300 shadow-md ring-offset-2 ring-4 ring-yellow-500">
                     <img

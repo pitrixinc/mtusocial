@@ -4,6 +4,7 @@ import { collection, doc, getDoc, setDoc, serverTimestamp } from 'firebase/fires
 import { db } from '../firebase';
 import { useSession } from 'next-auth/react';
 import Moment from 'react-moment'
+import { toast } from 'react-toastify';
 
 export default function JoinViewGroup() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function JoinViewGroup() {
   const joinGroup = async () => {
     try {
       if (group.private && group.password !== password) {
-        alert('Incorrect group password');
+        toast.error('Incorrect group password');
         return;
       }
 
@@ -36,8 +37,10 @@ export default function JoinViewGroup() {
           dateJoined: serverTimestamp(), // Change to the appropriate date format
           // You can add other member-related data here
         });
+        toast.success("You joined successfully")
         setIsMember(true); // Set isMember to true after successfully joining
       } else {
+        toast.success("You are a member of this group")
         setIsMember(true); // Set isMember to true if the user is already a member
       }
     } catch (error) {
@@ -66,6 +69,7 @@ export default function JoinViewGroup() {
           }
         } else {
           console.error('Group not found');
+          toast.error('Group not found');
           router.push('/'); // Redirect to home or another page
         }
       })
@@ -93,11 +97,11 @@ export default function JoinViewGroup() {
   }, [session]);
 
   return (
-    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto no-scrollbar'>
+    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-0 overflow-y-auto no-scrollbar'>
       <div className='mt-0'>
         {/* <!-- Header image --> */}
         <div className='mt-0'>
-          <img src={group.groupBanner ||"https://t3.ftcdn.net/jpg/02/16/47/50/360_F_216475029_YEdkzXdw97bvK9OioWRwRjfPG1IQkP69.jpg"} className=" w-[100%] h-[190px] mx-auto object-cover" />
+          <img src={group.groupBanner ||"https://t3.ftcdn.net/jpg/02/16/47/50/360_F_216475029_YEdkzXdw97bvK9OioWRwRjfPG1IQkP69.jpg"} className=" w-[100%] h-[190px] mx-auto object-cover mt-0" />
         </div>
 
         {/* <!-- Profile picture and edit button --> */}
@@ -128,18 +132,25 @@ export default function JoinViewGroup() {
 
         {isVerified ? (
           isMember ? (
-            <button onClick={() => router.push(`/group/${groupId}/chat`)} className='w-full text-white bg-yellow-500 font-semibold text-center p-3 rounded-md mt-5'>View Group</button>
+            <div className=' flex justify-center items-center'>
+            <button onClick={() => router.push(`/group/${groupId}/chat`)} className='mx-3 text-white bg-yellow-500 font-semibold text-center p-3 rounded-[20px] mt-5'>View Group</button>
+            </div>
           ) : (
             <>
               {group.private && (
+                <div className="bg-gray-200 mt-2 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[20px] mx-3">
                 <input
                   type="password"
                   placeholder="Enter Group Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  className="bg-transparent w-[100%] outline-none"
                 />
+                </div>
               )}
-              <button className='w-full text-white bg-yellow-500 font-semibold text-center p-3 rounded-md mt-5' onClick={joinGroup}>Join Group</button>
+              <div className=' flex justify-center items-center'>
+              <button className=' mx-3 text-white bg-yellow-500 font-semibold text-center p-3 rounded-[20px] mt-5' onClick={joinGroup}>Join Group</button>
+              </div>
             </>
           )
         ) : (

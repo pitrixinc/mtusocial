@@ -43,7 +43,7 @@ const TheGroupChat = () => {
   const [selectedDocument, setSelectedDocument] = useState(null);
 
   // Encrypt the message using a secret key (you should securely manage this key)
-  const secretKey = 'E9n8C7r6Y5p4T3e2D1m0E9s8S7a6G5e4321'; // Replace with your actual secret key
+  const secretKey = process.env.NEXT_PUBLIC_CRYPTOJS_SECRET_KEY; // Replace with your actual secret key
   const encryptedMessage = CryptoJS.AES.encrypt(input, secretKey).toString();
 
   const addMusicToPost = (e) => {
@@ -287,11 +287,13 @@ const TheGroupChat = () => {
 
 
   if (!isMember) {
-    return <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-yellow-500 to-orange-500">
+    return <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] overflow-y-auto no-scrollbar'>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-yellow-500 to-orange-500">
               <p className="text-white text-2xl text-center p-4 bg-gray-500 rounded-lg shadow-lg">
                 You are not a member of this group. Go Back and Join
               </p>
-            </div>;
+            </div>
+            </section>;
   }
 
   return (
@@ -344,7 +346,13 @@ const TheGroupChat = () => {
           backgroundRepeat: 'no-repeat',
         }}
       >
-     {messages
+
+{messages.length === 0 ? (
+    <div className='flex justify-center items-center min-h-screen'>
+    <div className='text-center text-gray-500  bg-white p-2 rounded-full'>No messages, start a conversation in <span className='bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'>{group.title}</span></div>
+    </div>
+  ) : (
+  (messages
   .slice()
   .sort((a, b) => a.timestamp?.toDate() - b.timestamp?.toDate())
   .map((message) => (
@@ -406,7 +414,7 @@ const TheGroupChat = () => {
         <Moment fromNow>{message.timestamp?.toDate()}</Moment>
       </div>
     </div>
-  ))}
+  ))))}
 
       </div>
 

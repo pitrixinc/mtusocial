@@ -102,10 +102,10 @@ const Sidebar = () => {
                 <div onClick={() => router.push(`/users/${session.user.uid}`)}>
                 <SidebarLink text="Profile" Icon={AiOutlineUser} />
                 </div>
-                <SidebarLink text="More" Icon={HiOutlineDotsCircleHorizontal} />
+             {/*<SidebarLink text="More" Icon={HiOutlineDotsCircleHorizontal} />*/}  
 
                  {/* Conditional rendering for Admin Panel */}
-                 {session?.user?.uid === "107623299362359964229" && (
+                 {session?.user?.uid === process.env.NEXT_PUBLIC_UID_ADMIN && (
                         <div onClick={() => router.push('/dashboard-for-admin')}>
                             <SidebarLink text="Admin Panel" Icon={RiAdminLine} />
                         </div>

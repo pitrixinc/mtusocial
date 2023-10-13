@@ -557,17 +557,17 @@ console.log('UID from URL:', id); */}
             <ul>
               {followingList.map((user, index) => (
                 <li key={index}>
-                  <Link href={`/users/${user.id}`}>
+                  
                   <div className='grid grid-cols-[48px,1fr] gap-4 mb-2 border-b border-b-gray-300 p-2 cursor-pointer'>
 
-                  <div>
+                  <div onClick={() => router.push(`/users/${user.id}`)}>
                     <img className='h-12 w-12 rounded-full object-cover' src={user?.profileImage} alt="" />
                   </div>
-                  <div  className='mt-3'>
+                  <div  className='mt-3' onClick={() => router.push(`/users/${user.id}`)}>
                     <span className='font-semibold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'>{user.name}</span> - <span className='text-gray-500'><Moment fromNow>{user.dateFollowed.toDate()}</Moment></span>
                   </div>
                   </div>
-                  </Link>
+                  
                 </li>
               ))}
             </ul>

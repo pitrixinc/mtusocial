@@ -90,7 +90,7 @@ const ProfileData = () => {
       <div className='h-full'>
        {isVerified ? ( <>
       <div className='bg-gray-200 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[20px] sticky top-1 z-10'>
-        <FiSearch />
+        <FiSearch className='text-gray-400' />
         <input
           className='bg-transparent w-[100%] outline-none'
           type='text'
@@ -100,7 +100,7 @@ const ProfileData = () => {
         />
       </div> </>) : ( <>
       <div className='bg-gray-200 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[20px] sticky top-1 z-10'>
-        <FiSearch />
+        <FiSearch className='text-gray-400'  />
         <input
           className='bg-transparent w-[100%] outline-none'
           type='text'

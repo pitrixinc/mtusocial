@@ -97,7 +97,7 @@ export default function JoinViewGroupDetails() {
 
    {/* <!-- Bio --> */}
     <div class="mt-4 px-4 text-center">
-      <span>{group.description || 'No Bio'}</span>
+      <span> {group?.description && group?.description?.slice(0, 100) || 'No Bio'}{group?.description?.length > 100 && '...'}</span>
     </div>
 
   {/*}  <!-- Location, CTA and join date --> */}

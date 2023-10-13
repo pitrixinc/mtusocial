@@ -9,19 +9,15 @@ import Typewriter from "typewriter-effect";
 const Login = () => {
   
   return (
-    <div className='grid grid-rows-2 md:grid-cols-2 lg:grid-cols-2'>
-
-        <div className='bg-gradient-to-r from-yellow-500 to-black h-screen grid place-items-center '>
+    <div className='grid grid-rows-2 md:grid-cols-2 lg:grid-cols-2 h-screen'>
+      {/* ... (your existing UI code) ... */}
+      <div className='bg-gradient-to-r from-yellow-500 to-black h-screen hidden md:grid lg:grid place-items-center '>
           <div className='hidden md:block lg:block'>
             <Image className='rounded-[1px]' src={Logo} height="220px" width="500px" />
           </div>
+    </div>
 
-          <div className='block md:hidden lg:hidden'>
-            <Image className='rounded-[1px]' src={Logo} height="120px" width="300px" />
-          </div>
-      </div>
-
-      <div className='grid place-items-center'>
+      <div className='grid place-items-center h-screen overflow-y-scroll no-scrollbar mb-5'>
       <h1 className="font-bold text-xl md:text-5xl lg:text-5xl p-5">
          <span className="bg-gradient-to-r text-white from-yellow-500 to-black p-5 rounded-lg shadow-lg">Welcome To MTU Social</span>
       </h1>

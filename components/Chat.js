@@ -47,7 +47,7 @@ const Chat = () => {
 
   
     // Encrypt the message using a secret key (you should securely manage this key)
-    const secretKey = 'E9n8C7r6Y5p4T3e2D1m0E9s8S7a6G5e4321'; // Replace with your actual secret key
+    const secretKey = process.env.NEXT_PUBLIC_CRYPTOJS_SECRET_KEY; // Replace with your actual secret key
     const encryptedMessage = CryptoJS.AES.encrypt(input, secretKey).toString();
 
   const addMusicToPost = (e) => {

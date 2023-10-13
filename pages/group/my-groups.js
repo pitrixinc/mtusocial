@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import MyGroups from '../../components/myGroupAndGroupsDiscovery';
 import Sidebar from '../../components/Sidebar';
-import ProfileData from '../../components/ProfileData';
+import VerifiedUsersList from '../../components/VerifiedUsersList'
 
 const TheGroup = () => {
   const router = useRouter();
@@ -12,7 +12,7 @@ const TheGroup = () => {
         <Sidebar />
         <div className='flex gap-6'>
         <MyGroups />
-        <ProfileData />
+        <VerifiedUsersList />
         </div>
     </div>
   );
