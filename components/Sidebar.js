@@ -178,7 +178,7 @@ const Sidebar = () => {
         {/* Sidebar */}
       {showSidebar && (
         <div 
-          className="xl:hidden fixed top-0 z-10 left-0 w-[90%] h-full bg-gray-100 p-4 transition-transform transform duration-300 ease-in-out"
+          className="xl:hidden fixed top-0 z-10 left-0 w-[90%] h-screen bg-gray-100 p-4 transition-transform transform duration-300 ease-in-out"
           
         >
           <div
@@ -188,25 +188,23 @@ const Sidebar = () => {
           </div>
           <div className='mt-10'>
            {/* Sidebar content goes here */} 
-           <div></div>
-           <div></div>
-           <div onClick={() => router.push(`/users/${session.user.uid}`)} className='flex items-center gap-2 font-bold text-[25px] cursor-pointer mx-2'>
+           <div onClick={() => router.push(`/users/${session.user.uid}`)} className='flex items-center gap-2 font-bold text-[22px] cursor-pointer mx-2'>
              <AiOutlineUser /> <span>Profile</span>
            </div>
-           <div onClick={() => router.push('/group/my-groups')} className='flex items-center gap-2 font-bold text-[25px] cursor-pointer mt-8 mx-2'>
+           <div onClick={() => router.push('/group/my-groups')} className='flex items-center gap-2 font-bold text-[22px] cursor-pointer mt-8 mx-2'>
              <HiOutlineUserGroup /> <span>Groups</span>
            </div>
-           <div onClick={() => router.push('/polls')} className='flex items-center gap-2 font-bold text-[25px] cursor-pointer mt-8 mx-2'>
+           <div onClick={() => router.push('/polls')} className='flex items-center gap-2 font-bold text-[22px] cursor-pointer mt-8 mx-2'>
              <BiPoll /> <span>Polls</span>
            </div>
-           <div onClick={() => router.push('/hashtag-posts?hashtag=foryou')} className='flex items-center gap-2 font-bold text-[25px] cursor-pointer mt-8 mx-2'>
+           <div onClick={() => router.push('/hashtag-posts?hashtag=foryou')} className='flex items-center gap-2 font-bold text-[22px] cursor-pointer mt-8 mx-2'>
              <RiHashtag /> <span>Hashtags</span>
            </div>
 
           
         </div>
         <div
-                className="text-black bottom-0 w-full flex items-center mt-[100px] py-4 px-1 shadow-md bg-white rounded-[20px]"
+                className="text-black bottom-0 w-full flex items-center mt-[70px] py-4 px-1 shadow-md bg-white rounded-[20px]"
                 onClick={signOut}
             >
                 <img
@@ -215,7 +213,7 @@ const Sidebar = () => {
                     className="h-8 w-8 rounded-full"
                 />
                 <div className="inline leading-5 gap-1">
-                    <h4 className="font-semibold text-sm">{session?.user?.name.slice(0, 15)}...</h4>
+                    <h4 className="font-semibold text-sm">{session?.user?.name.slice(0, 13)}</h4>
                     <p className="text-black text-sm">@{session?.user?.tag}</p>
                 </div>
                 <BsThreeDots className="h-5 inline ml-10" />
