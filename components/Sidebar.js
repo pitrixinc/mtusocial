@@ -188,16 +188,16 @@ const Sidebar = () => {
           </div>
           <div className='mt-10'>
            {/* Sidebar content goes here */} 
-           <div onClick={() => router.push(`/users/${session.user.uid}`)} className='flex items-center gap-2 font-bold text-[22px] cursor-pointer mx-2'>
+           <div onClick={() => router.push(`/users/${session.user.uid}`)} className='flex items-center gap-2 font-bold text-[20px] cursor-pointer mx-2'>
              <AiOutlineUser /> <span>Profile</span>
            </div>
-           <div onClick={() => router.push('/group/my-groups')} className='flex items-center gap-2 font-bold text-[22px] cursor-pointer mt-8 mx-2'>
+           <div onClick={() => router.push('/group/my-groups')} className='flex items-center gap-2 font-bold text-[20px] cursor-pointer mt-8 mx-2'>
              <HiOutlineUserGroup /> <span>Groups</span>
            </div>
-           <div onClick={() => router.push('/polls')} className='flex items-center gap-2 font-bold text-[22px] cursor-pointer mt-8 mx-2'>
+           <div onClick={() => router.push('/polls')} className='flex items-center gap-2 font-bold text-[20px] cursor-pointer mt-8 mx-2'>
              <BiPoll /> <span>Polls</span>
            </div>
-           <div onClick={() => router.push('/hashtag-posts?hashtag=foryou')} className='flex items-center gap-2 font-bold text-[22px] cursor-pointer mt-8 mx-2'>
+           <div onClick={() => router.push('/hashtag-posts?hashtag=foryou')} className='flex items-center gap-2 font-bold text-[20px] cursor-pointer mt-8 mx-2'>
              <RiHashtag /> <span>Hashtags</span>
            </div>
 
