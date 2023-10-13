@@ -4,6 +4,7 @@ import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useSession } from 'next-auth/react';
 import Moment from 'react-moment';
+import { MdVerified } from 'react-icons/md';
 
 export default function JoinViewGroupDetails() {
   const router = useRouter();
@@ -91,8 +92,8 @@ export default function JoinViewGroupDetails() {
         />
       </div> */}
        {/* <!-- Name and handle --> */}
-     <div class="mt-2 px-4">
-      <h2 class="text-xl md:text-3xl lg:text-3xl text-center font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black">{group.title || 'No Name'}</h2>
+     <div class="mt-2 px-4 flex items-center justify-center">
+      <h2 class="text-xl md:text-3xl lg:text-3xl text-center font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black">{group.title || 'No Name'}</h2> {group?.isQualifiedForBadge && (<MdVerified className="text-blue-500 inline text-2xl mt-2 ml-2" />) } {group?.isQualifiedForGoldBadge && (<MdVerified className="text-yellow-500 inline mt-2 ml-2 text-2xl" />) }
     </div>
 
    {/* <!-- Bio --> */}

@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 import { collection, where, query, getDocs, doc, getDoc, setDoc, arrayUnion } from 'firebase/firestore';
 import { db } from '../firebase';
 import Link from 'next/link';
-import { MdOutlineAddCircleOutline } from 'react-icons/md';
+import { MdOutlineAddCircleOutline, MdVerified } from 'react-icons/md';
 import { useRouter } from 'next/router'
 import { FiSearch } from 'react-icons/fi';
 
@@ -41,7 +41,7 @@ function GroupDiscovery({ groups }) {
     <section className="mt-8">
       <h2 className="text-xl font-semibold mb-4 mx-3">Group Discovery</h2>
       {/* Search input */}
-      <div className='bg-gray-200 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[20px] sticky top-1 z-10  mx-4'>
+      <div className='bg-gray-200 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[20px] mx-4'>
         <FiSearch className='text-gray-400' />
         <input
           type="text"
@@ -51,18 +51,20 @@ function GroupDiscovery({ groups }) {
           className='bg-transparent w-[100%] outline-none'
         />
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-3 mx-3">
         {filteredGroups.map((group) => (
           <div key={group.id} className="group-card">
             <Link href={`/group/${group.id}`}>
-              <a className="block rounded-lg overflow-hidden hover:shadow-lg hover:scale-105 transform transition-transform duration-300">
+              <a className="block rounded-lg overflow-hidden hover:shadow-lg hover:scale-105 transform transition-transform duration-300 shadow-md ring-offset-2 ring-4 ring-yellow-500">
                 <img
                   src={group.groupBanner}
                   alt="Group Banner"
                   className="w-full h-48 object-cover"
                 />
-                <p className="mt-2 text-lg font-medium">{group.title.slice(0, 15)}...</p>
-              </a>
+                <div className='flex items-center justify-center text-center'>
+                    <p className="mt-2 text-sm font-semibold text-center">{group.title.slice(0, 8)}...</p> {group?.isQualifiedForBadge && (<MdVerified className="text-blue-500 inline mt-2 ml-1" />) } {group?.isQualifiedForGoldBadge && (<MdVerified className="text-yellow-500 inline mt-2 ml-1" />) }
+                </div>
+                </a>
             </Link>
           </div>
         ))}
@@ -174,13 +176,15 @@ export default function MyGroups() {
          <MdOutlineAddCircleOutline className='text-2xl text-yellow-500 cursor-pointer' />
          </div>
       </div>
+
+      {isVerified && <GroupDiscovery groups={randomGroups} />}
       
-      <h1 className="text-xl md:text-xl font-semibold mb-6  p-2">My Groups</h1>
+      <h1 className="text-xl md:text-xl font-semibold mb-1 mt-6 p-2">My Groups</h1>
       <div className="overflow-x-scroll no-scrollbar">
         <div className="flex flex-wrap -mx-2 mt-2">
           {isVerified && myGroups.length > 0 ? (
             myGroups.map((group) => (
-              <div key={group.id} className="w-1/3 lg:w-1/3 xl:w-1/4 px-4 mb-8">
+              <div key={group.id} className="w-1/2 lg:w-1/3 xl:w-1/4 px-4 mb-8">
                 <Link href={`/group/${group.id}`}>
                   <a className="block rounded-lg overflow-hidden hover:shadow-lg hover:scale-105 transform transition-transform duration-300 shadow-md ring-offset-2 ring-4 ring-yellow-500">
                     <img
@@ -188,7 +192,9 @@ export default function MyGroups() {
                       alt="Group Banner"
                       className="w-full h-48 object-cover"
                     />
-                    <p className="mt-2 text-sm font-semibold text-center">{group.title.slice(0, 8)}...</p>
+                    <div className='flex items-center justify-center text-center'>
+                    <p className="mt-2 text-sm font-semibold text-center">{group.title.slice(0, 8)}...</p> {group?.isQualifiedForBadge && (<MdVerified className="text-blue-500 inline mt-2 ml-1" />) } {group?.isQualifiedForGoldBadge && (<MdVerified className="text-yellow-500 inline mt-2 ml-1" />) }
+                    </div>
                   </a>
                 </Link>
               </div>
@@ -201,29 +207,29 @@ export default function MyGroups() {
         </div>
       </div>
       {joinedGroups.length > 0 && (
-        <section className="mt-8">
-          <h2 className="text-xl font-semibold mb-4 mx-3">Joined Groups</h2>
-          <div className="overflow-x-auto no-scrollbar">
-            <div className="flex flex-wrap -mx-2 mt-2">
-              {joinedGroups.map((group) => (
-                <div key={group.id} className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-4 mb-8 ">
-                  <Link href={`/group/${group.id}`}>
-                    <a className="block rounded-lg overflow-hidden hover:shadow-lg hover:scale-105 transform transition-transform duration-300 shadow-md ring-offset-2 ring-4 ring-yellow-500">
-                      <img
-                        src={group.groupBanner}
-                        alt="Group Banner"
-                        className="w-full h-48 object-cover"
-                      />
-                      <p className="mt-2 text-sm font-semibold text-center">{group.title.slice(0, 8)}...</p>
-                    </a>
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-      {isVerified && <GroupDiscovery groups={randomGroups} />}
+  <section className="mt-8 mb-[60px]">
+    <h2 className="text-xl font-semibold mb-4 mx-3">Joined Groups</h2>
+    <div className="flex overflow-x-auto no-scrollbar">
+      {joinedGroups.map((group) => (
+        <div key={group.id} className="w-44 h-45 lg:h-52 lg:w-42 xl:w-30 xl:h-60 mr-4 flex-shrink-0">
+          <Link href={`/group/${group.id}`}>
+            <a className="block rounded-lg overflow-hidden hover:shadow-lg hover:scale-105 transform transition-transform duration-300 shadow-md ring-offset-2 ring-4 ring-yellow-500">
+              <img
+                src={group.groupBanner}
+                alt="Group Banner"
+                className="w-full h-40 object-cover"
+              />
+              <div className='flex items-center justify-center text-center'>
+                    <p className="mt-2 text-sm font-semibold text-center">{group.title.slice(0, 8)}...</p> {group?.isQualifiedForBadge && (<MdVerified className="text-blue-500 inline mt-2 ml-1" />) } {group?.isQualifiedForGoldBadge && (<MdVerified className="text-yellow-500 inline mt-2 ml-1" />) }
+              </div>
+              </a>
+          </Link>
+        </div>
+      ))}
+    </div>
+  </section>
+)}
+
     </section>
   );
 }

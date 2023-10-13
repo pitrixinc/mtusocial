@@ -190,7 +190,7 @@ export default function CreateGroup() {
       )} 
 
       <div className='flex justify-end mx-3 mt-3'>
-        <button onClick={createGroup} className="bg-yellow-500 text-white font-semibold rounded-[20px] p-3">
+        <button onClick={createGroup} className="bg-yellow-500 text-white font-semibold rounded-[20px] p-3 mb-[60px]">
             Create Group
         </button>
       </div>

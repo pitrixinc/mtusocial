@@ -22,6 +22,7 @@ import Picker from '@emoji-mart/react';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { FcDocument } from 'react-icons/fc';
 import CryptoJS from 'crypto-js';
+import { MdVerified } from 'react-icons/md';
 
 const TheGroupChat = () => {
   const router = useRouter();
@@ -311,7 +312,7 @@ const TheGroupChat = () => {
         className='w-8 h-8 rounded-full object-cover mr-2'
       />
     )}
-    <h1 className='text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'>{group.title}</h1>
+    <h1 className='text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'>{group.title}</h1> {group?.isQualifiedForBadge && (<MdVerified className="text-blue-500 inline text-xl mt-1 ml-1" />) } {group?.isQualifiedForGoldBadge && (<MdVerified className="text-yellow-500 inline mt-1 ml-1 text-xl" />) }
   </div>
   {isCreator && (
     <button

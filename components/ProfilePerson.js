@@ -160,28 +160,28 @@ useEffect(() => {
   // Define the content for each tab
   const tabContents = {
     Posts: <div>{userPosts.length === 0 ? (
-      <p className='text-xl text-semibold text-center text-gray-600'>You have no post.</p>
+      <p className='text-xl text-semibold text-center text-gray-600 mb-[60px]'>You have no post.</p>
               ) : (
                 userPosts.map((post) => (
                   <Post key={post.id} id={post.id} post={post} />
                 ))
               )}</div> ,
     'Reposts': <div>{rePosts.length === 0 ? (
-      <p className='text-xl text-semibold text-center text-gray-600'>You have no repost.</p>
+      <p className='text-xl text-semibold text-center text-gray-600 mb-[60px]'>You have no repost.</p>
                         ) : (
                           rePosts.map((post) => (
                             <Post key={post.id} id={post.id} post={post} />
                           ))
                         )}</div>,
     Media: <div>{postsWithMedia.length === 0 ? (
-      <p className='text-xl text-semibold text-center text-gray-600'>You have no media.</p>
+      <p className='text-xl text-semibold text-center text-gray-600 mb-[60px]'>You have no media.</p>
                       ) : (
                         postsWithMedia.map((post) => (
                           <Post key={post.id} id={post.id} post={post} />
                         ))
                       )}</div>,
     Likes: <div>{likePosts.length === 0 ? (
-      <p className='text-xl text-semibold text-center text-gray-600'>You have not liked any posts yet.</p>
+      <p className='text-xl text-semibold text-center text-gray-600 mb-[60px]'>You have not liked any posts yet.</p>
     ) : (
       likePosts.map((post) => (
         <Post key={post.id} id={post.id} post={post} />

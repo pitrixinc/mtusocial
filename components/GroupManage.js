@@ -20,6 +20,7 @@ import { AiOutlineArrowLeft, AiOutlineClose } from 'react-icons/ai';
 import { BsImage } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 import Moment from 'react-moment'
+import { MdVerified } from 'react-icons/md';
 
 export default function GroupManage() {
   const router = useRouter();
@@ -181,7 +182,7 @@ export default function GroupManage() {
   };
 
   return (
-    <div  className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto h-screen no-scrollbar'>
+    <div  className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] overflow-y-auto h-screen no-scrollbar'>
       <div className='flex sticky top-0 z-10 bg-white items-center justify-between p-4 border-b border-b-gray-300 shadow-md'>
         <div className='flex items-center'>
             <button onClick={() => router.push(`/group/${[groupId]}/chat`)} className='mr-2 text-blue-500 hover:underline'>
@@ -194,7 +195,7 @@ export default function GroupManage() {
                 className='w-8 h-8 rounded-full object-cover mr-2'
             />
             )}
-            <h1 className='text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'>{group.title}</h1>
+            <h1 className='text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'>{group.title}</h1> {group?.isQualifiedForBadge && (<MdVerified className="text-blue-500 inline text-xl mt-1 ml-1" />) } {group?.isQualifiedForGoldBadge && (<MdVerified className="text-yellow-500 inline mt-1 ml-1 text-xl" />) }
         </div>
         
       </div>
@@ -327,7 +328,7 @@ export default function GroupManage() {
       </div>
 
 
-     <div className='flex justify-between mx-3 mt-5'>
+     <div className='flex justify-between mx-3 mt-5 mb-[60px]'>
       <button  className=' text-white bg-yellow-500 font-semibold text-center p-3 rounded-[20px] cursor-pointer' onClick={updateGroup}>Update Group</button>
       <button className=' text-white bg-red-500 font-semibold text-center p-3 rounded-[20px] cursor-pointer' onClick={deleteGroup}>Delete Group</button>
      </div>

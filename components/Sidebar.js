@@ -3,7 +3,7 @@ import SidebarLink from './SidebarLink'
 import { useRouter } from 'next/router'
 import { AiFillHome, AiOutlineInbox, AiOutlineUser } from "react-icons/ai"
 import { BiHash, BiSearchAlt, BiPoll, BiMessageAltAdd } from "react-icons/bi"
-import { RiAdminLine } from "react-icons/ri"
+import { RiAdminLine, RiHashtag } from "react-icons/ri"
 import { BsBell, BsBookmark, BsThreeDots} from "react-icons/bs"
 import { HiOutlineClipboardList, HiOutlineDotsCircleHorizontal, HiOutlineUserGroup } from "react-icons/hi"
 import { signOut, useSession } from 'next-auth/react'
@@ -11,6 +11,7 @@ import Image from 'next/image'
 import { collection, getDocs, updateDoc, doc, getDoc } from 'firebase/firestore'; // Import Firestore functions here
 import { db } from '../firebase';
 import mtuLogo from "../assets/images/mtulogo.jpg";
+import { MdClose } from 'react-icons/md'
 
 
 const Sidebar = () => {
@@ -18,6 +19,12 @@ const Sidebar = () => {
     const {data: session} = useSession()
     const [unreadNotifications, setUnreadNotifications] = useState(0); // Count of unread notifications
     const [isVerified, setIsVerified] = useState(false); // Add state for user verification
+
+    const [showSidebar, setShowSidebar] = useState(false);
+
+    const toggleSidebar = () => {
+      setShowSidebar(!showSidebar);
+    };
 
 
     useEffect(() => {
@@ -158,15 +165,62 @@ const Sidebar = () => {
                 <div onClick={() => router.push('/ConversationList')}>
                  <BiMessageAltAdd className='text-xl cursor-pointer' />
                 </div>
-                <div onClick={() => router.push(`/users/${session.user.uid}`)}>
+              {/*  <div onClick={() => router.push(`/users/${session.user.uid}`)}>  */}
+              <div onClick={toggleSidebar}>
                 <img
                     src={session?.user?.image}
                     alt=""
-                    className="h-6 w-6 rounded-full"
+                    className="h-6 w-6 rounded-full cursor-pointer"
                 />
                 </div>
           </div>
 
+        {/* Sidebar */}
+      {showSidebar && (
+        <div 
+          className="xl:hidden fixed top-0 z-10 left-0 w-64 h-full bg-gray-100 p-4 transition-transform transform duration-300 ease-in-out"
+          
+        >
+          <div
+            className=" flex justify-end cursor-pointer"
+            onClick={toggleSidebar}
+          >  <MdClose className='text-[22px] cursor-pointer '/>
+          </div>
+          <div className='mt-10'>
+           {/* Sidebar content goes here */} 
+           <div onClick={() => router.push(`/users/${session.user.uid}`)} className='flex items-center gap-2 font-bold text-[20px] cursor-pointer'>
+             <AiOutlineUser /> <span>Profile</span>
+           </div>
+           <div onClick={() => router.push('/group/my-groups')} className='flex items-center gap-2 font-bold text-[20px] cursor-pointer mt-8'>
+             <HiOutlineUserGroup /> <span>Groups</span>
+           </div>
+           <div onClick={() => router.push('/polls')} className='flex items-center gap-2 font-bold text-[20px] cursor-pointer mt-8'>
+             <BiPoll /> <span>Polls</span>
+           </div>
+           <div onClick={() => router.push('/hashtag-posts?hashtag=foryou')} className='flex items-center gap-2 font-bold text-[20px] cursor-pointer mt-8'>
+             <RiHashtag /> <span>Hashtags</span>
+           </div>
+
+          
+        </div>
+        <div
+                className="text-black bottom-0 w-full flex items-center mt-[80px] py-10 shadow-sm bg-white rounded-[20px]"
+                onClick={signOut}
+            >
+                <img
+                    src={session?.user?.image}
+                    alt=""
+                    className="h-8 w-8 rounded-full"
+                />
+                <div className="inline leading-5">
+                    <h4 className="font-semibold text-sm">{session?.user?.name.slice(0, 15)}...</h4>
+                    <p className="text-black text-sm">@{session?.user?.tag}</p>
+                </div>
+                <BsThreeDots className="h-5 inline ml-10" />
+            </div>
+        </div>
+
+      )}
         </>
     )
 }

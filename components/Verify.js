@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react'
-import { BsEmojiSmile, BsTwitter } from "react-icons/bs"
+import { BsEmojiSmile, BsImage, BsTwitter } from "react-icons/bs"
 import Image from 'next/image'
 import { FcGoogle } from "react-icons/fc"
 import Logo from "../assets/images/mtu2.png";
@@ -10,6 +10,7 @@ import { addDoc, collection, doc, serverTimestamp, updateDoc, getDoc, query, whe
 import { db, storage } from '../firebase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { toast } from 'react-toastify';
+import { AiOutlineClose } from 'react-icons/ai';
 
 const Verify = () => {
   const { data: session } = useSession();
@@ -80,12 +81,143 @@ const Verify = () => {
       { label: 'Address', key: 'address' },
       { label: 'Emergency Contact Information', key: 'emergencyContact' },
     ],
-
-    // Include "Verified Badge" and "Image Upload" for all roles
-    Lecturer: [
+    'Faculty Members / Lecturers / Professors': [
       { label: 'Name', key: 'name' },
-      { label: 'Address', key: 'address' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Academic Department', key: 'academicDepartment' },
+      { label: 'Faculty Rank or Title', key: 'facultyRank' },
+      { label: 'Research Interests', key: 'researchInterests' },
+      { label: 'Office Location', key: 'officeLocation' },
     ],
+    'Administrative Staff': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Department', key: 'department' },
+      { label: 'Job Title', key: 'jobTitle' },
+      { label: 'Supervisor\'s Name', key: 'supervisorName' },
+    ],
+    'Administrative Leadership': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Title or Position', key: 'titleOrPosition' },
+      { label: 'Department or Area of Responsibility', key: 'departmentOrArea' },
+    ],
+    'Research Scholars / Postdoctoral Researchers': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Research Supervisor (if applicable)', key: 'researchSupervisor' },
+      { label: 'Research Focus or Project', key: 'researchFocus' },
+    ],
+    'Support Staff': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Department or Area of Work', key: 'departmentOrArea' },
+      { label: 'Job Title', key: 'jobTitle' },
+    ],
+    'Librarians': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Library Department', key: 'libraryDepartment' },
+      { label: 'Areas of Library Expertise', key: 'libraryExpertise' },
+    ],
+    'Counselors / Advisors': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Counseling Area (Academic, Career, Personal)', key: 'counselingArea' },
+      { label: 'Office Location', key: 'officeLocation' },
+    ],
+    'Tutors / Teaching Assistants (TAs)': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Course or Courses Supported', key: 'coursesSupported' },
+      { label: 'Faculty Supervisor (if applicable)', key: 'facultySupervisor' },
+    ],
+    Alumni: [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Graduation Year', key: 'graduationYear' },
+      { label: 'Major or Degree Earned', key: 'degreeEarned' },
+      { label: 'Alumni Association Affiliation', key: 'alumniAssociation' },
+    ],
+    'Visiting Scholars': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Affiliated University or Institution', key: 'affiliatedInstitution' },
+      { label: 'Purpose of Visit', key: 'purposeOfVisit' },
+    ],
+    'Guest Lecturers': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Affiliated Organization or Institution', key: 'affiliatedOrganization' },
+      { label: 'Lecture Topic', key: 'lectureTopic' },
+    ],
+    'Adjunct Faculty': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Department', key: 'department' },
+      { label: 'Course Taught', key: 'courseTaught' },
+    ],
+    'Researchers and Lab Technicians': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Research Project or Lab Affiliation', key: 'labAffiliation' },
+    ],
+    'Security Personnel': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Security Department', key: 'securityDepartment' },
+    ],
+    'Health Services Staff': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Role (e.g., Nurse, Counselor, Doctor)', key: 'healthRole' },
+      { label: 'Clinic or Health Center', key: 'healthCenter' },
+    ],
+    'Financial Aid Officers': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Financial Aid Office', key: 'aidOffice' },
+    ],
+    'Community and Public Relations Staff': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Public Relations Department', key: 'prDepartment' },
+    ],
+    'Athletics Department': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Sport or Role (e.g., Coach, Athlete)', key: 'athleticsRole' },
+    ],
+    'IT and Technology Support': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'IT Department', key: 'itDepartment' },
+    ],
+    'Dining Services Staff': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Dining Services Department', key: 'diningDepartment' },
+    ],
+    'Housing and Residence Life Staff': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Residence Hall or Housing Office', key: 'residenceOffice' },
+    ],
+    'Environmental and Sustainability Officers': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Sustainability Department', key: 'sustainabilityDepartment' },
+    ],
+    'Legal Counsel': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Legal Department', key: 'legalDepartment' },
+    ],
+    'Board of Trustees': [
+      { label: 'Name', key: 'name' },
+      { label: 'Contact Information (Email, Phone)', key: 'contactInfo' },
+      { label: 'Affiliation or Position on the Board', key: 'boardAffiliation' },
+    ],    
     // Define fields for other roles here
   };
 
@@ -215,7 +347,7 @@ const Verify = () => {
               </div>
             </div>
           ))}
-          <div className="mt-4 w-[80%]">
+          <div className="mt-4 w-[100%]">
             <label className="block mb-1 mt-1 mx-3 font-semibold text-[17px]">
               Verified Badge:
             </label>
@@ -234,23 +366,37 @@ const Verify = () => {
             <label className="block mb-1 mt-1 mx-3 font-semibold text-[17px]">
               Image Upload:
             </label>
-            <div className="bg-gray-200 mt-1 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[15px] w-[full] mx-3">
-              <input
+            <label  htmlFor="file" className="block mb-1 mt-3 mx-3 font-semibold text-[17px]"><BsImage className='cursor-pointer text-yellow-500 text-xl' /></label>
+            <input
+                id="file"
                 type="file"
                 accept="image/*"
                 onChange={handleImageUpload}
-                className="bg-transparent w-[100%] outline-none font-semibold"
+                hidden
               />
+          {imageFile && (
+            <div className="relative mb-4 mx-3">
+              <div className="absolute w-8 h-8 bg-[#15181c] hover:[#272c26] bg-opacity-75 rounded-full flex items-center justify-center top-1 left-1 cursor-pointer" onClick={() => setImageFile(null)}>
+                <AiOutlineClose className="text-white h-5" />
+              </div>
+
+              <img src={imageFile} alt="" className="rounded-2xl max-h-80 object-contain" />
             </div>
-          </div>
+          )}
+            </div>
+            
+          <div className='flex justify-between'>
+            <p></p>
           <button
             type="submit"
-            className="bg-yellow-500 text-white mt-4 py-2 px-4 rounded-full hover:bg-yellow-600 font-semibold"
+            className="bg-yellow-500 text-white mt-4 py-2 px-4 rounded-full mb-[60px] hover:bg-yellow-600 font-semibold cursor-pointer"
           >
             Submit
           </button>
+          </div>
         </form>
-        </>)}   </div>
+        </>)}   
+        </div>
          </div>
   )
 }
