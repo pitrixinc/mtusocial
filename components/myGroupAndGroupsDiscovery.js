@@ -200,7 +200,7 @@ export default function MyGroups() {
               </div>
             ))
           ) : (
-            <div className="w-full text-center font-semibold text-gray-500 mt-10">
+            <div className="w-full text-center font-semibold text-gray-500 mb-10">
               {isVerified ? 'You have not created any groups yet.' : 'Please verify your account to see your groups.'}
             </div>
           )}
