@@ -327,7 +327,7 @@ const Input = () => {
     <div className={`mt-4 px-4 ${loading && 'opacity-60'}`}>
       <div className="grid grid-cols-[48px,1fr] gap-4">
         <div>
-          <img className="h-12 w-12 rounded-full object-contain" src={session?.user?.image} alt="" />
+          <img className="h-12 w-12 rounded-full object-contain" src={userData.profileImage} alt="" />
         </div>
 
         <div className="w-[90%]">

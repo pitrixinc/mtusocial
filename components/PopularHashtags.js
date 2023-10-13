@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query, where, doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useRouter } from 'next/router'; // Import the useRouter hook from Next.js
+import { useSession } from 'next-auth/react';
 
 const PopularHashtags = () => {
   const [popularHashtags, setPopularHashtags] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter(); // Initialize the useRouter hook
+  const { data: session } = useSession();
 
   useEffect(() => {
     // Fetch the top 10 popular hashtags based on their names and counts
@@ -59,13 +61,34 @@ const PopularHashtags = () => {
     router.push(`/hashtag-posts?hashtag=${hashtag}`); // Redirect to the hashtag-posts page with the selected hashtag
   };
 
+  const [isVerified, setIsVerified] = useState(false); // Add state for user verification
+  useEffect(() => {
+    const fetchUserVerification = async () => {
+      if (session) {
+        // Check if the user is verified (you might need to adjust the condition)
+        const userDoc = doc(db, 'users', session.user.uid);
+        const userSnapshot = await getDoc(userDoc);
+        const userData = userSnapshot.data();
+        
+        if (userData && userData.isVerified) {
+          setIsVerified(true);
+          // Fetch conversations if the user is verified
+          
+        }
+      }
+    };
+
+    fetchUserVerification();
+  }, [session]);
+
   return (
     <div className="popular-hashtags-container bg-gray-100 p-2 rounded-lg shadow-sm">
       {loading ? (
         <p className="bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center">Loading...</p>
       ) : popularHashtags.length === 0 ? (
         <p className="bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center">No hashtags found.</p>
-      ) : (
+      ) : (<>
+        {isVerified && (
         <ul>
           {popularHashtags.map((hashtag, index) => (
             <li
@@ -77,7 +100,7 @@ const PopularHashtags = () => {
              <p className='font-bold text-md'>#{hashtag.name}</p> <span className='text-sm text-gray-500'>{hashtag.count} posts </span>
             </li>
           ))}
-        </ul>
+        </ul>)}</>
       )}
     </div>
   );

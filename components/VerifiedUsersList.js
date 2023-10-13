@@ -180,7 +180,10 @@ const ProfileData = () => {
         )} 
             <div className='bg-gray-100 rounded-[20px] text-[#16181C] mt-4 px-4 py-4'>
                 <h1 className='text-[#16181C] font-bold text-[20px]'>Popular Hashtags</h1>
+                {isVerified ? ( <>
                 <PopularHashtags />
+                </>) : (<div className='bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center'> Please verify to view popular hashtags </div>)}
+
             </div>
 
             <div className='bg-gray-100 rounded-[20px] text-[#16181C] mt-4 px-4 py-4 '>

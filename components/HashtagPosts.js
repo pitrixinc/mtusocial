@@ -91,13 +91,50 @@ const HashtagPosts = () => {
     });
   };
 
+  const [isVerified, setIsVerified] = useState(false); // Add state for user verification
+  useEffect(() => {
+    const fetchUserVerification = async () => {
+      if (session) {
+        // Check if the user is verified (you might need to adjust the condition)
+        const userDoc = doc(db, 'users', session.user.uid);
+        const userSnapshot = await getDoc(userDoc);
+        const userData = userSnapshot.data();
+        
+        if (userData && userData.isVerified) {
+          setIsVerified(true);
+          // Fetch conversations if the user is verified
+          
+        }
+      }
+    };
+
+    fetchUserVerification();
+  }, [session]);
+
   return (
-    <div className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto h-screen no-scrollbar'>
+    <div className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] overflow-y-auto h-screen no-scrollbar'>
+      {loading ? (
+         <div className='flex items-center justify-center gap-1 py-10'>
+            <div
+                class="bg-gradient-to-r from-yellow-500 to-black  w-4 h-4 rounded-full animate-bounce first-circle"
+                style={{ animationDelay: '0.1s', }}
+                ></div>
+                <div
+                class="bg-gradient-to-r from-yellow-500 to-black  w-4 h-4 rounded-full animate-bounce second-circle"
+                style={{ animationDelay: '0.2s', }}
+                ></div>
+                <div
+                class="bg-gradient-to-r from-yellow-500 to-black  w-4 h-4 rounded-full animate-bounce third-circle"
+                style={{ animationDelay: '0.3s', }}
+                ></div>
+         </div>
+        ) : ( <>
+        {isVerified ? (<>
       <h1 className="text-2xl text-center justify-between font-semibold mb-4 shadow-sm">
         Posts with #{hashtag}
       </h1>
 
-      {/* Search input and button */}
+     
       <div className="bg-gray-200 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[20px] sticky top-1 z-10 justify-between mx-3">
         <input
           type="text"
@@ -128,7 +165,14 @@ const HashtagPosts = () => {
             </>
           )}
         </div>
-      )}
+      )} </>) : (
+        <div className='flex flex-col items-center justify-center min-h-screen'>
+            <p className='bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center mb-4'>
+              Please verify your account to view posts from people and also post as well.
+            </p>
+            <button className='bg-yellow-500 p-2 rounded-[15px] text-white' onClick={() => router.push('/verify')}>Verify</button>
+          </div>
+      )}</>)}
     </div>
   );
 };

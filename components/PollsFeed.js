@@ -20,8 +20,8 @@ const Feed = () => {
     [db]
   )
   return (
-    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto h-screen no-scrollbar'>
-      <div className='sticky top-0 bg-white flex justify-between font-medium text-[20px] px-4 py-2'>
+    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] overflow-y-auto h-screen no-scrollbar'>
+      <div className='sticky top-0 z-10 bg-white flex justify-between font-medium text-[20px] px-4 py-2'>
       <h1 className="text-xl font-semibold text-gray-800">All Polls</h1>
         <HiOutlineSparkles />
       </div>

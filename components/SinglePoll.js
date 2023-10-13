@@ -109,7 +109,7 @@ const SinglePoll = () => {
   if (!poll) {
     // Display loading or error message
     return (
-      <div className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto h-screen no-scrollbar'>
+      <div className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] overflow-y-auto h-screen no-scrollbar'>
         <div className='flex justify-center items-center min-h-screen'>
           <p className="bg-clip-text text-transparent font-semibold bg-gradient-to-r from-yellow-500 to-black text-center">Loading Poll...</p>
         </div>

@@ -3,6 +3,9 @@ import { useSession } from 'next-auth/react';
 import { collection, where, query, getDocs, doc, getDoc, setDoc, arrayUnion } from 'firebase/firestore';
 import { db } from '../firebase';
 import Link from 'next/link';
+import { MdOutlineAddCircleOutline } from 'react-icons/md';
+import { useRouter } from 'next/router'
+import { FiSearch } from 'react-icons/fi';
 
 // Function to shuffle an array randomly
 function shuffleArray(array) {
@@ -36,15 +39,16 @@ function GroupDiscovery({ groups }) {
 
   return (
     <section className="mt-8">
-      <h2 className="text-2xl font-semibold mb-4">Group Discovery</h2>
+      <h2 className="text-xl font-semibold mb-4 mx-3">Group Discovery</h2>
       {/* Search input */}
-      <div className="mb-4">
+      <div className='bg-gray-200 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[20px] sticky top-1 z-10  mx-4'>
+        <FiSearch className='text-gray-400' />
         <input
           type="text"
           placeholder="Search for groups..."
           value={searchQuery}
           onChange={handleSearchInputChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-200"
+          className='bg-transparent w-[100%] outline-none'
         />
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
@@ -69,6 +73,7 @@ function GroupDiscovery({ groups }) {
 
 export default function MyGroups() {
   const { data: session } = useSession();
+  const router = useRouter()
   const [myGroups, setMyGroups] = useState([]);
   const [randomGroups, setRandomGroups] = useState([]);
   const [joinedGroups, setJoinedGroups] = useState([]);
@@ -114,35 +119,32 @@ export default function MyGroups() {
     // Fetch joined groups
     const fetchJoinedGroups = async () => {
       try {
-        if (!session) return;
+      const groupsCollectionRef = collection(db, 'groups');
+      const querySnapshot = await getDocs(groupsCollectionRef);
 
-        const groupsCollectionRef = collection(db, 'groups');
-        const querySnapshot = await getDocs(groupsCollectionRef);
+      const groups = [];
+      for (const groupDoc of querySnapshot.docs) {
+        const groupData = groupDoc.data();
+        // Check if the current user is a member of the group
+        const membersCollectionRef = collection(db, 'groups', groupDoc.id, 'members');
+        const memberDocRef = doc(membersCollectionRef, session.user.uid);
+        const memberDocSnap = await getDoc(memberDocRef);
 
-        const groups = [];
-        querySnapshot.forEach(async (groupDoc) => {
-          const groupData = groupDoc.data();
-          // Check if the current user is a member of the group
-          const membersCollectionRef = collection(db, 'groups', groupDoc.id, 'members');
-          const memberDocRef = doc(membersCollectionRef, session.user.uid);
-          const memberDocSnap = await getDoc(memberDocRef);
+        if (memberDocSnap.exists()) {
+          groups.push({
+            id: groupDoc.id,
+            title: groupData.title,
+            description: groupData.description,
+            groupBanner: groupData.groupBanner,
+            // Add other properties you want to display
+          });
+        }
+      }
 
-          if (memberDocSnap.exists()) {
-            groups.push({
-              id: groupDoc.id,
-              title: groupData.title,
-              description: groupData.description,
-              groupBanner: groupData.groupBanner,
-              // Add other properties you want to display
-            });
-          }
-        });
-
-        setJoinedGroups(groups);
+      setJoinedGroups(groups);
       } catch (error) {
         console.error('Error fetching joined groups:', error);
-      }
-    };
+      }}
 
     fetchJoinedGroups();
   }, [session]);
@@ -165,8 +167,15 @@ export default function MyGroups() {
   }, [session]);
 
   return (
-    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto no-scrollbar'>
-      <h1 className="text-xl md:text-xl font-semibold mb-6 border-b border-b-gray-100 shadow-md p-2">My Groups</h1>
+    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] overflow-y-auto no-scrollbar'>
+      <div className='sticky top-0 z-10 bg-white font-medium text-[20px] px-4 py-2 flex justify-between shadow-md border-b border-b-gray-100'>
+         <h1 className="text-xl font-semibold text-gray-800">All Groups</h1>
+         <div onClick={() => router.push('/create-group')}>
+         <MdOutlineAddCircleOutline className='text-2xl text-yellow-500 cursor-pointer' />
+         </div>
+      </div>
+      
+      <h1 className="text-xl md:text-xl font-semibold mb-6  p-2">My Groups</h1>
       <div className="overflow-x-scroll no-scrollbar">
         <div className="flex flex-wrap -mx-2 mt-2">
           {isVerified && myGroups.length > 0 ? (
@@ -193,7 +202,7 @@ export default function MyGroups() {
       </div>
       {joinedGroups.length > 0 && (
         <section className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4">Joined Groups</h2>
+          <h2 className="text-xl font-semibold mb-4 mx-3">Joined Groups</h2>
           <div className="overflow-x-auto no-scrollbar">
             <div className="flex flex-wrap -mx-2 mt-2">
               {joinedGroups.map((group) => (

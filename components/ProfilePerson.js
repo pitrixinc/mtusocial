@@ -413,7 +413,7 @@ console.log('UID from URL:', id); */}
 
 
   return (
-    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto no-scrollbar'>
+    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] overflow-y-auto no-scrollbar'>
        {/* <h1 className='font-semibold'>{session?.user?.name}</h1> */}
        <div class="mx-auto flex h-screen w-full items-start justify-center bg-white text-sm text-gray-900 antialiased">
   <div class="mx-auto w-full max-w-[600px]">

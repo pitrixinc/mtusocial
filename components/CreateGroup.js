@@ -4,7 +4,7 @@ import { collection, addDoc, serverTimestamp, doc, setDoc, updateDoc } from 'fir
 import { ref, uploadBytes, getDownloadURL, uploadString } from 'firebase/storage';
 import { db, storage } from '../firebase';
 import { useSession } from 'next-auth/react';
-import { AiOutlineClose, AiOutlineVideoCameraAdd } from 'react-icons/ai';
+import { AiOutlineArrowLeft, AiOutlineClose, AiOutlineVideoCameraAdd } from 'react-icons/ai';
 import { BsImage } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 
@@ -85,8 +85,11 @@ export default function CreateGroup() {
   };
 
   return (
-    <div className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto h-screen no-scrollbar'>
-      <div className='sticky top-0 z-10 bg-white font-medium text-[20px] px-4 py-2 shadow-md border-b border-b-gray-100'>
+    <div className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] overflow-y-auto h-screen no-scrollbar'>
+      <div className='sticky flex items-center top-0 z-10 bg-white font-medium text-[20px] px-4 py-2 shadow-md border-b border-b-gray-100'>
+        <button onClick={() => router.push(`/group/my-groups`)} className='mr-2 text-blue-500 hover:underline sticky'>
+            <AiOutlineArrowLeft className='text-2xl text-black'/>
+          </button>
          <h1 className="text-xl font-semibold text-gray-800">Create Group</h1>
       </div>
 

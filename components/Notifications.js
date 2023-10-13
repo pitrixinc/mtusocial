@@ -144,7 +144,7 @@ const handleNotificationClick = async (notification) => {
 };
 
   return (
-    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto no-scrollbar'>
+    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] overflow-y-auto no-scrollbar'>
       <div className="mx-auto flex h-screen w-full items-start justify-center bg-white text-sm text-gray-900 antialiased">
         <div>
           <h1 className='text-2xl font-bold text-center sticky top-1 z-10 bg-gray-100 border-b border-gray-100 shadow-sm p-2 rounded-[20px]'>Notifications</h1>

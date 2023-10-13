@@ -116,7 +116,7 @@ const ListConversation = () => {
   };
 
   return (
-    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto no-scrollbar'>
+    <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] h-screen min-h-screen border-r border-gray-400 text-[#16181C] overflow-y-auto no-scrollbar'>
       <div className="bg-white shadow-sm rounded-lg p-4 border-b border-b-gray-300">
         <div className='flex items-center p-4 border-b border-b-gray-300 shadow-md'>
           <button onClick={() => router.push(`/`)} className='mr-2 text-blue-500 hover:underline'>
