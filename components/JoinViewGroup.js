@@ -134,7 +134,7 @@ export default function JoinViewGroup() {
         {isVerified ? (
           isMember ? (
             <div className=' flex justify-center items-center'>
-            <button onClick={() => router.push(`/group/${groupId}/chat`)} className='mx-3 text-white bg-yellow-500 font-semibold text-center p-3 rounded-[20px] mt-5'>View Group</button>
+            <button onClick={() => router.push(`/group/${groupId}/chat`)} className='mx-3 text-white bg-yellow-500 font-semibold text-center p-3 rounded-[20px] mt-5 mb-[60px]'>View Group</button>
             </div>
           ) : (
             <>
@@ -150,7 +150,7 @@ export default function JoinViewGroup() {
                 </div>
               )}
               <div className=' flex justify-center items-center'>
-              <button className=' mx-3 text-white bg-yellow-500 font-semibold text-center p-3 rounded-[20px] mt-5' onClick={joinGroup}>Join Group</button>
+              <button className=' mx-3 text-white bg-yellow-500 font-semibold text-center p-3 rounded-[20px] mt-5 mb-[60px]' onClick={joinGroup}>Join Group</button>
               </div>
             </>
           )
