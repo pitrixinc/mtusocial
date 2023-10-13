@@ -204,7 +204,7 @@ const Sidebar = () => {
           
         </div>
         <div
-                className="text-black bottom-0 w-full flex items-center mt-[80px] py-10 shadow-sm bg-white rounded-[20px]"
+                className="text-black bottom-0 w-full flex items-center mt-[80px] py-4 px-1 shadow-md bg-white rounded-[20px]"
                 onClick={signOut}
             >
                 <img
