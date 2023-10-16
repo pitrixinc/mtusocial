@@ -56,9 +56,9 @@ const TheUsers = () => {
         email: updatedEmail,
         tag: updatedTag,
         profileImage: updatedProfileImage,
-        isVerified: updateIsVerified || "false",
-        isQualifiedForBadge: updateIsQualifiedForBadge || "false",
-        isQualifiedForGoldBadge: updateIsQualifiedForGoldBadge || "false",
+        isVerified: updateIsVerified || false,
+        isQualifiedForBadge: updateIsQualifiedForBadge || false,
+        isQualifiedForGoldBadge: updateIsQualifiedForGoldBadge || false,
       });
 
       setEditingUserId(null);
