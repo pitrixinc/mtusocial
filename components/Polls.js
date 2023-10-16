@@ -9,6 +9,7 @@ import Moment from 'react-moment';
 import CountdownTimer from './CountdownTimer';
 import { useRouter } from 'next/router';
 import SkeletonLoader from './SkeletonLoader';
+import CryptoJS from 'crypto-js';
 
 const Polls = () => {
   const { data: session } = useSession();
@@ -148,8 +149,12 @@ const handlePasswordSubmit = async (pollId) => {
 
     // Check if the entered password matches the actual poll password
     const actualPollPassword = poll.password; // Use the password from pollData
+
+    // Decrypt the entered password
+    const bytes = CryptoJS.AES.decrypt(actualPollPassword, process.env.NEXT_PUBLIC_CRYPTOJS_SECRET_KEY);
+    const decryptedPassword = bytes.toString(CryptoJS.enc.Utf8);
       
-    if (enteredPassword === actualPollPassword) {
+    if (enteredPassword === decryptedPassword) {
       setCorrectPasswordEntered(true);
     } else {
       toast.error('Incorrect poll password. Please try again.');
@@ -272,15 +277,15 @@ const handlePasswordSubmit = async (pollId) => {
                   </div>
                   {/* Disable voting options when the poll is closed */}
                   {new Date() >= new Date(poll.endDate) ? (
-                    <span className="text-sm font-semibold absolute inset-0 flex items-center px-2 text-gray-600">
-                      <RiRadioButtonLine className='mr-1' />  {option.text} ({option.votes} votes, {option.percentage}%)
+                    <span className="text-sm font-semibold absolute inset-0 flex items-center px-2 text-gray-600 justify-between">
+                    <span className='flex items-center'>   <RiRadioButtonLine className='mr-1' />  {option.text} </span> <p>({option.votes} votes, {option.percentage}%) </p>
                     </span>
                   ) : (
                     <button
                       onClick={() => handleVote(poll.id, index)}
-                      className={`absolute inset-0 w-full h-8  text-sm font-semibold flex px-2 text-gray-600 items-center`}
+                      className={`absolute inset-0 w-full h-8  text-sm font-semibold flex px-2 text-gray-600 items-center justify-between`}
                     >
-                     <RiRadioButtonLine className='mr-1' /> {option.text} ({option.votes} votes, {option.percentage}%)
+                   <span className='flex items-center'>  <RiRadioButtonLine className='mr-1' /> {option.text} </span> <p>({option.votes} votes, {option.percentage}%) </p>
                     </button>
                   )}
                 </li>
@@ -317,15 +322,15 @@ const handlePasswordSubmit = async (pollId) => {
                   </div>
                   {/* Disable voting options when the poll is closed */}
                   {new Date() >= new Date(poll.endDate) ? (
-                    <span className="text-sm font-semibold absolute inset-0 flex items-center px-2 text-gray-600">
-                      <RiRadioButtonLine className='mr-1' />  {option.text} ({option.votes} votes, {option.percentage}%)
+                    <span className="text-sm font-semibold absolute inset-0 flex items-center px-2 text-gray-600 justify-between">
+                      <span className='flex items-center'> <RiRadioButtonLine className='mr-1' />  {option.text} </span> <p>({option.votes} votes, {option.percentage}%)</p>
                     </span>
                   ) : (
                     <button
                       onClick={() => handleVote(poll.id, index)}
-                      className={`absolute inset-0 w-full h-8  text-sm font-semibold flex px-2 text-gray-600 items-center`}
+                      className={`absolute inset-0 w-full h-8  text-sm font-semibold flex px-2 text-gray-600 items-center justify-between`}
                     >
-                     <RiRadioButtonLine className='mr-1' /> {option.text} ({option.votes} votes, {option.percentage}%)
+                     <span className='flex items-center'> <RiRadioButtonLine className='mr-1' /> {option.text} </span> <p>({option.votes} votes, {option.percentage}%) </p>
                     </button>
                   )}
                 </li>

@@ -10,6 +10,7 @@ import CountdownTimer from './CountdownTimer';
 import { BsArrowLeft } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 import {RiRadioButtonLine} from 'react-icons/ri'
+import CryptoJS from 'crypto-js';
 
 const SinglePoll = () => {
   const { data: session } = useSession();
@@ -133,8 +134,12 @@ const handlePasswordSubmit = async (id) => {
   try {
     // Check if the entered password matches the actual poll password
     const actualPollPassword = poll.password; // Use the password from the fetched poll data
+    
+    // Decrypt the entered password
+    const bytes = CryptoJS.AES.decrypt(actualPollPassword, process.env.NEXT_PUBLIC_CRYPTOJS_SECRET_KEY);
+    const decryptedPassword = bytes.toString(CryptoJS.enc.Utf8);
       
-    if (enteredPassword === actualPollPassword) {
+    if (enteredPassword === decryptedPassword) {
       setCorrectPasswordEntered(true);
     } else {
       toast.error('Incorrect poll password. Please try again.');
@@ -148,7 +153,7 @@ const handlePasswordSubmit = async (id) => {
   // -------------------------------------------------------------------------------------
 
   return (
-    <div className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] py-2 overflow-y-auto h-screen no-scrollbar'>
+    <div className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] overflow-y-auto h-screen no-scrollbar'>
       <div className='sticky top-0 bg-white flex items-center gap-4 font-bold text-[20px] px-4 py-2 shadow-md'>
         <BsArrowLeft className='cursor-pointer' onClick={() => router.push(`/polls`)} />
         <div className='text-center items-center justify-center'> MTU Social Poll</div>
@@ -226,13 +231,13 @@ const handlePasswordSubmit = async (id) => {
                   <div className="w-5/6 flex items-center justify-between">
                    
                     {isPollClosed ? (
-                      <span className="text-sm font-semibold absolute inset-0 flex items-center px-2 text-gray-500"> <RiRadioButtonLine className='mr-1' /> {option.text} {option.votes} votes, {percentage}%</span>
+                      <span className="text-sm font-semibold absolute inset-0 flex items-center px-2 text-gray-500 justify-between"> <span className='flex items-center'> <RiRadioButtonLine className='mr-1' /> {option.text}</span> <p>({option.votes} votes, {percentage}%)</p></span>
                     ) : (
                       <button
                         onClick={() => handleVote(index)}
-                        className={`absolute inset-0 w-full h-8 rounded-r-lg text-sm font-semibold flex px-2 text-yellow-800 items-center`}
+                        className={`absolute inset-0 w-full h-8 rounded-r-lg text-sm font-semibold flex px-2 text-yellow-800 items-center justify-between`}
                       >
-                      <RiRadioButtonLine className='mr-1' /> {option.text} {option.votes} Votes, ({percentage}%)
+                     <span className='flex items-center'>  <RiRadioButtonLine className='mr-1' /> {option.text}</span> <p>({option.votes} Votes, {percentage}%)</p>
                       </button>
                     )}
                   </div>
@@ -273,15 +278,15 @@ const handlePasswordSubmit = async (id) => {
                 </div>
                 {/* Disable voting options when the poll is closed */}
                 {new Date() >= new Date(poll.endDate) ? (
-                  <span className="text-sm font-semibold absolute inset-0 flex items-center px-2 text-gray-600 cursor-not-allowed">
-                    <RiRadioButtonLine className='mr-1' />  {option.text} ({option.votes} votes, {percentage}%)
+                  <span className="text-sm font-semibold absolute inset-0 flex items-center px-2 text-gray-600 cursor-not-allowed justify-between">
+                   <span className='flex items-center'> <RiRadioButtonLine className='mr-1' />  {option.text} </span> <p>({option.votes} votes, {percentage}%)</p>
                   </span>
                 ) : (
                   <button
                     onClick={() => handleVote(poll.id, index)}
-                    className={`absolute inset-0 w-full h-8  text-sm font-semibold flex px-2 text-gray-600 items-center`}
+                    className={`absolute inset-0 w-full h-8  text-sm font-semibold flex px-2 text-gray-600 items-center justify-between`}
                   >
-                   <RiRadioButtonLine className='mr-1' /> {option.text} ({option.votes} votes, {percentage}%)
+                  <span className='flex items-center'> <RiRadioButtonLine className='mr-1' /> {option.text}</span> <p>({option.votes} votes, {percentage}%)</p>
                   </button>
                 )}
               </li>

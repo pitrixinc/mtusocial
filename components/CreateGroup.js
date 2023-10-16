@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import { AiOutlineArrowLeft, AiOutlineClose, AiOutlineVideoCameraAdd } from 'react-icons/ai';
 import { BsImage } from 'react-icons/bs';
 import { toast } from 'react-toastify';
+import CryptoJS from 'crypto-js';
 
 export default function CreateGroup() {
   const [groupTitle, setGroupTitle] = useState('');
@@ -23,6 +24,11 @@ export default function CreateGroup() {
   const { data: session } = useSession();
 
 
+  // Encrypt the message using a secret key (you should securely manage this key)
+  const secretKey = process.env.NEXT_PUBLIC_CRYPTOJS_SECRET_KEY; // Replace with your actual secret key
+  const encryptedPassword = CryptoJS.AES.encrypt(password, secretKey).toString();
+
+
   const createGroup = async () => {
     try {
       // Create a new group document
@@ -30,7 +36,7 @@ export default function CreateGroup() {
         title: groupTitle,
         description: groupDescription,
         private: isPrivate,
-        password: isPrivate ? password : '',
+        password: isPrivate ? encryptedPassword : '',
         creatorId: session.user.uid,
         createdAt: serverTimestamp(),
         groupPurpose: groupPurpose,

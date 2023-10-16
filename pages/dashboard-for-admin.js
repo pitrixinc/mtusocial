@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-import Sidebar from '../components/Sidebar';
-import AdminDashBoard from '../components/AdminDashBoard';
+import AdminDashBoard from '../components/Admin/AdminDashBoard';
 import VerifiedUsersList from '../components/VerifiedUsersList';
 import { useRouter } from 'next/router';
 import {toast} from 'react-toastify';
+import AdminSidebar from '../components/Admin/AdminSidebar';
 
 
 const DashboardForAdmin = () => {
@@ -21,7 +21,7 @@ const DashboardForAdmin = () => {
 
   useEffect(() => {
     // Check if the current user is the qualified admin (based on UID)
-    if (session && session.user.uid === '107623299362359964229') {
+    if (session && session.user.uid === process.env.NEXT_PUBLIC_UID_ADMIN) {
       setIsAdmin(true);
 
       // Check if it's the first time the admin is visiting
@@ -69,8 +69,9 @@ const DashboardForAdmin = () => {
     }
   };
 
-  if (session && session.user.uid !== '107623299362359964229') {
+  if (session && session.user.uid !== process.env.NEXT_PUBLIC_UID_ADMIN) {
     // If the user is not the admin, navigate them to the homepage
+    toast.error("Access Denied!")
     router.push('/');
     return null;
   }
@@ -80,7 +81,7 @@ const DashboardForAdmin = () => {
       {isAdminLoggedIn ? (
         // Display the specified content when the admin is logged in
         <div className='relative max-w-[1400px] mx-auto'>
-          <Sidebar />
+          <AdminSidebar />
           <div className='flex gap-6'>
             <AdminDashBoard />
             <VerifiedUsersList />

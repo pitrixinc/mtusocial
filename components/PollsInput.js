@@ -11,6 +11,7 @@ import { AiOutlineVideoCameraAdd, AiOutlineClose } from "react-icons/ai"
 import {BiAddToQueue, BiText} from 'react-icons/bi'
 import {MdOutlineRemoveCircleOutline} from 'react-icons/md'
 import {RiLockPasswordLine} from 'react-icons/ri'
+import CryptoJS from 'crypto-js';
 
 const Input = () => {
   const { data: session } = useSession();
@@ -115,6 +116,11 @@ const Input = () => {
   };
   // --------------------------------------
 
+
+  // Encrypt the message using a secret key (you should securely manage this key)
+  const secretKey = process.env.NEXT_PUBLIC_CRYPTOJS_SECRET_KEY; // Replace with your actual secret key
+  const encryptedPassword = CryptoJS.AES.encrypt(pollPassword, secretKey).toString();
+
   const sendPoll = async () => {
     if (loading) return;
   
@@ -172,7 +178,7 @@ const Input = () => {
         endDate: endTimestamp.toISOString(), // Store the end date/time as a string
         isClosed: false, // Initialize isClosed as false
         isPrivate: privatePoll, // Store whether the poll is private
-        password: privatePoll ? pollPassword : '', // Store the poll password if it's a private poll
+        password: privatePoll ? encryptedPassword : '', // Store the poll password if it's a private poll
       };
   
       const docRef = await addDoc(collection(db, 'polls'), pollData);
