@@ -95,8 +95,12 @@ const AdminSidebar = () => {
                 <SidebarLink text="Hashtags" Icon={HiHashtag} />
                 <SidebarLink text="Messages" Icon={BiMessageSquareDetail} />
                 <SidebarLink text="Notifications" Icon={AiOutlineNotification} />
+              <div onClick={() => router.push('/dashboard-for-admin/all-polls')}>
                 <SidebarLink text="Polls" Icon={MdOutlinePoll} /> 
+              </div>
+              <div onClick={() => router.push('/dashboard-for-admin/all-posts')}>
                 <SidebarLink text="Posts" Icon={BiBookContent} />
+              </div>
                 <SidebarLink text="User Votes" Icon={MdOutlineHowToVote} />
               <div onClick={() => router.push('/dashboard-for-admin/users')}>
                 <SidebarLink text="Users" Icon={RiUserSettingsLine} />

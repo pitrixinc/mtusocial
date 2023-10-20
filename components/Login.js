@@ -5,10 +5,19 @@ import Image from 'next/image'
 import { FcGoogle } from "react-icons/fc"
 import Logo from "../assets/images/mtu2.png";
 import Typewriter from "typewriter-effect";
+import Head from 'next/head'
 
 const Login = () => {
   
   return (
+    <>
+    <Head>
+        <title>Login - MTU Social</title>
+        <meta name="description" content="Michigan Technological University Social Network" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/logo192.png" />
+      </Head>
+
     <div className='grid grid-rows-2 md:grid-cols-2 lg:grid-cols-2 h-screen'>
       {/* ... (your existing UI code) ... */}
       <div className='bg-gradient-to-r from-yellow-500 to-black h-screen hidden md:grid lg:grid place-items-center '>
@@ -64,7 +73,7 @@ const Login = () => {
 
       </div>
 
-    </div>
+    </div></>
   )
 }
 

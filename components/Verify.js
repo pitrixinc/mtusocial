@@ -258,6 +258,9 @@ const Verify = () => {
     // Use the imageURL state variable to store the image URL
     formData['imageUpload'] = imageFile;
 
+    // Add the doc.id as a field called docId
+    formData['docId'] = ''; // Initialize docId with an empty string
+
     // Create or access the "applyVerify" collection
     const applyVerifyCollectionRef = collection(db, 'applyVerify');
 
@@ -272,6 +275,11 @@ const Verify = () => {
         role: selectedRole,
         timestamp: serverTimestamp(),
       });
+
+      // Update the docId field with the document ID
+    await updateDoc(doc(applyVerifyCollectionRef, docRef.id), {
+      docId: docRef.id,
+    });
 
       // Log the document ID for reference
       toast.success('Application submitted successfully');
