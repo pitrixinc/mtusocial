@@ -379,20 +379,20 @@ const formatPostText = (text) => {
 
 
           </div>
-          <p onClick={() => router.push(`/${id}`)}> {formatPostText(post?.text)}</p>
+          <p onClick={() => router.push(`/posts/${id}`)}> {formatPostText(post?.text)}</p>
           {post?.image && (
             <img
             className='max-h-[450px] object-cover rounded-[20px] mt-2'
             src={post?.image}
             alt="post"
-            onClick={() => router.push(`/${id}`)}
+            onClick={() => router.push(`/posts/${id}`)}
              />
           )}
           {post?.video && (
             <video
             controls
             className="max-h-[450px] object-cover rounded-[20px] mt-2"
-            onClick={() => router.push(`/${id}`)}
+            onClick={() => router.push(`/posts/${id}`)}
           >
             <source src={post?.video}  />
             Your browser does not support the video tag.

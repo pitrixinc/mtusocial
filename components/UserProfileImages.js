@@ -53,7 +53,7 @@ const UserProfileImages = () => {
           ) : (
             userPosts.map((post) => (<>
             {post.image && (
-              <div key={post.id} className="relative group bg-gray-100 hover:opacity-80 overflow-hidden rounded-md shadow-md cursor-pointer" onClick={() => router.push(`/${post.id}`)}>
+              <div key={post.id} className="relative group bg-gray-100 hover:opacity-80 overflow-hidden rounded-md shadow-md cursor-pointer" onClick={() => router.push(`/posts/${post.id}`)}>
                 
                   <img src={post.image} alt={`Image for post ${post.id}`} className="w-full h-[85px] object-cover" />
                 

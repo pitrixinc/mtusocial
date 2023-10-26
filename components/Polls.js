@@ -278,7 +278,7 @@ const handlePasswordSubmit = async (pollId) => {
                   {/* Disable voting options when the poll is closed */}
                   {new Date() >= new Date(poll.endDate) ? (
                     <span className="text-sm font-semibold absolute inset-0 flex items-center px-2 text-gray-600 justify-between">
-                    <span className='flex items-center'>   <RiRadioButtonLine className='mr-1' />  {option.text} </span> <p>({option.votes} votes, {option.percentage}%) </p>
+                    <span className='flex items-center'> <RiRadioButtonLine className='mr-1' />  {option.text} </span> <p>({option.votes} votes, {option.percentage}%) </p>
                     </span>
                   ) : (
                     <button

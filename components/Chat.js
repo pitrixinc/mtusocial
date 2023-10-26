@@ -411,7 +411,7 @@ const Chat = () => {
         <textarea
             className='w-[100%] bg-transparent outline-none text-[20px]'
             rows="2"
-            placeholder="What's Happening?"
+            placeholder="Type a message here..."
             value={input}
             onChange={(e) => setInput(e.target.value)} 
             />
