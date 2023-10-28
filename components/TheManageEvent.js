@@ -102,7 +102,7 @@ const ManageEvent = () => {
     }
   };
 
-  if (!eventData.creatorId) {
+  if (session.user.uid !== eventData?.creatorId) {
     toast.error("Access denied");
     router.push(`/events/${id}`);
     return;
