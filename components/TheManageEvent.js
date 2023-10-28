@@ -99,15 +99,9 @@ const ManageEvent = () => {
         });
     } else {
       toast.error('You are not the creator of this event.');
+      router.push(`/events/${id}`);
     }
   };
-
-  if (session.user.uid !== eventData?.creatorId) {
-    toast.error("Access denied");
-    router.push(`/events/${id}`);
-    return;
-  }
-
 
   return (
     <div className="sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] overflow-y-auto h-screen no-scrollbar">
