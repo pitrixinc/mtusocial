@@ -11,7 +11,7 @@ import Image from 'next/image'
 import { collection, getDocs, updateDoc, doc, getDoc } from 'firebase/firestore'; // Import Firestore functions here
 import { db } from '../firebase';
 import mtuLogo from "../assets/images/mtulogo.jpg";
-import { MdClose } from 'react-icons/md'
+import { MdClose, MdOutlineEventNote } from 'react-icons/md'
 
 
 const Sidebar = () => {
@@ -104,10 +104,13 @@ const Sidebar = () => {
                 <SidebarLink text="Groups" Icon={HiOutlineUserGroup} />
                 </div>
                 <div onClick={() => router.push('/polls')}>
-                <SidebarLink text="Polls" Icon={BiPoll} />
+                <SidebarLink text="Polls" Icon={BiPoll} /> 
+                </div>
+                <div onClick={() => router.push('/events')}>
+                <SidebarLink text="Events" Icon={MdOutlineEventNote} />
                 </div>
                 <div onClick={() => router.push(`/users/${session.user.uid}`)}>
-                <SidebarLink text="Profile" Icon={AiOutlineUser} />
+                <SidebarLink text="Profile" Icon={AiOutlineUser} /> 
                 </div>
              {/*<SidebarLink text="More" Icon={HiOutlineDotsCircleHorizontal} />*/}  
 
