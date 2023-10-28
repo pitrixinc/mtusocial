@@ -102,6 +102,13 @@ const ManageEvent = () => {
     }
   };
 
+  if (!eventData.creatorId) {
+    toast.error("Access denied");
+    router.push(`/events/${id}`);
+    return;
+  }
+
+
   return (
     <div className="sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] overflow-y-auto h-screen no-scrollbar">
       {eventData ? (
