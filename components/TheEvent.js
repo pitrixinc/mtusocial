@@ -131,7 +131,7 @@ const TheEvent = () => {
              <div className='flex items-center gap-2'>
                 <img src={event.creatorImage || "https://t3.ftcdn.net/jpg/02/16/47/50/360_F_216475029_YEdkzXdw97bvK9OioWRwRjfPG1IQkP69.jpg"} alt='' className='w-[50px] h-[50px] rounded-full' />
                 <p>{event.creatorName}</p>
-                {event.creatorId && (
+                {(event.creatorId === session.user.uid) && (
                   <button
                     onClick={() => router.push(`/events/manage-event/${id}`)}>
                       <AiOutlineControl className='w-6 h-6'/>
