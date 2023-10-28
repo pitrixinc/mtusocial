@@ -100,6 +100,7 @@ const ManageEvent = () => {
     } else {
       toast.error('You are not the creator of this event.');
       router.push(`/events/${id}`);
+      return  
     }
   };
 
