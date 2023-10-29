@@ -65,9 +65,9 @@ const MyEventAndEventsDiscovery = () => {
   return (
     <div className="sm:ml-[81px] xl:ml-[340px] w-[600px] border-r px-2 border-gray-400 text-[#16181C] overflow-y-auto h-screen no-scrollbar">
       <div className='sticky top-0 z-10 bg-white font-medium text-[20px] px-4 py-2 flex justify-between shadow-md border-b border-b-gray-100'>
-        <h1 className="text-xl font-semibold text-gray-800 my-4 ">Events</h1>
+        <h1 className="text-xl font-semibold text-gray-800 my-2">Events</h1>
         <div onClick={() => router.push('/events/create')}>
-          <MdOutlineAddCircleOutline className='text-2xl text-yellow-500 cursor-pointer' />
+          <MdOutlineAddCircleOutline className='text-2xl text-yellow-500 cursor-pointer my-2' />
         </div>
       </div>
       {/* Event Discovery Section */}
