@@ -206,10 +206,10 @@ const handlePasswordSubmit = async (pollId) => {
     ) : (<>
     <><>
     {searchQuery === '' ? (
-            <p className='mt-4 mb-10'>You can search for a Poll by typing its ID, question, or Poll creator name.</p>
+            <p className='mt-4 mb-10 text-center text-yellow-500 font-semibold'>You can search for a Poll by typing its ID, question, or Poll creator name.</p>
           ) :
           filteredPolls.length === 0 ? (
-            <p className='mt-4 mb-10'>No poll is related to your search.</p>
+            <p className='mt-4 mb-10  text-center text-yellow-500 font-semibold'>No poll is related to your search.</p>
           ) : (
       <ul className="mt-4">
          {filteredPolls.map((poll) => (<>

@@ -36,7 +36,7 @@ const HashtagPosts = () => {
               postIds.push(doc.data().postId);
             });
 
-            console.log('Post IDs related to the hashtag:', postIds); // Log post IDs
+           // console.log('Post IDs related to the hashtag:', postIds); // Log post IDs
 
             // Fetch the posts based on the collected post IDs
             const postsCollectionRef = collection(db, 'posts');
