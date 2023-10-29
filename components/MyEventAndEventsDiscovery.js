@@ -80,7 +80,7 @@ const MyEventAndEventsDiscovery = () => {
       {searchQuery === '' ? (
         <p className='text-center font-semibold text-yellow-500'>You can search for events by typing keywords or event names.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {filteredEvents.length === 0 && searchQuery.length > 0 ? (
             <p className="text-gray-500 mt-2">No events found for your search.</p>
           ) : (
