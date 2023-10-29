@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import EventCard from './EventCard';
+import { MdOutlineAddCircleOutline } from 'react-icons/md';
 
 const MyEventAndEventsDiscovery = () => {
   const { data: session } = useSession();
@@ -63,8 +64,12 @@ const MyEventAndEventsDiscovery = () => {
 
   return (
     <div className="sm:ml-[81px] xl:ml-[340px] w-[600px] border-r px-2 border-gray-400 text-[#16181C] overflow-y-auto h-screen no-scrollbar">
-      <h1 className="text-3xl font-semibold text-gray-800 my-4 ">My Events</h1>
-
+      <div className='sticky top-0 z-10 bg-white font-medium text-[20px] px-4 py-2 flex justify-between shadow-md border-b border-b-gray-100'>
+        <h1 className="text-xl font-semibold text-gray-800 my-4 ">Events</h1>
+        <div onClick={() => router.push('/events/create')}>
+          <MdOutlineAddCircleOutline className='text-2xl text-yellow-500 cursor-pointer' />
+        </div>
+      </div>
       {/* Event Discovery Section */}
       <section className="my-8">
       <h2 className="text-xl font-semibold text-gray-700 mb-4">Event Discovery</h2>

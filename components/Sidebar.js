@@ -200,6 +200,9 @@ const Sidebar = () => {
            <div onClick={() => router.push('/polls')} className='flex items-center gap-2 font-bold text-[20px] cursor-pointer mt-8 mx-2'>
              <BiPoll /> <span>Polls</span>
            </div>
+           <div onClick={() => router.push('/events')} className='flex items-center gap-2 font-bold text-[20px] cursor-pointer mt-8 mx-2'>
+              <MdOutlineEventNote /> <span>Events</span>
+          </div>
            <div onClick={() => router.push('/hashtag-posts?hashtag=foryou')} className='flex items-center gap-2 font-bold text-[20px] cursor-pointer mt-8 mx-2'>
              <RiHashtag /> <span>Hashtags</span>
            </div>
