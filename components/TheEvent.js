@@ -13,6 +13,7 @@ import {
 import { db } from '../firebase';
 import { toast } from 'react-toastify';
 import { AiOutlineControl } from 'react-icons/ai';
+import Moment from 'react-moment'
 
 const TheEvent = () => {
   const router = useRouter();
@@ -107,8 +108,8 @@ const TheEvent = () => {
             <h1 className="text-xl font-bold mb-4">{event.eventName}</h1>
             <p className="mt-4 px-2 text-center">{event.eventDescription || 'No Description'}</p>
             <div className="flex items-center w-[100%] gap-4 font-semibold">
-              <button disabled className="text-sm w-[50%] text-yellow-500 shadow-sm bg-gray-100 rounded-md h-[55px]">Starts: {event.startDate}</button>
-              <button disabled className="text-sm w-[50%] text-red-500 shadow-sm bg-gray-100 rounded-md h-[55px]">Ends: {event.endDate}</button>
+              <button disabled className="text-sm w-[50%] text-yellow-500 shadow-sm bg-gray-100 rounded-md h-[55px] capitalize">Starts: <Moment fromNow>{event?.startDate}</Moment></button>
+              <button disabled className="text-sm w-[50%] text-red-500 shadow-sm bg-gray-100 rounded-md h-[55px] capitalize">Ends:  <Moment fromNow>{event?.endDate}</Moment></button>
             </div>
             <div className="flex items-center w-[100%] gap-4 ">
             <button disabled className="mt-4 w-[50%] text-gray-500 bg-gray-100 shadow-sm rounded-md p-2">

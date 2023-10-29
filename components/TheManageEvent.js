@@ -5,6 +5,7 @@ import { collection, doc, getDoc, getDocs, query, where, addDoc, deleteDoc, upda
 import { db } from '../firebase';
 import { toast } from 'react-toastify';
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import Moment from 'react-moment'
 
 const ManageEvent = () => {
   const router = useRouter();
@@ -26,6 +27,12 @@ const ManageEvent = () => {
           if (docSnapshot.exists()) {
             setEventData(docSnapshot.data());
             setEditedEvent(docSnapshot.data());
+
+            // Check if the current user is the creator
+            if (session?.user.uid !== docSnapshot.data().creatorId) {
+              toast.error('Access Denied');
+              router.push(`/events/${id}`); // Redirect to home if not the creator
+            }
           } else {
             toast.error('Event not found.');
             router.push('/events'); // Redirect if event not found
@@ -129,50 +136,68 @@ const ManageEvent = () => {
               <div>
                 <div className="mb-4">
                   <label className="block font-semibold">Event Name</label>
+                  <div className="bg-gray-200 mt-1 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[15px] w-[full] mx-3">
                   <input
                     type="text"
                     value={editedEvent.eventName}
                     onChange={(e) => setEditedEvent({ ...editedEvent, eventName: e.target.value })}
+                    className="bg-transparent w-[100%] outline-none font-semibold"
                   />
+                  </div>
                 </div>
                 <div className="mb-4">
                   <label className="block font-semibold">Start Date</label>
+                  <div className="bg-gray-200 mt-1 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[15px] w-[full] mx-3">
                   <input
                     type="text"
                     value={editedEvent.startDate}
                     onChange={(e) => setEditedEvent({ ...editedEvent, startDate: e.target.value })}
+                    className="bg-transparent w-[100%] outline-none font-semibold"
                   />
+                  </div>
                 </div>
                 <div className="mb-4">
                   <label className="block font-semibold">End Date</label>
+                  <div className="bg-gray-200 mt-1 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[15px] w-[full] mx-3">
                   <input
                     type="text"
                     value={editedEvent.endDate}
                     onChange={(e) => setEditedEvent({ ...editedEvent, endDate: e.target.value })}
+                    className="bg-transparent w-[100%] outline-none font-semibold"
                   />
+                  </div>
                 </div>
                 <div className="mb-4">
                   <label className="block font-semibold">Event Location</label>
+                  <div className="bg-gray-200 mt-1 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[15px] w-[full] mx-3">
                   <input
                     type="text"
                     value={editedEvent.eventLocation}
                     onChange={(e) => setEditedEvent({ ...editedEvent, eventLocation: e.target.value })}
+                    className="bg-transparent w-[100%] outline-none font-semibold"
                   />
+                  </div>
                 </div>
                 <div className="mb-4">
                   <label className="block font-semibold">Event Description</label>
+                  <div className="bg-gray-200 mt-1 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[15px] w-[full] mx-3">
                   <textarea
                     value={editedEvent.eventDescription}
                     onChange={(e) => setEditedEvent({ ...editedEvent, eventDescription: e.target.value })}
+                    className="bg-transparent w-[100%] outline-none font-semibold"
                   />
+                  </div>
                 </div>
                 <div className="mb-4">
                   <label className="block font-semibold">Co-Hosts (comma-separated)</label>
+                  <div className="bg-gray-200 mt-1 flex gap-2 rounded-full py-2 px-4 text-black items-center text-[15px] w-[full] mx-3">
                   <input
                     type="text"
                     value={editedEvent.coHosts.join(', ')}
                     onChange={(e) => setEditedEvent({ ...editedEvent, coHosts: e.target.value.split(',').map((s) => s.trim()) })}
+                    className="bg-transparent w-[100%] outline-none font-semibold"
                   />
+                  </div>
                 </div>
               </div>
             ) : (
@@ -180,12 +205,8 @@ const ManageEvent = () => {
                 <h1 className="text-xl font-bold mb-4">{eventData.eventName}</h1>
                 <p className="mt-4 px-2 text-center">{eventData.eventDescription || 'No Description'}</p>
                 <div className="flex items-center w-[100%] gap-4 font-semibold">
-                  <button disabled className="text-sm w-[50%] text-yellow-500 shadow-sm bg-gray-100 rounded-md h-[55px]">
-                    Starts: {eventData.startDate}
-                  </button>
-                  <button disabled className="text-sm w-[50%] text-red-500 shadow-sm bg-gray-100 rounded-md h-[55px]">
-                    Ends: {eventData.endDate}
-                  </button>
+                  <button disabled className="text-sm w-[50%] text-yellow-500 shadow-sm bg-gray-100 rounded-md h-[55px] capitalize">Starts: <Moment fromNow>{eventData?.startDate}</Moment></button>
+                  <button disabled className="text-sm w-[50%] text-red-500 shadow-sm bg-gray-100 rounded-md h-[55px] capitalize">Ends:  <Moment fromNow>{eventData?.endDate}</Moment></button>
                 </div>
                 <div className="flex items-center w-[100%] gap-4 ">
                   <button disabled className="mt-4 w-[50%] text-gray-500 bg-gray-100 shadow-sm rounded-md p-2">
@@ -212,7 +233,7 @@ const ManageEvent = () => {
             <div className="mb-2 mt-2">
               <p className="font-semibold mb-1">Event Members</p>
               {members.map((member) => (
-                <div key={member.id} className="flex items-center justify-between">
+                <div key={member.id} className="flex items-center rounded-[20px] justify-between p-2 border-b border-b-gray-300">
                   <div className="flex items-center gap-2">
                     <img
                       src={member.userImage || 'https://t3.ftcdn.net/jpg/02/16/47/50/360_F_216475029_YEdkzXdw97bvK9OioWRwRjfPG1IQkP69.jpg'}
@@ -221,17 +242,17 @@ const ManageEvent = () => {
                     />
                     <p>{member.userName}</p>
                   </div>
-                  {session && eventData.creatorId === session.user.uid ? (<p className='text-yellow-500 font-semibold'>Creator</p>) : (
+                  {member && member.userId === eventData.creatorId ? (<p className='text-yellow-500 font-semibold'>Creator</p>) : (
                     <button
                       onClick={() => handleDeleteMember(member.id)}
-                      className="text-red-500 cursor-pointer"
+                      className="text-red-500 font-bold cursor-pointer"
                     >
                       <AiOutlineDelete />
                     </button>
                   )}
                 </div>
               ))}
-              <p>Total Members: {memberCount}</p>
+              <p className='text-center text-yellow-500 font-semibold my-3'>Total Members: {memberCount}</p>
             </div>
             <div className="mb-2 mt-2">
               <p className="font-semibold mb-1">Hosted by</p>
@@ -249,13 +270,13 @@ const ManageEvent = () => {
                     <div className="flex items-center">
                       <button
                         onClick={handleSaveEdit}
-                        className="text-white bg-green-500 font-semibold p-3 rounded"
+                        className="text-white bg-green-500 font-semibold p-3 rounded mb-[60px]"
                       >
                         Save
                       </button>
                       <button
                         onClick={handleCancelEdit}
-                        className="text-red-500 font-semibold p-3 ml-2"
+                        className="text-red-500 bg-gray-200 font-semibold p-3 ml-2 mb-[60px]"
                       >
                         Cancel
                       </button>
@@ -263,7 +284,7 @@ const ManageEvent = () => {
                   ) : (
                     <button
                       onClick={handleEditEvent}
-                      className="text-white bg-yellow-500 font-semibold p-3 rounded"
+                      className="text-white bg-yellow-500 font-semibold p-3 rounded mb-[60px]"
                     >
                       Edit Event
                     </button>

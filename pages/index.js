@@ -20,8 +20,8 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>MTU Social</title>
-        <meta name="description" content="Michigan Technological University Social Network" />
+        <title>Home - MTU Social</title>
+        <meta name="description" content="Michigan Technological University Social Network Website" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/logo192.png" />
       </Head>
