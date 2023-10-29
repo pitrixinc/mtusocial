@@ -97,7 +97,7 @@ const PopularHashtags = () => {
               onClick={() => handleHashtagClick(hashtag.name)} // Handle the click event
             >
               <span className='text-sm text-gray-500'>Trending Now</span>
-             <p className='font-bold text-md'>#{hashtag.name}</p> <span className='text-sm text-gray-500'>{hashtag.count} posts </span>
+             <p className='font-bold text-md bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black'>#{hashtag.name}</p> <span className='text-sm text-gray-500'>{hashtag.count} posts </span>
             </li>
           ))}
         </ul>)}</>
