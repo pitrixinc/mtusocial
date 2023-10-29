@@ -4,11 +4,13 @@ import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firesto
 import { db } from '../firebase';
 import EventCard from './EventCard';
 import { MdOutlineAddCircleOutline } from 'react-icons/md';
+import { useRouter } from 'next/router'
 
 const MyEventAndEventsDiscovery = () => {
   const { data: session } = useSession();
   const [events, setEvents] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const router = useRouter()
 
   useEffect(() => {
     const fetchEvents = async () => {
