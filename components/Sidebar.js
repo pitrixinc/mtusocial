@@ -86,7 +86,7 @@ const Sidebar = () => {
                 <div onClick={() => router.push('/')}>
                 <SidebarLink text="Home" Icon={AiFillHome} />
                 </div>
-                <div onClick={() => router.push('search')}>
+                <div onClick={() => router.push('/search')}>
                 <SidebarLink text="Search" Icon={BiSearchAlt} />
                 </div>
                 <div onClick={() => router.push(`/notifications/${session.user.uid}`)}>
