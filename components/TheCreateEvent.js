@@ -98,7 +98,6 @@ const TheCreateEvent = () => {
       router.push(`/events/${eventId}`);
     } catch (error) {
       toast.error('Error creating event. Please try again.');
-      console.error('Error creating event. Please try again.', error)
     }
   };
 
