@@ -102,11 +102,15 @@ const MyEventAndEventsDiscovery = () => {
       {/* My Events Section */}
       <section className="my-8">
         <h2 className="text-xl font-semibold text-gray-700 mb-4">My Events</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {myEvents.map((event) => (
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {myEvents.length > 0 ?
+          (myEvents.map((event) => (
             // Render each event card
             <EventCard key={event.eventId} event={event} />
-          ))}
+          ))
+          ) : (
+          <p className="text-gray-600 mb-4 font-semibold">You haven't created any events yet.</p>
+          )}
         </div>
       </section>
 

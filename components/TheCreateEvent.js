@@ -95,9 +95,10 @@ const TheCreateEvent = () => {
       setBannerImage(null);
 
       toast.success('Event created successfully!');
-      router.push(`/events/${id}`);
+      router.push(`/events/${eventId}`);
     } catch (error) {
       toast.error('Error creating event. Please try again.');
+      console.error('Error creating event. Please try again.', error)
     }
   };
 
