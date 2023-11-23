@@ -23,6 +23,7 @@ const Feed = () => {
   const [isNewPostsAvailable, setIsNewPostsAvailable] = useState(false);
   const postContainerRef = useRef(null);
   const latestPostTimestampRef = useRef(null);
+  const [loading, setLoading] = useState(true); // State to track loading status
   const router = useRouter()
 
   useEffect(() => {
@@ -134,6 +135,15 @@ const Feed = () => {
     setShowMore((prevShowMore) => prevShowMore + 20);
   };
 
+  // Use useEffect to simulate loading time
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      setLoading(false); // Set loading to false after a simulated delay
+    }, 1000); // Adjust the delay time as needed
+
+    return () => clearTimeout(delay);
+  }, []);
+
   return (
     <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] overflow-y-auto h-screen no-scrollbar'>
       <div className='top-0 bg-white text-[#16181C] flex justify-between font-bold text-[20px] px-4 py-2 mt-[0px]'>
@@ -173,6 +183,28 @@ const Feed = () => {
           <BsNewspaper />
         </div>
       </div>
+      {loading ? (<>
+        
+        <div className='flex flex-col gap-1 items-center justify-center min-h-screen'>
+          <div className='items-center justify-center w-14 h-14 hoverEffect p-0 mb-4'>
+              <Image className='rounded-[1px]' src={mtuLogo} height="74px" width="64px" />
+          </div>
+          <div className='flex flex-row'>
+            <div
+                class="bg-gradient-to-r from-yellow-500 to-black  w-4 h-4 rounded-full animate-bounce first-circle"
+                style={{ animationDelay: '0.1s', }}
+                ></div>
+                <div
+                class="bg-gradient-to-r from-yellow-500 to-black  w-4 h-4 rounded-full animate-bounce second-circle"
+                style={{ animationDelay: '0.2s', }}
+                ></div>
+                <div
+                class="bg-gradient-to-r from-yellow-500 to-black  w-4 h-4 rounded-full animate-bounce third-circle"
+                style={{ animationDelay: '0.3s', }}
+                ></div>
+            </div>
+         </div>
+      </>) : (<>
       {isCurrentUserVerified && <Input />}
       <div ref={postContainerRef} className='px-4 pt-2'>
       {isNewPostsAvailable && (
@@ -210,7 +242,7 @@ const Feed = () => {
             <button className='bg-yellow-500 p-2 rounded-[15px] text-white' onClick={() => router.push('/verify')}>Verify</button>
           </div>
         )}
-      </div>
+      </div> </>)}
     </section>
   );
 };
