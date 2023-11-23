@@ -231,11 +231,11 @@ const handlePasswordSubmit = async (id) => {
                   <div className="w-5/6 flex items-center justify-between">
                    
                     {isPollClosed ? (
-                      <span className="text-sm font-semibold absolute inset-0 flex items-center px-2 text-gray-500 justify-between"> <span className='flex items-center'> <RiRadioButtonLine className='mr-1' /> {option.text}</span> <p>({option.votes} votes, {percentage}%)</p></span>
+                      <span className="text-sm font-semibold absolute inset-0 flex items-center px-2 text-gray-500 justify-between border border-gray-600 rounded-xl"> <span className='flex items-center'> <RiRadioButtonLine className='mr-1' /> {option.text}</span> <p>({option.votes} votes, {percentage}%)</p></span>
                     ) : (
                       <button
                         onClick={() => handleVote(index)}
-                        className={`absolute inset-0 w-full h-8 rounded-r-lg text-sm font-semibold flex px-2 text-yellow-800 items-center justify-between`}
+                        className={`absolute inset-0 w-full h-8 rounded-r-lg text-sm font-semibold flex px-2 text-yellow-800 items-center justify-between border border-yellow-600 rounded-xl`}
                       >
                      <span className='flex items-center'>  <RiRadioButtonLine className='mr-1' /> {option.text}</span> <p>({option.votes} Votes, {percentage}%)</p>
                       </button>
@@ -278,13 +278,13 @@ const handlePasswordSubmit = async (id) => {
                 </div>
                 {/* Disable voting options when the poll is closed */}
                 {new Date() >= new Date(poll.endDate) ? (
-                  <span className="text-sm font-semibold absolute inset-0 flex items-center px-2 text-gray-600 cursor-not-allowed justify-between">
+                  <span className="text-sm font-semibold absolute inset-0 flex items-center px-2 text-gray-600 cursor-not-allowed justify-between border border-gray-600 rounded-xl">
                    <span className='flex items-center'> <RiRadioButtonLine className='mr-1' />  {option.text} </span> <p>({option.votes} votes, {percentage}%)</p>
                   </span>
                 ) : (
                   <button
                     onClick={() => handleVote(poll.id, index)}
-                    className={`absolute inset-0 w-full h-8  text-sm font-semibold flex px-2 text-gray-600 items-center justify-between`}
+                    className={`absolute inset-0 w-full h-8  text-sm font-semibold flex px-2 text-gray-600 items-center justify-between border border-yellow-600 rounded-xl`}
                   >
                   <span className='flex items-center'> <RiRadioButtonLine className='mr-1' /> {option.text}</span> <p>({option.votes} votes, {percentage}%)</p>
                   </button>
