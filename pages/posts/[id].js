@@ -25,7 +25,7 @@ const PostPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className='relative  lg:max-w-[1400px] md:max-w-[1000px] mx-auto'>
+      <main className='relative  max-w-[1400px] mx-auto'>
         <Sidebar />
         <div className='flex gap-6'>
           <SinglePost />

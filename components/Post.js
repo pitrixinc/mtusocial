@@ -449,7 +449,7 @@ const formatPostText = (text) => {
            <div className='bg-white w-[350px] md:w-[650px] text-black absolute left-[50%] translate-x-[-50%] mt-[40px] p-4 rounded-[20px]     overflow-y-auto no-scrollbar h-[380px] md:h-[450px]'>
             
            <div className='text-center font-bold'>Repost</div>
-           
+
            <div className='flex justify-end'>
             <MdClose 
                 className='text-[22px] cursor-pointer ' 

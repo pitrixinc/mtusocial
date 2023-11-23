@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, }) {
         <ToastContainer
           theme="light"
           position="top-right"
-          autoClose={3000}
+          autoClose={4000}
           closeOnClick
           pauseOnHover={false}
         />
