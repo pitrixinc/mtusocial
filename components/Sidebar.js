@@ -82,7 +82,7 @@ const Sidebar = () => {
             <div className='flex items-center justify-center w-14 h-14 hoverEffect p-0 xl:ml-24'>
                 <Image className='rounded-[1px]' src={mtuLogo} height="74px" width="64px" />
             </div>
-            <div className='space-y-2 mt-4 mb-2.5 xl:ml-24 text-[#16181C]'>
+            <div className='space-y-2 mt-4 mb-2.5 xl:ml-24 text-[#16181C] overflow-y-scroll'>
                 <div onClick={() => router.push('/')}>
                 <SidebarLink text="Home" Icon={AiFillHome} />
                 </div>
