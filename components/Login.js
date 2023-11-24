@@ -60,7 +60,7 @@ const Login = () => {
           ></div>
      <div className='absolute inset-0 z-20 flex flex-col items-center p-5 transition-all duration-300 rounded-lg blur-lg hover:blur-none'>
       <div className='wrapper flex flex-col items-center justify-between ' style={{ backdropFilter: 'blur(10px)', backgroundColor: 'rgba(255, 255, 255, 0.6)'}}>
-      <h1 className="font-bold text-xl md:text-5xl lg:text-5xl p-5">
+      <h1 className="font-bold text-xl sm:text-md md:text-md lg:text-5xl p-5">
          <span className="bg-gradient-to-r text-white from-yellow-500 to-black p-5 rounded-lg shadow-lg">Welcome To MTU Social</span>
       </h1>
       <h1 className="font-semibold text-xl bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black p-5 text-center w-[90%]">

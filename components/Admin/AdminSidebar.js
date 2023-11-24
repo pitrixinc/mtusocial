@@ -13,6 +13,7 @@ import { db } from '../../firebase';
 import mtuLogo from "../../assets/images/mtulogo.jpg";
 import { MdClose, MdGroups, MdOutlineHowToVote, MdOutlinePoll, MdVerified } from 'react-icons/md'
 import Admin from './Admin'
+import { MdEvent } from "react-icons/md";
 
 
 const AdminSidebar = () => {
@@ -81,7 +82,7 @@ const AdminSidebar = () => {
     return (
       <>
         <div className='hidden sm:flex flex-col items-center xl:items-start xl:w-[340px] p-2 fixed h-full border-r border-gray-400 pr-0 xl:pr-8 overflow-y-scroll'>
-            <div className='flex items-center justify-center w-14 h-14 hoverEffect p-0 xl:ml-24'>
+            <div className='flex items-center justify-center w-14 h-14 hoverEffect p-0 xl:ml-24' onClick={() => router.push('/')}>
                 <Image className='rounded-[1px]' src={mtuLogo} height="74px" width="64px" />
             </div>
             <div className='space-y-2 mt-4 mb-2.5 xl:ml-24 text-[#16181C]'>
@@ -104,6 +105,9 @@ const AdminSidebar = () => {
                 <SidebarLink text="User Votes" Icon={MdOutlineHowToVote} />
               <div onClick={() => router.push('/dashboard-for-admin/users')}>
                 <SidebarLink text="Users" Icon={RiUserSettingsLine} />
+              </div>
+              <div onClick={() => router.push('/dashboard-for-admin/users')}>
+                <SidebarLink text="Events" Icon={MdEvent} />
               </div>
             </div>
                 {/* 
