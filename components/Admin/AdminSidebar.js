@@ -92,7 +92,9 @@ const AdminSidebar = () => {
               <div onClick={() => router.push('/dashboard-for-admin/verification-request')}>
                 <SidebarLink text="Verifications" Icon={MdVerified} />
               </div>
+              <div onClick={() => router.push('/dashboard-for-admin/all-groups')}>
                 <SidebarLink text="Groups" Icon={MdGroups} />
+              </div>
                 <SidebarLink text="Hashtags" Icon={HiHashtag} />
                 <SidebarLink text="Messages" Icon={BiMessageSquareDetail} />
                 <SidebarLink text="Notifications" Icon={AiOutlineNotification} />
