@@ -207,7 +207,8 @@ const Feed = () => {
          </div>
       </>) : (<>
       {isCurrentUserVerified && (<>
-        <p className="text-base text-center text-gray-800 leading-6 font-medium bg-gray-100 p-4 rounded-md shadow-sm">
+        <p className="text-base text-center text-gray-800 leading-6 font-medium bg-gray-100 p-4 rounded-md shadow-sm flex justify-end">
+         <span className='mr-1'>Dear {session?.user?.name.slice(0, 13)}</span>
         <Typewriter 
            options={{
             strings : [
