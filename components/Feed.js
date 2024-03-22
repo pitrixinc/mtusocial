@@ -145,6 +145,18 @@ const Feed = () => {
     return () => clearTimeout(delay);
   }, []);
 
+  const [currentTime, setCurrentTime] = useState(new Date());
+  
+    // Determine the greeting based on the current time
+    let greeting;
+    if (currentTime.getHours() >= 5 && currentTime.getHours() < 12) {
+      greeting = "Good Morning";
+    } else if (currentTime.getHours() >= 12 && currentTime.getHours() < 17) {
+      greeting = "Good Afternoon";
+    } else {
+      greeting = "Good Evening";
+    }
+
   return (
     <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] overflow-y-auto h-screen no-scrollbar'>
       <div className='top-0 bg-white text-[#16181C] flex justify-between font-bold text-[20px] px-4 py-2 mt-[0px]'>
@@ -211,6 +223,7 @@ const Feed = () => {
         <Typewriter 
            options={{
                strings : [
+                `${greeting}, ${session?.user?.name}!`,
                 `Dear ${session?.user?.name}, believe in yourself; your potential is limitless, aim high.`,
                 `Dear ${session?.user?.name}, embrace failure; it's a stepping stone to success, learn.`,
                 `Dear ${session?.user?.name}, persist through challenges; resilience breeds victory, keep moving forward.`,
