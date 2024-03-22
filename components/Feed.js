@@ -207,12 +207,11 @@ const Feed = () => {
          </div>
       </>) : (<>
       {isCurrentUserVerified && (<>
-        <p className="text-base text-center text-gray-800 leading-6 font-medium bg-gray-100 p-4 rounded-md shadow-sm flex justify-end">
-         <span className='mr-1'>Dear {session?.user?.name.slice(0, 13)}</span>
+        <p className="text-base text-center text-gray-800 leading-6 font-medium bg-gray-100 p-4 rounded-md shadow-sm">
         <Typewriter 
            options={{
             strings : [
-              "Believe in yourself; your potential is limitless, aim high.",
+              `Dear ${session?.user?.name.slice(0, 13)} Believe in yourself; your potential is limitless, aim high.`,
               "Embrace failure; it's a stepping stone to success, learn.",
               "Persist through challenges; resilience breeds victory, keep moving forward.",
               "Stay focused on your goals; distractions deter progress, prioritize.",
