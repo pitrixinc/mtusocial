@@ -222,7 +222,7 @@ if (currentTime.getHours() >= 5 && currentTime.getHours() < 12) {
          </div>
       </>) : (<>
       {isCurrentUserVerified && (<>
-        <p className="text-base text-center leading-6 font-semibold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black  p-4 rounded-md shadow-sm">
+        <p className="text-base text-center leading-6 font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black  p-4 rounded-md shadow-sm">
         <Typewriter 
            options={{
                strings : [
