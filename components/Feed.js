@@ -10,6 +10,7 @@ import { HiOutlineSparkles } from 'react-icons/hi';
 import { toast } from 'react-toastify';
 import { BsNewspaper } from 'react-icons/bs';
 import { useRouter } from 'next/router'
+import Typewriter from "typewriter-effect";
 
 
 const Feed = () => {
@@ -205,7 +206,69 @@ const Feed = () => {
             </div>
          </div>
       </>) : (<>
-      {isCurrentUserVerified && <Input />}
+      {isCurrentUserVerified && (<>
+        <p className="text-base text-center text-gray-800 leading-6 font-medium bg-gray-100 p-4 rounded-md shadow-md">
+        <Typewriter 
+           options={{
+            strings : [
+              "Believe in yourself; your potential is limitless, aim high.",
+              "Embrace failure; it's a stepping stone to success, learn.",
+              "Persist through challenges; resilience breeds victory, keep moving forward.",
+              "Stay focused on your goals; distractions deter progress, prioritize.",
+              "Find joy in the journey; each step counts, cherish moments.",
+              "Never settle for mediocrity; strive for excellence, aim higher.",
+              "Trust your instincts; intuition guides wise decisions, listen closely.",
+              "Seek opportunities in setbacks; adversity fuels growth, adapt.",
+              "Celebrate small wins; they pave the way to big achievements, appreciate.",
+              "Surround yourself with positivity; energy is contagious, radiate light.",
+              "Practice gratitude daily; blessings abound, count them joyfully.",
+              "Be kind to yourself; self-love nurtures inner strength, embrace flaws.",
+              "Dream big dreams; imagination shapes reality, dare greatly.",
+              "Forge your path; uniqueness defines success, be authentic.",
+              "Speak your truth; honesty breeds trust, integrity matters.",
+              "Take calculated risks; courage leads to breakthroughs, leap fearlessly.",
+              "Forgive past hurts; freedom lies in letting go, release burdens.",
+              "Stay humble in victory; grace wins hearts, show gratitude.",
+              "Embrace change; growth thrives in transition, adapt gracefully.",
+              "Serve others selflessly; kindness transforms lives, give generously.",
+              "Stay resilient in adversity; storms pass, strength endures, endure.",
+              "Practice patience; timing is key, trust the process, wait.",
+              "Invest in personal development; knowledge empowers, learn continuously.",
+              "Cultivate resilience; setbacks build character, bounce back stronger.",
+              "Value relationships; love and connection enrich life's journey, cherish.",
+              "Find purpose in passion; fulfillment lies in doing what ignites your soul, pursue.",
+              "Embrace discomfort; growth resides outside your comfort zone, expand.",
+              "Be a lifelong learner; wisdom comes from curiosity, seek knowledge.",
+              "Stay committed to excellence; mediocrity is the enemy, strive for greatness.",
+              "Believe in miracles; faith moves mountains, miracles happen, trust.",
+              "Nurture inner peace; tranquility is found within, seek stillness.",
+              "Inspire others with your actions; lead by example, shine brightly.",
+              "Embrace failures as lessons; setbacks are stepping stones to success, learn.",
+              "Visualize success; manifest your dreams into reality, envision greatness.",
+              "Set boundaries; protect your energy, prioritize self-care, value yourself.",
+              "Rise above negativity; positivity is contagious, spread joy wherever you go.",
+              "Celebrate progress, not perfection; every step forward is a victory, acknowledge growth.",
+              "Stay true to your values; integrity is your compass, follow it unwaveringly.",
+              "Transform obstacles into opportunities; resilience is the key, adapt and overcome.",
+              "Leave a legacy of kindness; compassion echoes through generations, be a light.",
+              "Live with purpose; passion fuels purpose, pursue meaningful endeavors.",
+              "Seek wisdom in adversity; challenges are lessons in disguise, learn and grow.",
+              "Stay committed to your vision; persistence conquers all, never give up.",
+              "Cultivate an attitude of gratitude; appreciation magnifies blessings, count your joys.",
+              "Radiate positivity; optimism is contagious, brighten the world with your smile.",
+              "Practice self-reflection; introspection leads to self-awareness, know thyself deeply.",
+              "Dream fearlessly; imagination knows no bounds, envision limitless possibilities.",
+              "Embrace diversity; inclusivity fosters unity, celebrate differences, embrace diversity.",
+              "Create your own path; innovation thrives in originality, dare to be different.",
+              "Live in the present moment; yesterday is history, tomorrow is a mystery, cherish today."
+            ],            
+              autoStart: true,
+              loop: true,
+           }}
+           />
+           </p>
+      <Input />    
+      </>)}
       <div ref={postContainerRef} className='px-4 pt-2'>
       {isNewPostsAvailable && (
               <div className='fixed w-full top-0 text-center bg-white py-2'>
