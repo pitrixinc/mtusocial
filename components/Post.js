@@ -330,7 +330,7 @@ const formatPostText = (text) => {
             <span
               key={index}
               className="text-blue-500 font-semibold cursor-pointer"
-              onClick={() => router.push(`/${id}`)}
+              onClick={() => router.push(`/posts/${id}`)}
             >
               {part}
             </span>
