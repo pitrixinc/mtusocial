@@ -56,7 +56,7 @@ const Modal = () => {
         setAppContext({...appContext, isModalOpen: false})
         setInput("");
 
-        router.push(`/${appContext.postId}`);
+        router.push(`/posts/${appContext.postId}`);
     }
 
      

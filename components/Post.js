@@ -230,7 +230,7 @@ const Post = ({ id, post }) => {
 
       // Redirect to the reposted post
       toast.success("Your repost was sent!");
-      router.push(`/${id}`);
+      router.push(`/posts/${id}`);
       onClose();
       
     } catch (error) {
