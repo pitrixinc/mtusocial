@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import { BsNewspaper } from 'react-icons/bs';
 import { useRouter } from 'next/router'
 import Typewriter from "typewriter-effect";
+import { FaTimes } from 'react-icons/fa';
 
 
 const Feed = () => {
@@ -159,6 +160,11 @@ if (currentTime.getHours() >= 5 && currentTime.getHours() < 12) {
   greeting = "Good Night";
 }
 
+const [isMessageVisible, setMessageVisible] = useState(true);
+
+  const closeMessage = () => {
+    setMessageVisible(false);
+  };
 
   return (
     <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] overflow-y-auto h-screen no-scrollbar'>
@@ -222,6 +228,8 @@ if (currentTime.getHours() >= 5 && currentTime.getHours() < 12) {
          </div>
       </>) : (<>
       {isCurrentUserVerified && (<>
+        {isMessageVisible && (
+          <div className="relative">
         <p className="text-base text-center leading-6 font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-black  p-4 rounded-md shadow-sm">
         <Typewriter 
            options={{
@@ -284,6 +292,14 @@ if (currentTime.getHours() >= 5 && currentTime.getHours() < 12) {
            }}
            />
            </p>
+           <button
+            className="absolute top-0 right-0 m-2 text-gray-500 hover:text-gray-700 focus:outline-none"
+            onClick={closeMessage}
+          >
+            <FaTimes className="w-5 h-5" />
+          </button>
+        </div>
+      )}
       <Input />    
       </>)}
       <div ref={postContainerRef} className='px-4 pt-2'>
