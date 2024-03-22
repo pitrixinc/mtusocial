@@ -207,7 +207,7 @@ const Feed = () => {
          </div>
       </>) : (<>
       {isCurrentUserVerified && (<>
-        <p className="text-base text-center text-gray-800 leading-6 font-medium bg-gray-100 p-4 rounded-md shadow-md">
+        <p className="text-base text-center text-gray-800 leading-6 font-medium bg-gray-100 p-4 rounded-md shadow-sm">
         <Typewriter 
            options={{
             strings : [
