@@ -147,15 +147,18 @@ const Feed = () => {
 
   const [currentTime, setCurrentTime] = useState(new Date());
   
-    // Determine the greeting based on the current time
-    let greeting;
-    if (currentTime.getHours() >= 5 && currentTime.getHours() < 12) {
-      greeting = "Good Morning";
-    } else if (currentTime.getHours() >= 12 && currentTime.getHours() < 17) {
-      greeting = "Good Afternoon";
-    } else {
-      greeting = "Good Evening";
-    }
+// Determine the greeting based on the current time
+let greeting;
+if (currentTime.getHours() >= 5 && currentTime.getHours() < 12) {
+  greeting = "Good Morning";
+} else if (currentTime.getHours() >= 12 && currentTime.getHours() < 17) {
+  greeting = "Good Afternoon";
+} else if (currentTime.getHours() >= 17 && currentTime.getHours() < 21) {
+  greeting = "Good Evening";
+} else {
+  greeting = "Good Night";
+}
+
 
   return (
     <section className='sm:ml-[81px] xl:ml-[340px] w-[600px] border-r border-gray-400 text-[#16181C] overflow-y-auto h-screen no-scrollbar'>
