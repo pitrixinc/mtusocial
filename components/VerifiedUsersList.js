@@ -12,9 +12,32 @@ const ProfileData = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { data: session } = useSession();
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const handleSearch = async () => {
+
+      // Clear previous error message on search
+      setErrorMessage('');
+      
+      // Clear previous search results
+      setSearchResults([]);
+      
+      // Check if the search query meets the length requirement
+      if (searchQuery.length < 3) {
+        setErrorMessage('Your search input should be at least three letters');
+        setIsLoading(false);
+        return;
+      }
+
+      // Check if the search query contains any special characters
+      const specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+      if (specialCharacters.test(searchQuery)) {
+        setErrorMessage('No special character is allowed');
+        setIsLoading(false);
+        return;
+      }
+
       setIsLoading(true);
 
       // Define a Firestore query to search for users and groups, make it case insensitive
@@ -52,6 +75,7 @@ const ProfileData = () => {
         setSearchResults([...userResults, ...groupResults]);
       } catch (error) {
         console.error('Error searching:', error);
+        setErrorMessage('An error occurred while searching');
       } finally {
         setIsLoading(false);
       }
@@ -60,10 +84,16 @@ const ProfileData = () => {
     if (searchQuery.length > 0) {
       handleSearch();
     } else {
-      // Clear search results when the query is empty
+      // Clear search results and error message when the query is empty
       setSearchResults([]);
+      setErrorMessage('');
     }
   }, [searchQuery]);
+
+  
+  const clearErrorMessage = () => {
+    setErrorMessage('');
+  };
 
   const [isVerified, setIsVerified] = useState(false); // Add state for user verification
   useEffect(() => {
@@ -84,6 +114,7 @@ const ProfileData = () => {
 
     fetchUserVerification();
   }, [session]);
+
 
   return (
     <div className='hidden lg:block w-[350px] mt-2 h-screen overflow-y-auto no-scrollbar'>
@@ -110,7 +141,10 @@ const ProfileData = () => {
       </div> </>)}
 
       <div className='bg-white rounded-[20px] text-[#16181C] mt-4 px-4 py-4 sticky top-1 z-10 h-full'>
-        {isLoading ? (
+      {errorMessage ? (
+            <div className='text-red-500 font-bold mb-4'>{errorMessage}</div>
+          ) :
+        isLoading ? (
          <div className='flex items-center justify-center gap-1'>
             <div
                 class="bg-gradient-to-r from-yellow-500 to-black  w-4 h-4 rounded-full animate-bounce first-circle"

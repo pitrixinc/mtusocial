@@ -12,6 +12,7 @@ const HashtagPosts = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState(''); // State for search query
+  const [errorMessage, setErrorMessage] = useState('');
   let unsubscribe = null;
 
   useEffect(() => {
@@ -85,6 +86,25 @@ const HashtagPosts = () => {
 
   // Function to handle search and update the URL query
   const handleSearch = () => {
+
+     // Clear previous error message on search
+     setErrorMessage('');
+
+    // Check if the search query meets the length requirement
+    if (searchQuery.length < 3) {
+      setErrorMessage('Your search input should be at least three letters');
+      setLoading(false);
+      return;
+    }
+
+    // Check if the search query contains any special characters
+    const specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if (specialCharacters.test(searchQuery)) {
+      setErrorMessage('No special character is allowed');
+      setLoading(false);
+      return;
+    }
+
     router.push({
       pathname: '/hashtag-posts',
       query: { hashtag: searchQuery }, // Update the hashtag query
@@ -151,7 +171,9 @@ const HashtagPosts = () => {
         </button>
       </div>
 
-      {loading ? (
+      {errorMessage ? (
+            <div className='text-red-500 font-bold mb-4'>{errorMessage}</div>
+          ) : loading ? (
         <p>Loading...</p>
       ) : posts.length === 0 ? (
         <p>No posts found for #{hashtag}.</p>

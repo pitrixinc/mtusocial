@@ -13,6 +13,7 @@ const ProfileData = () => {
   const [groupResults, setGroupResults] = useState([]);
   const [postResults, setPostResults] = useState([]); // State for post search results
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const { data: session } = useSession();
 
   // Tab state to switch between "Users", "Groups", and "Posts"
@@ -20,6 +21,23 @@ const ProfileData = () => {
 
   useEffect(() => {
     const handleSearch = async () => {
+      // Clear previous error message on search
+      setErrorMessage('');
+      // Check if the search query meets the length requirement
+      if (searchQuery.length < 3) {
+        setErrorMessage('Your search input should be at least three letters');
+        setIsLoading(false);
+        return;
+      }
+
+      // Check if the search query contains any special characters
+      const specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+      if (specialCharacters.test(searchQuery)) {
+        setErrorMessage('No special character is allowed');
+        setIsLoading(false);
+        return;
+      }
+
       setIsLoading(true);
 
       // Define Firestore queries for users, groups, and posts
@@ -71,6 +89,7 @@ const ProfileData = () => {
         setPostResults(postResults);
       } catch (error) {
         console.error('Error searching:', error);
+        setErrorMessage('An error occurred while searching');
       } finally {
         setIsLoading(false);
       }
@@ -83,8 +102,15 @@ const ProfileData = () => {
       setUserResults([]);
       setGroupResults([]);
       setPostResults([]);
+      setErrorMessage('');
     }
   }, [searchQuery]);
+
+  
+  const clearErrorMessage = () => {
+    setErrorMessage('');
+  };
+
 
   const [isVerified, setIsVerified] = useState(false); // Add state for user verification
   useEffect(() => {
@@ -122,7 +148,10 @@ const ProfileData = () => {
       </div>
 
       <div className='bg-white rounded-[20px] text-[#16181C] mt-4 px-4 py-4 top-1 z-10 h-full'>
-        {isLoading ? (
+      {errorMessage ? (
+            <div className='text-red-500 font-bold mb-4'>{errorMessage}</div>
+          ) :
+          isLoading ? (
           // Loading indicator
           <div className='flex items-center justify-center gap-1'>
             <div

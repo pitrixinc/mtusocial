@@ -20,6 +20,9 @@ const Polls = () => {
   const [enteredPassword, setEnteredPassword] = useState('');
   const [correctPasswordEntered, setCorrectPasswordEntered] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  
 
   useEffect(() => {
     const fetchPolls = async () => {
@@ -170,7 +173,26 @@ const handlePasswordSubmit = async (pollId) => {
 
 
   const handleSearchInputChange = (e) => {
+
+    // Clear previous error message on search
+    setErrorMessage('');
+
     setSearchQuery(e.target.value);
+
+    // Check if the search query meets the length requirement
+    if (searchQuery.length < 3) {
+      setErrorMessage('Your search input should be at least three letters');
+      setLoading(false);
+      return;
+    }
+
+    // Check if the search query contains any special characters
+    const specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if (specialCharacters.test(searchQuery)) {
+      setErrorMessage('No special character is allowed');
+      setLoading(false);
+      return;
+    }
   };
 
   const filteredPolls = polls.filter((poll) => {
@@ -201,7 +223,9 @@ const handlePasswordSubmit = async (pollId) => {
         />
       </div>
 
-      {loading ? (
+      {errorMessage ? (
+            <div className='text-red-500 font-bold mb-4'>{errorMessage}</div>
+          ) : loading ? (
       <SkeletonLoader /> // Display the SkeletonLoader while loading
     ) : (<>
     <><>
