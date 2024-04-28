@@ -300,7 +300,7 @@ const [isMessageVisible, setMessageVisible] = useState(true);
           </button>
         </div>
       )}
-      <Input />    
+       {isCurrentUserVerified && (<Input />)}    
       </>)}
       <div ref={postContainerRef} className='px-4 pt-2'>
       {isNewPostsAvailable && (
